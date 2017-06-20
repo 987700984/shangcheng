@@ -1,0 +1,72 @@
+{include file="public:header" /}
+</head>
+
+<body style="background: #fff;">
+<div class="contents user_ty">
+
+    <div class="user_zc">
+ <form>
+        <div class="zc_list">
+            <div class="zc_name dl_center">
+                <i class="icon iconfont icon-shouji"></i>
+            </div>
+            <div class="zc_input">
+                <input type="text" id="phone" name="telephone" placeholder="请输入你的手机号码">
+            </div>
+        </div>
+
+
+        <div class="zc_list">
+            <div class="zc_name dl_center">
+                <i class="icon iconfont icon-suo"></i>
+            </div>
+            <div class="zc_input">
+                <input type="password" id="pw" name="password" placeholder="请输入您的密码">
+            </div>
+        </div>
+
+        <div class="zc_buttom" style="margin: 50px 0 20px 0;">
+            <input type="button" id="denglu"  class="weui-btn weui-btn_primary denglu" value="登录" />
+    
+        </div>
+</form>
+
+        <p class="wangjimima"><a href="{:url('Login/forget_pw')}">忘记密码</a></p>
+
+    </div>
+
+    {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+<script>
+    document.getElementById("index").className = "active";
+    $('#denglu').click(function() {
+        var mobile_phone = document.getElementById("phone").value;
+        var password = document.getElementById("pw").value;
+        var mobile_phone1 = /^1[3|4|5|7|8]\d{9}$/;
+//        var password1=null;
+
+        if (!mobile_phone1.test(mobile_phone)) {
+            $.alert("手机号不正确");
+            return false;
+        }
+        if (password == "") {
+            $.alert("密码不能为空");
+            return false;
+        }
+        $.post(
+                "{:url('Login/login')}",
+                {telephone:mobile_phone,password:password},
+                function(d){
+                    if(d.success){
+                        $.alert(d.success);
+                        window.location.href= d.url;
+                    }else{
+                        $.alert(d.error);
+                    }
+                }
+        )
+    })
+</script>
+
+</html>

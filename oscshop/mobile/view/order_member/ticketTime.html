@@ -1,0 +1,69 @@
+{include file="public:header" /}
+</head>
+
+<body>
+<div class="contents user_for_record">
+    <div class="nav-top">
+        <div class="icon">
+            <div class="l-height"></div>
+        </div>
+        <h1>兑换账期</h1>
+    </div>
+
+
+    <div class="total">
+        <div class="left">
+            <div class="bq"><img src="__PUBLIC__/index/img/user/icon-bq.png" width="100%"></div>
+            <div class="circle1">
+                <p>未兑换卷</p>
+                <p>共{$points}张</p>
+            </div>
+        </div>
+        <div class="right">
+                <div class="circle">
+                    <p>当前可用</p>
+                    <p>共{$point}张</p>
+                </div>
+        </div>
+    </div>
+    
+
+{volist name="order" id="d"}
+
+    <div class="list-box">
+        <h3>{$d.goods_name}</h3>
+        <div class="text">
+            <div class="left">
+                <p>您还有{$d.none_points}张兑换券未兑</p>
+                <p>到期时间：{$d.start_time|date='Y/m/d H:i:s',###}</p>
+            </div>
+            <div class="right">
+                <p>当前有{$d.cash_points}张兑换券可用</p>
+                <p>作废时间：{$d.end_time|date='Y/m/d H:i:s',###}</p>
+            </div>
+        </div>
+        <ul>
+        <?php
+
+        for($i=$d['total_points'];$i>$d['none_points'];$i--){
+            echo '<li class="active">'.$i.'兑</li>';
+        }
+        
+        for($i=$d['none_points'];$i>=1;$i--){
+            echo '<li>'.$i.'未</li>';
+        }
+        ?>
+            
+        </ul>
+    </div>
+{/volist}
+
+
+    
+
+
+
+</div>
+</body>
+
+</html>

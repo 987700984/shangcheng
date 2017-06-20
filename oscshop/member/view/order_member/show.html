@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>全部订单</title>
+    <link rel="stylesheet" href="__PUBLIC__/index/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/index/css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/my-sytle.css">
+</head>
+
+<body>
+<div class="contents user_order">
+    <div class="nav-box">
+        <div class="nav-list">
+            <ul class="tabs">
+                <li><a href="{:url('OrderMember/show_order','id='$)}" class="active">全部订单</a></li>
+                <li><a href="user_order_02.php">待付款</a></li>
+                <li><a href="user_order_03.php">待发货</a></li>
+                <li><a href="user_order_04.php">待收货</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="order-box">
+        <div class="centent-list">
+            <div class="img-box">
+                <img src="__PUBLIC__/index/img/test-data/01.jpg" width="100%">
+            </div>
+            <div class="right-box">
+                <div class="title">宝马牌24速山地自行车（高配版）</div>
+                <p>￥1888.00 <span>x1</span></p>
+                <p><s>￥6680.00</s> </p>
+            </div>
+        </div>
+
+
+        <div class="statistics">
+            <span>合计：￥1888.00</span>
+            <button style="bottom" class="active">付款</button>
+            <button style="bottom">取消订单</button>
+        </div>
+    </div>
+
+    {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+</html>

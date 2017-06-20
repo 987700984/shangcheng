@@ -1,0 +1,114 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>搜索页</title>
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/example.css" />
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/my-sytle.css">
+
+</head>
+<body>
+
+
+
+<div class="weui_search_bar" id="search_bar">
+    <form name="myform" class="weui_search_outer">
+        <div class="weui_search_inner">
+            <i class="weui_icon_search"></i>
+            <input type="search" class="weui_search_input" id="search_input" value="{:input('name')}" placeholder="搜索" name="name"/>
+            <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
+        </div>
+        <label for="search_input" class="weui_search_text" id="search_text">
+            <i class="weui_icon_search"></i>
+            <span></span>
+        </label>
+    </form>
+    <a href="javascript:" class="" style="color: #b96432" id="search">搜索</a>
+
+</div>
+
+
+{if condition="isset($lists)&&$lists"}
+<div class="weui-row">
+
+{volist name="lists" id="vo"}
+
+<div class="weui-col-50">
+    <a href="{:url('goods/detail',['id'=>$vo.goods_id])}">
+        <div class="mall-list">
+            <div class="mall-list-img">
+                <img style="width: 100%;" src="__PUBLIC__/../uploads/{$vo.image}" alt=""><span></span>
+            </div>
+
+            <div class="mall-list-title font-size-13">
+                <h4>{$vo.name}</h4>
+            </div>
+            <div class="mall-list-money m-t-5">
+                <p><s>原价：{$vo.origin_price}</s></p>
+                <p class="font-size-12 red">折扣价：￥{$vo.price}</p>
+            </div>
+            <div class="mall-list-namber">
+                围观：{$vo.viewed}<span>剩余数量：{$vo.quantity}</span>
+            </div>
+        </div>
+    </a>
+</div>
+
+{/volist}
+{else /}
+
+{/if}
+</div>
+<div class="height55"></div>
+<div class="height55"></div>
+
+
+
+<div class="bottomNav">
+    <div class="weui_tabbar">
+        <a href="{:url('aucIndex/index')}" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-01.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">专场</p>
+        </a>
+        <a href="{:url('aucIndex/list_painting')}" class="weui_tabbar_item ">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-02.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">拍品</p>
+        </a>
+        <a href="{:url('Index/index')}" class="weui_tabbar_item  weui_bar_item_on">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-03.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">商城</p>
+        </a>
+        <a href="{:url('User/index')}" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-04.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">个人中心</p>
+        </a>
+    </div>
+</div>
+<script src="__PUBLIC__/auction/js/jquery.min.js"></script>
+<script src="__PUBLIC__/auction/js/jquery-weui.min.js"></script>
+<script src="__PUBLIC__/auction/js/swiper.min.js"></script>
+<script src="__PUBLIC__/auction/js/city-picker.min.js"></script>
+
+
+<script>
+    $('#search').on('click',function(){
+document.myform.submit();
+    })
+</script>
+
+
+

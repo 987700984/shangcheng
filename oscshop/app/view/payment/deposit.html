@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>支付订金 - 盛世艺拍</title>
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/example.css" />
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/my-sytle.css">
+</head>
+<body>
+
+<div class="archives-top">
+    <div class="hd">
+        <h4 class="page_title">
+            <img src="{$user->userpic|default=''}" class="img-circle">
+        </h4>
+        <div class="grades">
+            <div class="text-center">{$user->nickname|default=''} </div>
+            <!--<div  class="text-center"><small></small></div>-->
+        </div>
+    </div>
+</div>
+
+<div class="weui_cells weui_cells_form archives">
+    <div class="weui_cell weui_cel">
+        <div class="weui_cell_hd"><label class="weui_label">拍品名称：</label></div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input class="archives-input" name="phone" type="tel" placeholder="{$goods->aucGoods->name}">
+        </div>
+    </div>
+    <div class="weui_cell weui_vcode">
+        <div class="weui_cell_hd"><label class="weui_label">保证金：</label></div>
+        <div class="weui_cell_bd weui_cell_primary" style="height: 44px;line-height: 44px">
+            ￥<b style="font-size: 25px;color: #b93eb3">{$goods->deposit}</b>
+        </div>
+    </div>
+</div>
+
+
+
+
+<button  style=" margin:30px 5% 5px 5%;width:90%"  id="wechat-payment-btn"  class="weui_btn weui_btn_primary" >立即支付</button>
+
+
+
+
+<div class="height55"></div>
+<div class="bottomNav">
+    <div class="weui_tabbar">
+        <a href="{:url('aucIndex/index')}" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-01.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">专场</p>
+        </a>
+        <a href="{:url('aucIndex/list_painting')}" class="weui_tabbar_item ">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-02.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">拍品</p>
+        </a>
+        <a href="{:url('Index/index')}" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-03.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">商城</p>
+        </a>
+        <a href="{:url('User/index')}" class="weui_tabbar_item  weui_bar_item_on">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-04.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">个人中心</p>
+        </a>
+    </div>
+</div>
+<script src="__PUBLIC__/auction/js/jquery.min.js"></script>
+<script src="__PUBLIC__/auction/js/jquery-weui.min.js"></script>
+<script src="__PUBLIC__/auction/js/swiper.min.js"></script>
+<script src="__PUBLIC__/auction/js/city-picker.min.js"></script>
+</body>
+
+<script>
+
+//    $('#to_pay').on('click',function(){
+//        $.post('{:url("deposit")}',{
+//            'goods_id':{$goods->goods_id},
+//            'deposit':{$goods->deposit}
+//        },function(data){
+//            if(data.status==0){
+//                $.alert(data.msg);
+//
+//            }else if(data.status==1){
+//                $.alert(data.msg);
+//                setTimeout(function(){
+//                    window.history.back();
+//                },1500)
+//            }else if(data.status==2){
+//                $.alert(data.msg);
+//                setTimeout(function(){
+//                    window.location.href = '{:url("charge")}';
+//                },1500)
+//            }
+//        })
+//    })
+
+//    $('#to_charge').on('click',function(){
+//
+//        window.localStorage.setItem('auction_goods_id',{$goods->goods_id});
+//        window.location.href = '{:url("charge")}';
+//
+//    })
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+        <!-- 微信JSSDK -->
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<!-- 微信JSSDK -->
+<script type="text/javascript">
+
+    wx.config({
+                debug: true,
+                appId: '{$signPackage.appId}',
+                timestamp: {$signPackage.timestamp},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: ['chooseWXPay']
+    });
+
+
+
+
+    /**
+     * 发起微信支付
+     */
+    $('#wechat-payment-btn').click(wepayCall);
+
+    /**
+     * 发起微信支付
+     * @returns {undefined}
+     */
+    function wepayCall() {
+
+
+        $('#wechat-payment-btn').attr('disabled',true).html('支付发起中...');
+
+        $.post("{:url('Payment/deposit')}",
+                {
+                    'pay_total':{$goods->deposit},
+                    'goods_id':{$goods->goods_id}
+                },
+                function (r) {
+                    if(r.error){
+                        $.toast(r.error, "forbidden");
+                        return;
+                    }
+                    if (r.ret_code === 0) {
+                        if (r.bizPackage.package !== 'prepay_id=') {
+                            // 支付操作成功
+                            r.bizPackage.success = wepayCallback;
+                            // 支付操作取消
+                            r.bizPackage.cancel = wepayCancel;
+                            // 支付操作出错
+                            r.bizPackage.fail = wepayError;
+//							 发起微信支付
+
+                            wx.chooseWXPay(r.bizPackage);
+
+                            // 按钮恢复
+                            $('#wechat-payment-btn').attr('disabled',false).html('微信支付');
+                        } else {
+
+                            wepayError();
+                        }
+                    } else if(r.ret_code === 11){
+                        $('#wechat-payment-btn').attr('disabled',false).html('微信支付');
+                        alert('订单创建失败！' + r.ret_msg);
+                    }
+                });
+
+
+    }
+    /**
+     * 微信支付回调
+     * @param {type} res
+     * @returns {undefined}
+     */
+    function wepayCallback(res) {
+        if(res.errMsg == "chooseWXPay:ok" ) {
+            $.alert('支付成功',function(){
+                window.history.back();
+            })
+////            var goods_id = window.localStorage.getItem('auction_goods_id');
+//
+//            if(goods_id){
+//
+//                window.localStorage.removeItem('auction_goods_id');
+//
+//                window.location.href = '{:url("AucIndex/auction_goods")}'+'/id/'+goods_id;
+//            }else{
+//                window.location.href = '{:url("User/index")}';
+//            }
+//            $('#wechat-payment-btn').removeClass('disable').html('微信安全支付');
+        }else{
+            alert(res.errMsg);
+        }
+
+    }
+    /**
+     * 微信支付失败
+     */
+    function wepayError() {
+        alert('微信支付发起失败');
+        // 按钮恢复
+        $('#wechat-payment-btn').attr('disabled',false).val('微信支付');
+    }
+    /**
+     * 微信支付手动取消
+     */
+    function wepayCancel() {
+        // 按钮恢复
+        $('#wechat-payment-btn').attr('disabled',false).val('微信支付');
+    }
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

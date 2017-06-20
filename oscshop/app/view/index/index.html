@@ -1,0 +1,113 @@
+{include file="public:header" /}
+</head>
+
+<body>
+<div class="contents index">
+    <div class="swiper-container">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            {volist name="banner" id="banner" }
+            <div class="swiper-slide"><a href="JavaScript:;"><img src="IMG_ROOT{$banner.image_url|resize=300,300}" alt=""></a></div>
+            {/volist}
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+
+    <div class="weui-flex p-t-10">
+    
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Membership/index','id=28')}"><img class="icon-centent" src="__PUBLIC__/index/img/icon-01.png" alt="">
+                <p class="center">盆景入会</p>
+            </a>            </div>
+        </div>
+  
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Membership/index','id=29')}"><img class="icon-centent" src="__PUBLIC__/index/img/icon-02.png" alt="">
+                <p class="center">种植园入会</p>
+            </a>            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Member/product')}"><img class="icon-centent" src="__PUBLIC__/index/img/icon-03.png" alt="">
+                <p class="center">产品入会</p>
+            </a>            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Payment/recharge')}"><img class="icon-centent" src="__PUBLIC__/index/img/icon-04.png" alt="">
+                <p class="center">充值入会</p>
+            </a>            </div>
+        </div>
+    </div>
+
+
+    <div class="nav-box">
+        <div class="nav-title">限时秒杀：</div>
+    </div>
+
+    <div class="centent-box">
+    {volist name="list" id="list" }
+        <div class="centent-list">
+            <div class="list-img"> <a href="{:url('Goods/index','id='.$list.goods_id)}"><img src="IMG_ROOT{$list.image|resize=100,100}" alt=""></a>
+            </div>
+            <div class="list-text">
+                <div class="title"><a href="{:url('Goods/index','id='.$list.goods_id)}">{$list.name}</a></div>
+                <p class="money">秒杀价：￥{$list.price}
+                    
+                </p>
+                <p><s>￥{$list.origin_price}
+                        
+                    </s></p>
+                <p><span><i class="icon iconfont icon-daojishi"></i></span> <span>离结束还剩：</span>
+                    <span class="lxftime" endtime="{$list.end_time}"></span>
+                </p>
+            </div>
+        </div>
+    {/volist}
+     {volist name="list1" id="list1" }
+        <div class="centent-list">
+            <div class="list-img"> <a href="{:url('Goods/index','id='.$list1.goods_id)}"><img src="IMG_ROOT{$list1.image|resize=100,100}" alt=""></a>
+            </div>
+            <div class="list-text">
+                <div class="title"><a href="{:url('Goods/index','id='.$list1.goods_id)}">{$list1.name}</a></div>
+                <p class="money">秒杀价：￥{$list1.price}
+                    
+                </p>
+                <p><s>￥{$list1.origin_price}
+                
+                    </s></p>
+                <p><span><i class="icon iconfont icon-daojishi"></i></span> <span>离结束还剩：</span>
+                    <span class="lxftime" endtime="{$list1.end_time}"></span>
+                </p>
+            </div>
+        </div>
+    {/volist}
+        
+    </div>
+
+
+    {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+
+
+<script type="text/javascript" src="__PUBLIC__/index/js/chenks-time.js"></script>
+<script>
+    $(".swiper-container").swiper({
+        loop: true,
+        autoplay: 3000
+    });
+
+    $(".swiper-containers").swiper({
+        loop: true,
+        autoplay: 0
+    });
+    $("#index").addClass("active");
+</script>
+
+
+</html>

@@ -1,0 +1,181 @@
+{include file="public:header" /}
+</head>
+
+<body style="background: #fff;">
+<div class="contents user_ty">
+<form>
+    <div class="user_zc">
+        <div class="zc_list">
+            <div class="zc_name">
+                昵称：
+            </div>
+            <div class="zc_input">
+                <input type="text" name="nickname" id="name" placeholder="请输入你的昵称">
+            </div>
+        </div>
+        <div class="zc_list">
+            <div class="zc_name">
+                手机号：
+            </div>
+            <div class="zc_input">
+                <input type="text" name="telephone" id="phone" placeholder="请输入你的手机号码">
+            </div>
+        </div>
+
+        <div class="zc_list">
+            <div class="zc_name">
+                验证码：
+            </div>
+            <div class="zc_input_yz">
+                <input type="text" name="code" id="code" placeholder="请输入验证码">
+            </div>
+            <div class="right_button">
+                <input type="button" id="btn" value="验证"/>
+            </div>
+        </div>
+
+        <div class="zc_list">
+            <div class="zc_name">
+                密码：
+            </div>
+            <div class="zc_input">
+                <input type="password" name="password" id="pw" placeholder="请输入您的密码">
+            </div>
+        </div>
+
+        <div class="zc_list">
+            <div class="zc_name">
+                确认密码：
+            </div>
+            <div class="zc_input">
+                <input type="password" name="password1" id="pw2"  placeholder="请再次输入您的密码">
+            </div>
+        </div>
+
+        <div class="zc_list">
+            <div class="zc_name">
+                推荐人：
+            </div>
+            <div class="zc_input">
+                <input type="text" id="pid" placeholder="推荐人的用户ID，没有可不填">
+            </div>
+        </div>
+
+
+        <div class="zc_buttom" style="margin: 50px 0;">
+            <input type="buttun" id="zhuce" value="注册" class="weui-btn weui-btn_primary"/>
+        </div>
+    
+
+    </div>
+</form>
+    {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+<script type="text/javascript">
+    document.getElementById("index").className = "active";
+    $('#zhuce').click(function(){
+        var code = document.getElementById("code").value;
+        var username = document.getElementById("name").value;
+        var mobile_phone = document.getElementById("phone").value;
+        var password = document.getElementById("pw").value;
+        var password2 = document.getElementById("pw2").value;
+        var pid = document.getElementById("pid").value;
+
+
+        var mobile_phone2 = /^1[3|4|5|7|8]\d{9}$/;
+        var passowrd3 = /^(\w){6,20}$/;
+
+
+        if (username == ""){
+            $.alert("昵称不能为空");
+            return false;
+        }
+        if (code == ""){
+            $.alert("验证码不能为空");
+            return false;
+        }
+
+        if (mobile_phone == ""){
+            $.alert("手机号不能为空");
+            return false;
+        }
+
+        if (!mobile_phone2.test(mobile_phone)) {
+            $.alert("手机号不正确");
+            return false;
+        }
+
+        if (password == ""){
+            $.alert("密码不能为空");
+            return false;
+        }
+
+        if (!passowrd3.test(password)) {
+            $.alert("密码最少需要6位");
+            return false;
+        }
+
+        if (password!=password2){
+            $.alert("两次密码不相同");
+            return false;
+        }
+
+
+        $.post(
+                "{:url('Login/reg')}",
+                {username:username,telephone:mobile_phone,password:password,code:code,pw2:password2,pid:pid},
+                function(d){
+                    if(d.success){
+                        $.alert(d.success);
+                        window.location.href= d.url;
+                    }else{
+                        $.alert(d.error);
+                    }
+                }
+        )
+    })
+
+
+
+var wait=60;  
+function time(o) {  
+        if (wait == 0) {  
+            o.removeAttribute("disabled");            
+            o.value="免费获取验证码";  
+            wait = 60;  
+        } else {  
+            o.setAttribute("disabled", true);  
+            o.value="重新发送(" + wait + ")";  
+            wait--;  
+            setTimeout(function() {  
+                time(o)  
+            },  
+            1000)  
+        }  
+    }  
+document.getElementById("btn").onclick=function(){
+    
+    var phone = $('#phone').val();
+    var mobile_phone2 = /^1[3|4|5|7|8]\d{9}$/;
+    if (phone=='' || !mobile_phone2.test(phone) ) {
+        $.alert('手机号不正确！');
+    }else{
+        time(this);
+        $.post(
+            "{:url('Login/send')}",
+            {telephone:phone},
+            function(data){
+                if (data) {
+                    $.alert('发送成功！');
+                }else{
+                    $.alert('发送失败！');
+                }
+            }
+        ) 
+    }
+    
+}  
+
+</script>
+</html>

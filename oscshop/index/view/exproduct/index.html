@@ -1,0 +1,201 @@
+<div class="all-nav-box">
+    <div class="container">
+        <a href="{:url('Index/index')}">首页</a>
+        {volist name="father" id="fa"}
+        &gt; {$fa.name}
+       {/volist}
+    </div>
+</div>
+<div class="list-product">
+    <div class="container">
+        <div class="fl-list-title">
+            <span>{$ptitle}</span>
+            {if condition="($cate!='')"}
+            <lb>- 类别筛选</lb>
+            {/if}
+        </div>
+        <div class="fl-list-content">
+            <ul>
+                {if condition="($cate!='')"}
+                {volist name="cate" id="cate"}
+                <li><a href="{:url('Exproduct/index','id='.$cate['id'])}">{$cate.name}</a></li>
+                {/volist}
+                {/if}
+            </ul>
+        </div>
+
+        <div class="b-color" style="margin-bottom: 10px;">
+
+                <ul>
+                    <li><span>排序方式 :</span></li>
+                    <li class="active"><a href="">默认排序</a></li>
+                    {if condition="($id != 0)"}
+                    <li>
+                        <span id="text_left">按价格排序</span>
+                        <ul class="list">
+                            <li data-id="1"><a href="javascript:;">价格从高到低</a></li>
+                            <li data-id="2"><a href="javascript:;">价格从低到高</a></li>
+                        </ul>
+                    </li>
+                    {/if}
+                    <li>
+                        <span id="text_left2">按人气排序</span>
+                        <ul class="list2">
+                            <li data-id="3"><a href="javascript:;">人气从高到低</a></li>
+                            <li data-id="4"><a href="javascript:;">人气从低到高</a></li>
+                        </ul>
+                    </li>
+
+
+                </ul>
+
+
+        </div>
+
+        <div class="list-content">
+            <div id="list" class="row">
+                {volist name="goodlist" id="li" empty="$empty"}
+                <div class="col-sm-3 col-xs-6">
+                    <div class="lis-box">
+                       <a href="{:url('Exproduct/details','id='.$li['goods_id'])}"> <div class="img-list">
+                            <img src="IMG_ROOT{$li.image|resize=210,210}" alt="">
+                        </div></a>
+                         <h3 class="title">
+                             <a href="{:url('Exproduct/details','id='.$li['goods_id'])}"> {$li.name}</a>
+                        </h3>
+                        <p class="money">
+                            {$li.pay_points}张兑换券
+                        </p>
+                        <div class="button">
+                            <div class="row">
+                                <div class="col-xs-6" >
+                                    <a href="javascript:add({$li.goods_id});"   type="button"  class="btn btn-danger btn-sm btn-lg btn-block">加入购物车</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a href="javascript:save({$li.goods_id});" type="button" class="btn btn-default btn-sm btn-lg btn-block">收藏商品</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/volist}
+
+                <!----------------------产品重复循环  END-------------------->
+
+
+
+            </div>
+            <div>{$page}</div>
+        </div>
+
+
+    </div>
+</div>
+<script  src="__PUBLIC__/pc/js/modernizr-custom-v2.7.1.min.js"></script>
+<script>
+
+    function add(id) {
+
+//         alert($(this).attr('id'));
+        $.post(
+                "{:url('Cart/add')}",
+                {goods_id:id,type:'points',quantity:1},
+                function (data) {
+                    if (data) {
+                        alert('加入成功！！');
+                    }else{
+                        alert('请先登录！！');
+                    }
+                 }
+        );
+    }
+    function save(id){
+//
+
+        $.post(
+                "{:url('Collect/save_check')}",
+                {goods_id:id},
+                function(data){
+
+                    if (data.error) {
+                        alert(data.error);
+                    }else{
+                        alert(data.success);
+                    }
+
+                }
+        );
+    }
+
+
+
+</script>
+
+
+{include file="public/foot" /}
+</body>
+<script type="text/javascript">
+    $(function(){
+        $('#text_left').click(function(e){
+            $('.list').toggle();
+            e.stopPropagation();
+            $('body').click(function(){
+                $('.list').hide();
+            })
+        })
+        $('.list li').click(function(){
+            $('#text_left').text(($(this).text()));
+            $('#text_left').parent().addClass('active').siblings().removeClass('active');
+            var url =window.location;
+            var id = $(this).attr('data-id');
+
+            $.post(
+                url,
+                {oid:id},
+                function(d) {
+
+                    var len = d.length;
+
+                    l= '';
+                    for (var i = 0; i <= len; i++) {
+//                        alert(d[i]['image']);
+                        l+= '<div class="col-sm-3 col-xs-6"><div class="lis-box"><div class="img-list"><a href="'+d[i]['url']+'"><img src="/'+d[i]['image']+'" alt=""></a></div><h3 class="title"><a href="'+d[i]['url']+'">' + d[i]['name'] + '</a></h3><p class="money"> ' + d[i]['pay_points'] + '张兑换券</p><div class="button"><div class="row"><div class="col-xs-6" ><a href="javascript:add('+d[i]['goods_id']+')"   type="button"  class="btn btn-danger btn-sm btn-lg btn-block">加入购物车</a></div><div class="col-xs-6"><a href="javascript:save('+d[i]['goods_id']+')" type="button" class="btn btn-default btn-sm btn-lg btn-block">收藏商品</a></div></div></div></div></div>';
+                        $('#list').html(l);
+                    }
+                }
+            )
+        })
+    })
+    $(function(){
+        $('#text_left2').click(function(e){
+            $('.list2').toggle();
+            e.stopPropagation();
+            $('body').click(function(){
+                $('.list2').hide();
+            })
+        })
+        $('.list2 li').click(function(){
+            $('#text_left2').text(($(this).text()));
+            $('#text_left2').parent().addClass('active').siblings().removeClass('active');
+                var url =window.location;
+                var id = $(this).attr('data-id');
+
+                $.post(
+                        url,
+                        {oid:id},
+                        function(d) {
+
+                            var len = d.length;
+
+                            l= '';
+                            for (var i = 0; i <= len; i++) {
+                                l+= '<div class="col-sm-3 col-xs-6"><div class="lis-box"><div class="img-list"><a href="'+d[i]['url']+'"> <img src="/'+d[i]['image']+'" alt=""></a></div><h3 class="title"><a href="'+d[i]['url']+'">' + d[i]['name'] + '</a></h3><p class="money"> ' + d[i]['pay_points'] + '张兑换券</p><div class="button"><div class="row"><div class="col-xs-6" ><a href="javascript:add('+d[i]['goods_id']+')"   type="button"  class="btn btn-danger btn-sm btn-lg btn-block">加入购物车</a></div><div class="col-xs-6"><a href="javascript:save('+d[i]['goods_id']+')" type="button" class="btn btn-default btn-sm btn-lg btn-block">收藏商品</a></div></div></div></div></div>';
+                                $('#list').html(l);
+                            }
+                        }
+                )
+            })
+
+    })
+</script>
+</html>

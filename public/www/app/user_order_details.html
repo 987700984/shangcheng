@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>全部订单</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+</head>
+
+<body>
+<div class="contents user_order details">
+    <div class="add-box">
+        <div class="add-icon"><i class="icon iconfont icon-dingwei"></i></div>
+        <div class="add-right">
+            <p>柳妃妃 <span>13800138000</span></p>
+            <p>广东省 深圳市 宝安区 松岗镇 芙蓉路 韦恩斯科技有限公司</p>
+        </div>
+    </div>
+
+    <div class="leave">
+        <i class="icon iconfont icon-xinxi"></i><span>麻烦帮我发韵达快递，谢谢！</span>
+    </div>
+
+
+    <div class="order-box">
+        <div class="centent-list">
+            <a href="mall_centent.html">
+                <div class="img-box">
+                    <img src="img/test-data/01.jpg" width="100%">
+                </div>
+                <div class="right-box">
+                    <div class="title">宝马牌24速山地自行车（高配版）</div>
+                    <p>￥1888.00 <span>x1</span></p>
+                    <p><s>￥6680.00</s></p>
+                </div>
+            </a>
+        </div>
+
+
+
+
+
+        <div class="centent-list">
+            <a href="mall_centent.html">
+                <div class="img-box">
+                    <img src="img/test-data/01.jpg" width="100%">
+                </div>
+                <div class="right-box">
+                    <div class="title">宝马牌24速山地自行车（高配版）</div>
+                    <p>￥1888.00 <span>x1</span></p>
+                    <p><s>￥6680.00</s></p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class="details-content">
+        <p>订单编号：20161218203</p>
+        <p>下单时间：2016-12-18 22:23</p>
+        <p>收货时间：2016-12-25 12:15</p>
+    </div>
+
+
+<!--    待付款状态    -->
+<!--    <div class="bottom order-box">-->
+<!--        <div class="statistics">-->
+<!--            <span>合计：￥1888.00</span>-->
+<!--            <a href="javascript:;" class="active">付款</a>-->
+<!--            <button style="bottom" id="abolish">取消订单</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--    待发货状态   -->
+<!--    <div class="bottom order-box">-->
+<!--        <div class="statistics">-->
+<!--            <span>合计：￥1888.00</span>-->
+<!--            <button style="bottom" id="wait-delivered">待发货</button>-->
+<!--            <button style="bottom" id="account-paid">已付款</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    待收货状态  -->
+<!--        <div class="bottom order-box">-->
+<!--            <div class="statistics">-->
+<!--                <span>合计：￥1888.00</span>-->
+<!--                <button style="bottom" class="active" id="ont-ok">确认收货</button>-->
+<!--                <button style="bottom" id="express">快递单号</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+    <!--    已完成状态  -->
+            <div class="bottom order-box">
+                <div class="statistics">
+                    <span>合计：￥1888.00</span>
+                    <button type="button" id="over">已完成</button>
+                    <button type="button" id="express">快递单号</button>
+                </div>
+            </div>
+
+</div>
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/jquery-weui.min.js"></script>
+<script src="js/jquery.min.js"></script>
+
+<script style="text/javascript">
+    $(document).on("click", "#over", function() {
+        $.toast("订单已完成", function() {
+            console.log('close');
+        });
+    })
+    $(document).on("click", "#express", function() {
+        $.alert("运单号：62542225435", "韵达快递");
+    });
+    $(document).on("click", "#ont-ok", function() {
+        $.alert("您确定已经收到货物了吗？", "确认收货！");
+    });
+    $(document).on("click", "#account-paid", function() {
+        $.alert("您已付款了哦，如果还需要，请重新下单哦！", "已付款啦！");
+    });
+    $(document).on("click", "#wait-delivered", function() {
+        $.alert("包裹已经在仓库准备了哦，请耐心等待的！", "待发货！");
+    });
+    $(document).on("click", "#abolish", function() {
+        $.confirm("您确定要取消此订单吗?", "确认取消?", function() {
+            $.toast("订单已取消!");
+        }, function() {
+            //取消操作
+        });
+    });
+</script>
+</body>
+</html>

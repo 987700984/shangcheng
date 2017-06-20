@@ -1,0 +1,62 @@
+{extend name="public:base" /}
+{block name="content"}	
+<div class="page-header">
+	<h1>
+		{$breadcrumb1}
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$breadcrumb2}
+		</small>
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			产品图片
+		</small>			
+
+	</h1>
+</div>
+	<div class="row">
+	<div class="col-xs-12">	
+		<div class="panel-body">
+        <form  method="post" enctype="multipart/form-data" id="form-goods" class="form-horizontal">
+
+          <ul class="nav nav-tabs">
+          	
+          	<li class="active"><a href="#tab-data" data-toggle="tab">产品图片</a></li>
+           
+          </ul>
+          <div class="tab-content">
+          		
+	       	<!-- 关联 START -->
+	          	<div class="tab-pane active" id="tab-data">	          		
+	         
+	          		<div class="table-responsive">
+	          			
+	          		
+	                	<table id="images" class="table table-striped table-bordered table-hover">
+		                  <thead>
+		                    <tr>
+		                      <td class="text-left">商品图片</td>
+		                    </tr>
+		                  </thead>
+		                	 <tbody>
+			                     {volist name="image" id="v"}
+					                    <tr id="gallery-image-row">
+					                      <td class="text-left"><img src="__IMAGE__/product/{$v.image}" /></td>
+					                     
+									
+											
+							                    </tr>
+						         {/volist}          
+					                  </tbody>
+							          </table>
+							          
+                
+                  				</div>          		
+	          	
+        						</div>
+          </div>
+	</div>
+	</div>
+</div>
+
+{/block}

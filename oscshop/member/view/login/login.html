@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>手机登录</title>
+    <link rel="stylesheet" href="__PUBLIC__/index/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/index/css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/my-sytle.css">
+</head>
+
+<body style="background: #fff;">
+<div class="contents user_ty">
+
+    <div class="user_zc">
+ <form action="" method="post">
+        <div class="zc_list">
+            <div class="zc_name dl_center">
+                <i class="icon iconfont icon-shouji"></i>
+            </div>
+            <div class="zc_input">
+                <input type="text" name="telephone" placeholder="请输入你的手机号码">
+            </div>
+        </div>
+
+
+        <div class="zc_list">
+            <div class="zc_name dl_center">
+                <i class="icon iconfont icon-suo"></i>
+            </div>
+            <div class="zc_input">
+                <input type="password" name="password" placeholder="请输入您的密码">
+            </div>
+        </div>
+
+        <div class="zc_buttom" style="margin: 50px 0 20px 0;">
+            <input type="submit" class="weui-btn weui-btn_primary" value="登录" />
+    
+        </div>
+</form>
+
+        <p class="wangjimima"><a href="{:url('Account/password')}">忘记密码</a></p>
+
+    </div>
+
+    {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+<script>
+    document.getElementById("index").className = "active";
+    function isForm() {
+        var mobile_phone = document.getElementById("mobile").value;
+        var password = document.getElementById("pw").value;
+        var mobile_phone1 = /^1[3|4|5|7|8]\d{9}$/;
+//        var password1=null;
+
+        if (!mobile_phone1.test(mobile_phone)) {
+            alert("手机号不正确");
+            return false;
+        }
+        if (password == "") {
+            alert("密码不能为空");
+            return false;
+        }
+    }
+</script>
+
+</html>

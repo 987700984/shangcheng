@@ -1,0 +1,110 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+<div class="settlement pay-success">
+    <div class="top-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img class="logo" src="__PUBLIC__/pc/img/member_logo.png" alt="">
+                </div>
+                <div class="col-sm-10 hidden-xs">
+                    <div class="stepflex" id="#sflex03">
+                        <dl class="first done">
+                            <dt class="s-num">1</dt>
+                            <dd class="s-text">1.我的购物车</dd>
+                        </dl>
+                        <dl class="normal doing">
+                            <dt class="s-num">2</dt>
+                            <dd class="s-text">2.填写核对订单信息<s></s><b></b></dd>
+                        </dl>
+                        <dl class="normal last">
+                            <dt class="s-num">3</dt>
+                            <dd class="s-text">3.成功提交订单<s></s><b></b></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pay-success pay-mode">
+    <div class="container">
+        <div class="nav-title-box">
+            成功提交订单
+        </div>
+        <div class="info-box">
+            <p>订单提交成功，请您尽快支付！
+                <span>订单号：{$order.order_num_alias}</span></p>
+            <p>应付订单总额：<span class="money">{$order.pay_points}张兑换券</span></p>
+            <p><span>请使用以下支付方式尽快完成付款</span></p>
+        </div>
+        <div class="content-box">
+            <label class="pay-mobe active" id="checkbox1">
+                <input type="radio" checked="checked" form="checkbox1">
+                账户剩余：<span>{$point}</span>张兑换卷
+            </label>
+            <div class="button">
+                <a href="javascript:;" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target=".bs-example-modal-zf">立即支付</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------弹出层-------->
+<div class="member-order">
+    <!--确定支付-->
+    <div class="modal fade bs-example-modal-zf" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="mySmallModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    确认支付{$order.pay_points}张兑换券？
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <!--备用按钮<button type="button" class="btn btn-primary btn-block">确定</button>-->
+                            <a href="javascript:;" onclick="pay({$order.pay_points},{$order.order_id})" class="btn btn-primary btn-block">确定</a>
+                        </div>
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+{include file="public/foot" /}
+<script >
+    //付款
+    function pay(point,order_id){
+
+        $.post(
+                "{:url('Order/pay_point')}",
+                {pay_points:point,order_id:order_id},
+                function(d){
+                    if(d.success){
+                       alert(d.success);
+                       window.location.href= d.url;
+                    }else{
+                        alert(d.error);
+                    }
+                }
+        )
+    }
+
+</script>
+
+</body>
+</html>

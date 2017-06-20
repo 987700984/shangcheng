@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>产品入会</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="js/jquery-weui.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var objUrl;
+            var img_html;
+            $("#myFile").change(function () {
+                var img_div = $(".img_div");
+                var filepath = $("input[name='myFile']").val();
+                for (var i = 0; i < this.files.length; i++) {
+                    objUrl = getObjectURL(this.files[i]);
+                    var extStart = filepath.lastIndexOf(".");
+                    var ext = filepath.substring(extStart, filepath.length).toUpperCase();
+
+                    if (ext != ".BMP" && ext != ".PNG" && ext != ".GIF" && ext != ".JPG" && ext != ".JPEG") {
+                        $(".shade").fadeIn(500);
+                        $(".text_span").text("图片限于bmp,png,gif,jpeg,jpg格式");
+                        this.value = "";
+                        $(".img_div").html("");
+                        return false;
+                    } else {
+
+                        img_html = "<div class='isImg'><img src='" + objUrl + "' style='height: 100%; width: 100%;' /><button class='removeBtn' onclick='javascript:removeImg(this)'>x</button></div>";
+                        img_div.append(img_html);
+                    }
+                }
+
+                var file_size = 0;
+                var all_size = 0;
+                for (j = 0; j < this.files.length; j++) {
+                    file_size = this.files[j].size;
+                    all_size = all_size + this.files[j].size;
+                    var size = all_size / 1024;
+                    if (size > 500) {
+                        $(".shade").fadeIn(500);
+                        $(".text_span").text("上传的图片大小不能超过100k！");
+                        this.value = "";
+                        $(".img_div").html("");
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            function getObjectURL(file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                //console.log(url);
+                return url;
+            }
+        });
+
+        function removeImg(r) {
+            $(r).parent().remove();
+        }
+
+
+    </script>
+</head>
+<body style="background-color: #fff">
+<div class="contents ruhui_product">
+    <form action="user.html">
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">产品名称:</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请输入产品名称">
+                </div>
+            </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">产品数量:</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入产品数量">
+                </div>
+            </div>
+
+
+
+
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">图片上传</p>
+                            <div class="weui-uploader__info">0/2</div>
+                        </div>
+                        <div class="weui-uploader__bd">
+
+
+                            <div class="img_div">
+                            </div>
+                            <a href="javascript:;" class="a-upload">
+                                <span class="weui-uploader__input-box">
+                                <input class="weui-uploader__input" type="file" name="myFile" id="myFile" multiple="multiple"/>
+                                </span>
+                            </a>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">联系电话:</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入联系电话">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">备注:</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="">
+                </div>
+            </div>
+        </div>
+        <p class="shuoming">产品入会说明及要求：<br>
+            全新的供消方式 用户提交产品认证资质 以供货商身份入驻点对点 可返一定比例的点对点商城兑换券
+        </p>
+        <div class="weui-cells">
+            <div class="weui_buttom" style="margin: 50px 0 20px 0;">
+                <input type="submit" href="user.html" class="weui-btn weui-btn_primary" value="提交"/>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

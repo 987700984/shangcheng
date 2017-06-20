@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>兑换券充值</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+    <style>
+        .toolbar .toolbar-inner {
+            height:3.2rem;
+        }
+        .toolbar .title {
+            line-height:3.2rem;
+            font-size:1.4rem;
+        }
+
+        .toolbar .picker-button {
+            height:3.2rem;
+            line-height:3.2rem;
+            font-size:1.4rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="contents ruhui_recharge">
+
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="name" class="weui-label">充值方式</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id="mobile" type="text" value="微信支付">
+            </div>
+            <i class="icon iconfont icon-qianjin"></i>
+        </div>
+    </div>
+
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label for="name" class="weui-label">充值数量</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input red" type="text" value="20">
+            </div>
+            张
+        </div>
+    </div>
+
+    <div class="weui-cells weui-cells_form">
+        <div class="meny">共2000元</div>
+        <p class="shuoming">说明：兑换卷购买为100元/张，购买后立即到账！</p>
+    </div>
+
+
+    <a href="user.html" class="weui-btn weui-btn_primary">
+        确定
+    </a>
+
+
+</div>
+</body>
+<script src="./js/jquery-2.1.4.js"></script>
+<script src="./js/jquery-weui.min.js"></script>
+<script src="js/jquery.min.js"></script>
+
+<script>
+
+    $("#mobile").select({
+        title: "选择充值方式",
+        items: [
+            {
+                title: "微信支付",
+                value: "001",
+            },
+            {
+                title: "支付宝支付",
+                value: "002",
+            }
+        ]
+    });
+
+</script>
+</body>
+</html>

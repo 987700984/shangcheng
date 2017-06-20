@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/example.css" />
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/my-sytle.css">
+</head>
+
+<body>
+    <div class="menber-top">
+        <div class="setup">
+            <a href="archives.php"><img src="images/setup.png" alt="设置"></a>
+        </div>
+        <div class="top-left">
+            <a href="archives.php"><img src="images/user-logo.gif" alt="会员头像"></a>
+        </div>
+        <div class="top-right">
+            卟暧\aiq
+            <div class="grade">
+                <div class="left">
+                    <img src="images/Grade.png" width="100%" height="100%">
+                </div>
+                <div class="right">新手买家</div>
+            </div>
+        </div>
+
+        <div class="user-info">
+            <a href="archives.php">会员资料》</a>
+        </div>
+    </div>
+
+    <div class="order">
+        <div class="m-order"><a href="my_order.php">我的订单</a></div>
+        <div class="weui-row text-center">
+            <div class="weui-col-25">
+                <a href="my_order.php">
+                    <p><img src="images/all-order.png" alt="全部订单"></p>
+                    <p>全部订单</p>
+                </a>
+            </div>
+            <div class="weui-col-25">
+                <a href="order-dfk.php">
+                    <p><img src="images/pay.png" alt="待付款"></p>
+                    <p>待付款</p>
+                </a>
+            </div>
+            <div class="weui-col-25">
+                <a href="order-dfh.php">
+                    <p><img src="images/deliver.png" alt="待发货"></p>
+                    <p>待发货</p>
+                </a>
+            </div>
+            <div class="weui-col-25">
+                <a href="order-dsh.php">
+                    <p><img src="images/transport.png" alt="待收货"></p>
+                    <p>待收货</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="order">
+        <div class="my-order"><a href="my_custom.php">我的定制</a></div>
+        <div class="weui-row text-center customized">
+            <div class="weui-col-25">
+                <a href="custom_dqr.php">
+                    <p><img src="images/determine.png" alt="待确认"></p>
+                    <p>待确认</p>
+                </a>
+            </div>
+            <div class="weui-col-25">
+                <a href="custom_dfk.php">
+                    <p><img src="images/Deposit.png" alt="待付款"></p>
+                    <p>待付款</p>
+                </a>
+            </div>
+            <div class="weui-col-25">
+                <a href="custom_dzz.php">
+                    <p><img src="images/Make.png" alt="定制中"></p>
+                    <p>定制中</p>
+                </a>
+            </div>
+            <div class="weui-col-25">
+                <a href="custom_dsh.php">
+                    <p><img src="images/Delivers.png" alt="待收货"></p>
+                    <p>待收货</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="bottomNav">
+        <div class="weui_tabbar">
+            <a href="{:url('aucIndex/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-01.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">专场</p>
+            </a>
+            <a href="{:url('aucIndex/list_painting')}" class="weui_tabbar_item ">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-02.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">拍品</p>
+            </a>
+            <a href="{:url('Index/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-03.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">商城</p>
+            </a>
+            <a href="{:url('User/index')}" class="weui_tabbar_item  weui_bar_item_on">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-04.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">个人中心</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="__PUBLIC__/auction/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/auction/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/auction/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/auction/js/city-picker.min.js"></script>
+
+</body>
+
+</html>

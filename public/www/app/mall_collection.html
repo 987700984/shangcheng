@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>商品收藏</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+</head>
+
+<body style="background-color: #fff;">
+<div class="contents collection">
+
+
+    <div class="nav-box">
+        <div class="title-nav">
+            <ul>
+                <li><a href="javascript:;" class="in">默认</a></li>
+                <li><a href="javascript:;">价值<i class="icon iconfont icon-paixu2"></i></a></li>
+                <li><a href="javascript:;">库存<i class="icon iconfont icon-paixu21"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="sc-list">
+        <div class="list">
+            <div class="left"><a href="ruhui_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+            <div class="right">
+                <h1><a href="ruhui_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                <div class="money">兑换券：1张</div>
+                <div class="money-02"><s>兑换券：2张</s></div>
+                <div class="buttoms">
+                    <span class="sc-shoping"><a href="ruhui_centent.html"><i class="icon iconfont icon-gouwuche"></i></a></span>
+                    <span class="qx"><a href="javascript:;" id='show-confirm'>取消关注</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    循环重复开始-->
+    <div class="sc-list">
+        <div class="list">
+            <div class="left"><a href="ruhui_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+            <div class="right">
+                <h1><a href="ruhui_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                <div class="money">兑换券：1张</div>
+                <div class="money-02"><s>兑换券：2张</s></div>
+                <div class="buttoms">
+                    <span class="sc-shoping"><a href="ruhui_centent.html"><i class="icon iconfont icon-gouwuche"></i></a></span>
+                    <span class="qx"><a href="javascript:;" id='show-confir'>取消关注</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sc-list">
+        <div class="list">
+            <div class="left"><a href="ruhui_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+            <div class="right">
+                <h1><a href="ruhui_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                <div class="money">兑换券：1张</div>
+                <div class="money-02"><s>兑换券：2张</s></div>
+                <div class="buttoms">
+                    <span class="sc-shoping"><a href="ruhui_centent.html"><i class="icon iconfont icon-gouwuche"></i></a></span>
+                    <span class="qx"><a href="javascript:;" id='show-confi'>取消关注</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sc-list">
+        <div class="list">
+            <div class="left"><a href="ruhui_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+            <div class="right">
+                <h1><a href="ruhui_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                <div class="money">兑换券：1张</div>
+                <div class="money-02"><s>兑换券：2张</s></div>
+                <div class="buttoms">
+                    <span class="sc-shoping"><a href="ruhui_centent.html"><i class="icon iconfont icon-gouwuche"></i></a></span>
+                    <span class="qx"><a href="javascript:;" id='show-conf'>取消关注</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sc-list">
+        <div class="list">
+            <div class="left"><a href="ruhui_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+            <div class="right">
+                <h1><a href="ruhui_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                <div class="money">兑换券：1张</div>
+                <div class="money-02"><s>兑换券：2张</s></div>
+                <div class="buttoms">
+                    <span class="sc-shoping"><a href="ruhui_centent.html"><i class="icon iconfont icon-gouwuche"></i></a></span>
+                    <span class="qx"><a href="javascript:;" id='show-con'>取消关注</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    循环重复结束-->
+
+</div>
+</body>
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/jquery-weui.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="../js/jquery-weui.js"></script>
+
+<script>
+
+    $(document).on("click", "#show-confirm", function() {
+        $.confirm("您确定要取消关注吗?", "确认取消?", function() {
+            //$.toast("已经删除!");
+        }, function() {
+            //取消操作
+        });
+    });
+</script>
+
+</html>

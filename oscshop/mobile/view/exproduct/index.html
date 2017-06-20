@@ -1,0 +1,92 @@
+{include file="public:header" /}
+    <style type="text/css">
+    .pagination li {
+        display: block;
+        padding:0 0.5rem;
+        line-height: 1.6rem;
+        margin-right: 1rem;
+        margin-bottom: 2rem;
+        border: 1px solid #666;
+        float: left;
+    }
+    .page{
+        width: 100%;
+        clear: both;
+    }
+    .pagination .active{
+        background: #ff6c00;
+        color: #fff;
+    }
+    </style>
+</head>
+
+<body>
+<div class="contents">
+    <div class="mall-centent-list">
+    {volist name="list" id="l"}
+        <div class="left-box" id="{$l['goods_id']}">
+            <a href="{:url('Exproduct/details','id='.$l['goods_id'])}">
+                <img class="images" src="IMG_ROOT{$l['image']|resize=100,100}">
+                <h1 class="title">{$l['name']}</h1>
+                <p class="money">{$l['pay_points']}张兑换券</p>
+            </a>
+        </div>
+    {/volist}
+    <div class="page">{$list->render()}</div>
+    </div>
+
+
+   {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+
+
+<script type="text/javascript" src="__PUBLIC__/index/js/chenks-time.js"></script>
+
+</html>
+<script type="text/javascript">
+
+
+</script>
+{if condition="is_module_install('member')"}
+<script>
+
+$(function(){
+    
+$('#button-cart').bind('click', function() {
+
+    $.ajax({
+        url: "{:url('/add')}",
+        type: 'post',
+        data: $('input[type=\'text\'],input[type=\'hidden\'],input[type=\'radio\']:checked,input[type=\'checkbox\']:checked,select'),
+        dataType: 'json',
+        success: function(json) {
+            $('.box-check').removeClass('text-error');          
+            $('.text-danger').remove(); 
+            if(json){                       
+                if(json.error){
+                    if (json['goods_option_id']) {
+                         
+                         var id=json['goods_option_id'];
+                         
+                            var element = $('#option-'+id);
+                
+                            if (element.parent().hasClass('box-check')) {
+                              element.parent().addClass('text-error').after('<div class="text-danger">' + json.error + '</div>');
+                            } else {
+                              element.after('<div class="text-danger">' + json.error+ '</div>');
+                            }
+                          
+                    }
+                    alert(json.error);
+                }else if(json.success){
+                    alert(json.success);
+                    $('#cart a').text(json.total);
+                }
+            }
+        }
+    }); 
+});
+}); 
+</script>
+{/if}

@@ -1,0 +1,110 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+<div class="settlement pay-success">
+    <div class="top-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img class="logo" src="__PUBLIC__/pc/img/member_logo.png" alt="">
+                </div>
+                <div class="col-sm-10 hidden-xs">
+                    <div class="stepflex" id="#sflex03">
+                        <dl class="first done">
+                            <dt class="s-num">1</dt>
+                            <dd class="s-text">1.我的购物车</dd>
+                        </dl>
+                        <dl class="normal doing">
+                            <dt class="s-num">2</dt>
+                            <dd class="s-text">2.填写核对订单信息<s></s><b></b></dd>
+                        </dl>
+                        <dl class="normal last">
+                            <dt class="s-num">3</dt>
+                            <dd class="s-text">3.成功提交订单<s></s><b></b></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pay-success pay-mode">
+    <div class="container">
+        <div class="nav-title-box">
+            成功提交订单
+        </div>
+        <div class="info-box">
+            <p>订单提交成功，请您尽快支付！
+                <span>订单号：{$order.order_num_alias}</span></p>
+            <p>应付订单总额：<span class="money">￥{$order.total}</span></p>
+            <p><span>请使用以下支付方式尽快完成付款</span></p>
+        </div>
+        <div class="content-box">
+
+            <div class="row settlement">
+                <div class="col-sm-5 col-xs-5 col-md-3">
+                    <div class="list-pay">
+                        <input type="radio" checked="checked" id="weixin" name="pay" value="">
+                        <label name="pay" class="pay active" for="weixin">
+                            <img src="__PUBLIC__/pc/img/weixin-pay.svg" width="100%" />
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-sm-5 col-xs-5 col-md-3">
+                    <div class="list-pay">
+                        <input type="radio" id="alipay" name="pay" value="">
+                        <label name="pay" class="pay" for="alipay">
+                            <img src="__PUBLIC__/pc/img/alipay.svg" width="100%" />
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="button">
+                <button type="button" data-id="{$order.order_id}" id="pay" class="btn btn-danger btn-lg btn-block">立即支付</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{include file="public/foot" /}
+<script>
+    $(function () {
+        $('.pay').click(function () {
+            $(this).addClass("active").parents().siblings().find('label').removeClass("active");//清除class并添加当前class
+
+        });
+    });
+    $('#pay').click(function(){
+        var type=$('input:checked').attr('id');
+        var id=$(this).attr('data-id');
+
+            $.post(
+                    "{:url('payment/Payment/re_pay')}",
+                    {
+                        id:id,
+                        type:type
+                    },
+                    function(d){
+                        if(d.error){
+                            alert(d.error);
+                        }else if(d.pay_url){
+
+                            if(d.type=='wx_pay'){
+                                window.location.href=d.pay_url;
+                            }else{
+
+                                parent.window.location.href=d.pay_url;
+                            }
+                        }
+                    }
+            );
+
+    })
+</script>
+
+</body>
+</html>

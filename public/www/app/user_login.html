@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>手机登录</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+</head>
+
+<body style="background: #fff;">
+    <div class="contents user_ty">
+        <form action="login.html" method="post" onsubmit="return isForm()">
+        <div class="user_zc">
+
+                <div class="zc_list">
+                    <div class="zc_name dl_center">
+                        <i class="icon iconfont icon-shouji"></i>
+                    </div>
+                    <div class="zc_input">
+                        <input type="text" name="mobile_phone" id="mobile" placeholder="请输入你的手机号码"/>
+                    </div>
+                </div>
+
+        <div class="zc_list">
+            <div class="zc_name dl_center">
+                <i class="icon iconfont icon-suo"></i>
+            </div>
+            <div class="zc_input">
+                <input type="password" name="password" id="pw" placeholder="请输入您的密码">
+            </div>
+        </div>
+        </div>
+        <div class="zc_buttom" style="margin: 50px 0 20px 0;">
+            <input type="submit" class="weui-btn weui-btn_primary" value="登录"/>
+        </div>
+        </form>
+
+        <p class="wangjimima"><a href="user_datails_password.html">忘记密码</a></p>
+    </div>
+
+    <div style="height: 4rem;"></div>
+<div class="bottom">
+
+    <div class="weui-flex">
+        <div class="weui-flex__item"><div class="placeholder in">
+            <a href="index.html" class="" id="index"><i class="icon iconfont icon-zhuye"></i>
+            <p>首页</p></a>
+        </div></div>
+        <div class="weui-flex__item"><div class="placeholder">
+            <a href="mall_index.html" id="mall"><i class="icon iconfont icon-shangcheng2"></i>
+            <p>兑换商城</p></a>
+        </div></div>
+        <div class="weui-flex__item"><div class="placeholder">
+            <a href="user.html" id="my"><i class="icon iconfont icon-geren"></i>
+            <p>我的</p></a>
+        </div></div>
+    </div>
+</div>
+
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/jquery-weui.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/city-picker.min.js"></script>
+    </div>
+</body>
+<script>
+    document.getElementById("index").className = "active";
+    function isForm() {
+        var mobile_phone = document.getElementById("mobile").value;
+        var password = document.getElementById("pw").value;
+        var mobile_phone1 = /^1[3|4|5|7|8]\d{9}$/;
+//        var password1=null;
+
+        if (!mobile_phone1.test(mobile_phone)) {
+            alert("手机号不正确");
+            return false;
+        }
+        if (password == "") {
+            alert("密码不能为空");
+            return false;
+        }
+    }
+
+</script>
+</html >

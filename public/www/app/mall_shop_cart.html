@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>购物车</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+</head>
+<body>
+<div class="contents shop_cart" id="tab">
+    <div class="nav-box-s">
+        <div class="title-nav">
+            订单信息
+        </div>
+    </div>
+    <form action="mall_shop_purchase.html">
+        <div class="sc-list">
+            <div class="list">
+                <div class="gouxuan">
+                    <input name="Fruit" type="checkbox" value="" />
+                </div>
+                <div class="left"><a href="mall_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+                <div class="right">
+                    <h1><a href="mall_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                    <div class="money">兑换券<span class="price">1</span>张</div>
+                    <div class="money-02"><s>￥6680<small>.00</small></s></div>
+                    <div class="buttoms">
+                        <div class="buttoms-left">
+
+                            <div class="weui_cell_ft">
+                                <input type="button" class="min" value="-">
+                                <input class="text_box buy_num" name="" type="text" value="1">
+                                <input type="button" class="add" value="+">
+                            </div>
+
+                        </div>
+                        <div class="buttoms-right"><a href="javascript:;" class='show-confirm'><i class="icon iconfont icon-lajitong"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--    循环开始-->
+        <div class="sc-list">
+            <div class="list">
+                <div class="gouxuan">
+                    <input name="Fruit" type="checkbox" value="" />
+                </div>
+                <div class="left"><a href="mall_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+                <div class="right">
+                    <h1><a href="mall_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                    <div class="money">兑换券<span class="price">1</span>张</div>
+                    <div class="money-02"><s>￥6680<small>.00</small></s></div>
+                    <div class="buttoms">
+                        <div class="buttoms-left">
+
+                            <div class="weui_cell_ft">
+                                <input type="button" class="min" value="-">
+                                <input class="text_box buy_num" name="" type="text" value="1">
+                                <input type="button" class="add" value="+">
+                            </div>
+
+                        </div>
+                        <div class="buttoms-right"><a href="javascript:;" class='show-confirm'><i class="icon iconfont icon-lajitong"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div><div class="sc-list">
+            <div class="list">
+                <div class="gouxuan">
+                    <input name="Fruit" type="checkbox" value="" />
+                </div>
+                <div class="left"><a href="mall_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a></div>
+                <div class="right">
+                    <h1><a href="mall_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                    <div class="money">兑换券<span class="price">1</span>张</div>
+                    <div class="money-02"><s>￥6680<small>.00</small></s></div>
+                    <div class="buttoms">
+                        <div class="buttoms-left">
+
+                            <div class="weui_cell_ft">
+                                <input type="button" class="min" value="-">
+                                <input class="text_box buy_num" name="" type="text" value="1">
+                                <input type="button" class="add" value="+">
+                            </div>
+
+                        </div>
+                        <div class="buttoms-right"><a href="javascript:;" class='show-confirm'><i class="icon iconfont icon-lajitong"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div style="height: 3.5rem;"></div>
+        <!--底部浮动菜单-->
+        <div class="bottom ruhui_shop">
+            <div class="left-ruhui">合计：<span id="total_price">0张</span></div>
+            <div class="right-ruhui"><input type="submit"  value="结算"></div>
+        </div>
+    </form>
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="js/jquery-weui.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/city-picker.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+</div>
+<script>
+    $(function(){
+        $(document).on("click", ".show-confirm", function(e) {
+            $.confirm("您确定要购物车中的此商品吗?", "确认删除?", function() {
+                $(e.target).parent().parent().parent().parent().parent().parent().hide()
+            }, function() {
+                //取消操作
+            });
+        });
+        var adds=$('.add');
+        var mins=$('.min');
+        var selects=$('.sc-list input[type=checkbox]');
+        var prices=$('.price');
+        var nums=$('.buy_num');
+        function getTotal(){
+            var i=0;
+            var total=0;
+            do{
+                var select=selects.eq(i);
+                if(select.is(':checked')){
+                    var num=nums.eq(i).val();
+                    var price=prices.eq(i).html();
+                    total=parseFloat(total)+parseFloat(num)*parseFloat(price);
+                }
+                i++;
+                $('#total_price').html(+total+'张兑换券');
+            }while(i<selects.length)
+        };
+        selects.click(function(){
+            getTotal();
+        });
+        adds.on('click',function(){
+            var num= $(this).siblings('.buy_num');
+            num.val(parseInt(num.val())+1);
+            getTotal();
+        });
+        mins.on('click',function(){
+            var num =$(this).siblings('.buy_num');
+            if(num.val()>1) {
+                num.val(parseInt(num.val()) - 1);
+                getTotal();
+            }
+        });
+    })
+</script>
+</body>
+
+
+
+</html>

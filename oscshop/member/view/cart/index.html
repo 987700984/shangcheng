@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>{$SEO.title}</title>
+    <link rel="stylesheet" href="__PUBLIC__/index/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/index/css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/my-sytle.css">
+    <style type="text/css">
+    .pagination li {
+        display: block;
+        padding:0 0.5rem;
+        line-height: 1.6rem;
+        margin-right: 1rem;
+        margin-bottom: 2rem;
+        border: 1px solid #666;
+        float: left;
+    }
+    .page{
+        width: 100%;
+        clear: both;
+    }
+    .pagination .active{
+        background: #ff6c00;
+        color: #fff;
+    }
+    </style>
+</head>
+<body>
+<div class="contents shop_cart" id="tab">
+    <div class="nav-box-s">
+        <div class="title-nav">
+            购物车信息
+        </div>
+    </div>
+    <form action="{:url('OrderMember/order')}" method="post" onsubmit="return registerForm()">
+{volist name="list" id="d" empty=$empty}
+    <div class="sc-list">
+        <div class="list">
+            <div class="gouxuan">
+                <input name="cart_id[]" type="checkbox" value="{$d.cart_id}" />
+            </div>
+            <div class="left"><a href="{:url('/goods/'.$d['goods_id'])}"><img class="images" src="IMG_ROOT{$d.image|resize=100,100}" alt=""></a></div>
+            <div class="right">
+                <h1><a href="{:url('/goods/'.$d['goods_id'])}">{$d.name}</a></h1>
+                {if condition="($d.end_time == NULL)"}
+                <div class="money">￥<span class="price">{$d.origin_price}</span></div>
+                {elseif condition="($d.end_time eq 1) "}
+                <div class="money">￥<span class="price">{$d.origin_price}</span></div>
+                {else}
+                <div class="money">￥<span class="price">{$d.price}</span></div>
+                <div class="money-02"><s>{$d.origin_price}</s></div>
+                {/if}
+            
+                <div class="buttoms">
+                    <div class="buttoms-left">
+
+                        <div class="weui_cell_ft">
+                            <input type="button" class="min" value="-">
+                            <input id="{$d.cart_id}" class="text_box buy_num" readonly="readonly" name="quantity[]"   type="text" value="{$d.quantity}">
+                            <input type="button" class="add" value="+">
+                        </div>
+
+                    </div>
+                    <div class="buttoms-right"><a href="javascript:del({$d['cart_id']});" class='show-confirm'><i class="icon iconfont icon-lajitong"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{/volist}
+
+<div class="page">{$list->render()}</div>
+
+
+
+
+    <div style="height: 3.5rem;"></div>
+<!--底部浮动菜单-->
+    <div class="bottom ruhui_shop">
+        <div class="left-ruhui">合计：<span id="total_price">￥0</span></div>
+        <div class="right-ruhui"><input type="submit"  value="结算"></div>
+    </div>
+</form>
+    <script src="__PUBLIC__/index/js/jquery-2.1.4.js"></script>
+    <script src="__PUBLIC__/index/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/index/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/index/js/city-picker.min.js"></script>
+</div>
+<script>
+ function registerForm() {
+        var a = $('.gouxuan input:checked').length;
+        if (!a) {
+            alert('请选择商品！');
+            return false;
+        }
+    }
+function del(id)
+{   
+    var f=confirm('确认要删除吗？');
+
+    if(f==false){
+        return false;
+    }else{
+        $.post(
+            "{:url('Cart/remove')}",
+            {id:id},
+            function(data){
+                if (data) {
+                   window.location.reload(); 
+                }else{
+                    alert('删除失败！');
+                }
+            }
+        ); 
+    }
+}
+    $(function(){
+        
+        var adds=$('.add');
+        var mins=$('.min');
+        var selects=$('.sc-list input[type=checkbox]');
+        var prices=$('.price');
+        var nums=$('.buy_num');
+        function getTotal(){
+            var i=0;
+            var total=0;
+            do{
+                var select=selects.eq(i);
+                if(select.is(':checked')){
+                    var num=nums.eq(i).val();
+                    var price=prices.eq(i).html();
+                    total=parseFloat(total)+parseFloat(num)*parseFloat(price);
+                }
+                i++;
+                $('#total_price').html('￥'+total.toFixed(2));
+            }while(i<selects.length)
+        };
+        selects.click(function(){
+            getTotal();
+        });
+        adds.on('click',function(){
+            var num= $(this).siblings('.buy_num');
+            num.val(parseInt(num.val())+1);
+            getTotal();
+            $.post(
+            "{:url('Cart/numb')}",
+            {id:$(this).prev().val(),cart_id:$(this).prev().attr('id')},
+            function(data){
+               
+            }
+        );
+
+        });
+        mins.on('click',function(){
+            var num =$(this).siblings('.buy_num');
+            if(num.val()>1) {
+                num.val(parseInt(num.val()) - 1);
+                getTotal();
+            $.post(
+            "{:url('Cart/numb')}",
+            {id:$(this).next().val(),cart_id:$(this).next().attr('id')},
+            function(data){
+               
+            }
+        ); 
+            }
+            
+        });
+    });
+
+         
+
+</script>
+</body>
+
+
+
+</html>

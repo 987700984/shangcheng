@@ -1,0 +1,106 @@
+{extend name="public:base" /}
+{block name="content"}
+<div class="page-header">
+	<h1>
+		{$breadcrumb1}
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$breadcrumb2}
+		</small>
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$crumbs}
+		</small>			
+	
+	</h1>
+</div>
+<form action="{$action}" method="post">
+<div class="row">
+	<div class="col-xs-12">	
+		
+		<div class="form-horizontal">
+			
+			{if condition="$Request.param.id"}
+			<input name="id" type="hidden" value="{$Request.param.id}" />
+			{/if}
+			 
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> * 新闻分类 </label>
+				<div class="col-sm-5">
+					<div class="clearfix">
+						<select name="category">
+													
+							{if condition="$Request.param.id"}	
+								{volist name="category" id="c"}
+									<option {if condition="$c['id'] eq $mes['category']"} selected="selected"{/if} value="{$c.id}">{$c.name}</option>
+								{/volist}
+							{else/}
+								{volist name="category" id="c"}
+									<option value="{$c.id}">{$c.name}</option>
+								{/volist}
+							{/if}
+						</select>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"> * 新闻标题 </label>
+				<div class="col-sm-5">
+					<div class="clearfix">
+						<input name="title" class="col-xs-10 col-sm-5"  value="{$mes.title|default=''}" type="text">
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+	                    <label class="col-sm-2 control-label" for="input-message">文章内容：</label>
+	                    <div class="col-sm-6">
+	                      <textarea name="content"  id="message">{$mes.content|default=''}</textarea>	
+	                    </div>
+            </div>
+			
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input id="send"  type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+{/block}
+{block name="javascript"}
+<script src="__PUBLIC__/js/ckeditor/ckeditor.js"></script> 
+<script>
+
+CKEDITOR.replace('message', {
+	filebrowserImageUploadUrl: '{:url("FileManager/ckupload")}',	
+	toolbar: [
+				[ 'Source', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ],
+				[ 'FontSize', 'TextColor', 'BGColor' ],
+				[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','Image','Format']
+			]	
+});
+
+// var back_index="{:url('Message/index')}";
+
+// $('#send').click(function(){
+// 	$.post(
+// 		'{$action}',
+// 		$('input[type=\'text\'],input[type=\'hidden\'],select,textarea'),
+// 		function(d){
+// 			art_dialog(d,back_index);
+// 		}
+// 	);
+// });
+
+	
+
+
+
+</script>							
+{/block}

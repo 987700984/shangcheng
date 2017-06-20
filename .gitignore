@@ -1,0 +1,4 @@
+runtime/
+public/uploads/cache
+.idea/
+test.php

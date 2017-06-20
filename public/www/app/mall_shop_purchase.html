@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>结算</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+</head>
+
+<body>
+<div class="contents shop_cart" id="tab">
+    <div class="order_details">
+
+        <div class="nav-box-s">
+            <div class="title-nav">
+                收货信息
+            </div>
+        </div>
+
+        <!-- 默认       -->
+        <div class="shop_add">
+            <a class="sh_add" href="add_manage.html">点击选择收货地址 <span><i class="icon iconfont icon-qianjin"></i></span></a>
+        </div>
+
+        <!--已选择地址-->
+        <!--        <div class="shop_add">-->
+        <!--            <div class="add_left"><i class="icon iconfont icon-dingwei"></i></div>-->
+        <!--            <div class="add_right">-->
+        <!--                <div class="name">收货人：柳妃妃 <span>13432353852</span></div>-->
+        <!--                <div class="add_centent">收货地址：广东省 深圳市 宝安区 松岗镇 松岗街道 芙蓉路9号 桃-->
+        <!--                    花源创新科技园B栋603</div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <div class="nav-box-s">
+            <div class="title-nav">
+                订单信息
+            </div>
+        </div>
+        <form action="pay.html">
+        <div class="sc-list">
+            <div class="list">
+                <div class="left"><a href="mall_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a>
+                </div>
+                <div class="right right2">
+                    <h1><a href="mall_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                    <div class="money money2">兑换券<span class="price">2</span>张</div>
+
+                    <div class="buttoms">
+                        <div class="buttoms-left">
+
+                            <div class="weui_cell_ft">
+                                <span class="min">-</span>
+                                <input class="text_box buy_num" name="" type="text" value="1">
+                                <span class="add">+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        循环开始-->
+        <div class="sc-list">
+            <div class="list">
+                <div class="left"><a href="mall_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a>
+                </div>
+                <div class="right right2">
+                    <h1><a href="mall_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                    <div class="money money2">兑换券<span class="price">2</span>张</div>
+
+                    <div class="buttoms">
+                        <div class="buttoms-left">
+
+                            <div class="weui_cell_ft">
+                                <span class="min">-</span>
+                                <input class="text_box buy_num" name="" type="text" value="1">
+                                <span class="add">+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sc-list">
+            <div class="list">
+                <div class="left"><a href="mall_centent.html"><img class="images" src="img/test-data/01.jpg" alt=""></a>
+                </div>
+                <div class="right right2">
+                    <h1><a href="mall_centent.html">永久27速自行车 27.5寸铝合金山地车/男女式单车</a></h1>
+                    <div class="money money2">兑换券<span class="price">2</span>张</div>
+
+                    <div class="buttoms">
+                        <div class="buttoms-left">
+
+                            <div class="weui_cell_ft">
+                                <span class="min">-</span>
+                                <input class="text_box buy_num" name="" type="text" value="1">
+                                <span class="add">+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="remarks">
+            <span>买家留言:</span><input type="text" placeholder="选填，对本此交易的说明">
+        </div>
+
+        <div style="height: 3.5rem;"></div>
+        <!--底部浮动菜单-->
+        <div class="bottom ruhui_shop">
+            <div class="left-ruhui">合计：<span><label id="total_price"></label>张兑换券</span></div>
+            <input type="submit" class="right-ruhui" value="提交">
+        </div>
+        </form>
+        <script src="js/jquery-2.1.4.js"></script>
+        <script src="js/jquery-weui.min.js"></script>
+        <script src="js/swiper.min.js"></script>
+        <script src="js/city-picker.min.js"></script>
+        <script src="js/jquery.min.js"></script>
+    </div>
+</div>
+</body>
+
+<script>
+    $(function () {
+        var adds = $('.add');
+        var mins = $('.min');
+        var selects = $('.sc-list');
+        var prices = $('.price');
+        var nums = $('.buy_num');
+
+        function getTotal() {
+            var total = 0;
+            for (i = 0; i < selects.length; i++) {
+                var num = nums.eq(i).val();
+                var price = prices.eq(i).html();
+                total = parseFloat(total) + parseFloat(num) * parseFloat(price);
+                $('#total_price').html(total);
+            }
+        }
+
+        getTotal();
+        adds.on('click', function () {
+            var num = $(this).siblings('.buy_num');
+            num.val(parseInt(num.val()) + 1);
+            getTotal();
+        });
+        mins.on('click', function () {
+            var num = $(this).siblings('.buy_num');
+            if (num.val() > 1) {
+                num.val(parseInt(num.val()) - 1);
+                getTotal();
+            }
+        });
+    })
+</script>
+</html>

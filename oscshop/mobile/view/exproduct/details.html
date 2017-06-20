@@ -1,0 +1,247 @@
+{include file="public:header" /}
+    <style type="text/css">
+    .pagination li {
+        display: block;
+        padding:0 0.5rem;
+        line-height: 1.6rem;
+        margin-right: 1rem;
+        margin-bottom: 2rem;
+        border: 1px solid #666;
+        float: left;
+    }
+    .page{
+        width: 100%;
+        clear: both;
+    }
+    .pagination .active{
+        background: #ff6c00;
+        color: #fff;
+    }
+    </style>
+    <style>
+.weui-tab__bd {
+    padding-top:50px;
+}
+    </style>
+
+</head>
+
+<body>
+<div class="contents ruhui_centent">
+    <div class="swiper-container">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+             {volist name="image" id="img" }
+            <div class="swiper-slide"><a href="JavaScript:;"><img src="IMG_ROOT{$img.image|resize=400,400}" alt=""></a>
+            </div>
+            {/volist}
+
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="synopsis">
+        <h1 class="name-title">{$goods.name} </h1>
+        <h1 class="name-title">库存 :<span id="kucun">{$goods.quantity}</span> </h1>
+        <div class="money">{$goods.pay_points}张兑换券</div>
+        <p>运费到付/自提</p>
+
+    </div>
+<input type="hidden" name="goods_id" value="{$goods.goods_id}"/>
+
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                图文详情
+            </a>
+            <a class="weui-navbar__item" href="#tab2">
+                物品清单
+            </a>
+            <a class="weui-navbar__item" href="#tab3">
+                评论
+            </a>
+        </div>
+        <div class="weui-tab__bd">
+
+            <!--图文详情-->
+            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                {$goods.description}
+            </div>
+            <!--图文详情END-->
+            <!--物品清单-->
+            <div id="tab2" class="weui-tab__bd-item">
+                <div class="item_list">
+                      {$goods.goods_list}
+                </div>
+            </div>
+            <!--物品清单END-->
+            <!--评论-->
+            <div id="tab3" class="weui-tab__bd-item">
+                <div class="pl_input">
+                    <textarea placeholder="无需忍着，想说什么就说吧？"></textarea>
+
+                    <button type="buttom">提交</button>
+                </div>
+                {volist name="comment" id="c" empty="$empty"}
+                <div class="pl">
+                    <div class="head">
+                    {if condition="($c.userpic==NULL)"}
+                        <div class="img"><img src="__PUBLIC__/index/img/head.jpg" alt=""></div>
+                    {else/}
+                       <div class="img"><img src="__IMAGE__/product/{$c.userpic}" alt=""></div>  
+                    {/if}   
+                        <div class="name">{$c.user_name}</div>
+                        <div class="time">{$c.add_time}</div>
+                    </div>
+                    <div class="pl_centent">
+                        <p>{$c.content}</p>
+
+                    </div>
+                </div>
+                {/volist}
+                <a id="more" href="javascript:;" style="font-size:1.4rem;color:blue;float:right">更多》</a>
+            </div>
+            <!-- 评论END-->
+        </div>
+    </div>
+
+
+    <div style="height: 3.5rem;"></div>
+    <!--底部浮动菜单-->
+    <div class="bottom ruhui_shop">
+    <form action="{:url('OrderMember/member_shop')}" method="post" onsubmit="return isForm()">
+        <ul>
+        <input id="goods_id" type="hidden" name="goods_id" value="{$goods.goods_id}">
+
+            <li class="kefu"><a href="{$qq}"><i class="icon iconfont icon-qq"></i>联系客服</a></li>
+            <li class="shouchang">
+                {if condition="($collect==NULL)"}
+                <a  href="javascript:;"><i class="icon iconfont icon-xing"></i>
+                    <p id="add1">关注</p></a>
+           {else/}
+                <a class="active" href="javascript:;"><i class="icon iconfont icon-xing"></i>
+                    <p id="del1">取消关注</p></a>
+           {/if}
+            </li>
+            <li class="gouwuche"><a href="javascript:;">加入购物车</a></li>
+         <li class="goumai"><input type="submit" value="立即购买"/></li>
+        </ul>
+    </form>
+    </div>
+
+    <script src="__PUBLIC__/index/js/jquery-2.1.4.js"></script>
+    <script src="__PUBLIC__/index/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/index/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/index/js/city-picker.min.js"></script>
+</div>
+</body>
+
+<script>
+    $(".swiper-container").swiper({
+        loop: true,
+        autoplay: 3000
+    });
+
+    $(".swiper-containers").swiper({
+        loop: true,
+        autoplay: 0
+    });
+    $('.pl_input button').click(function(){
+        
+          // alert($('.pl_input textarea').val());
+        $.post(
+            "{:url('Exproduct/addComent')}",
+            {content:$('.pl_input textarea').val(),goods_id:$('#goods_id').val()},
+            function(data){
+                if(data){
+                    $.alert('评论成功！');
+                }
+            })
+    })
+    $('#more').click(function(){
+        $(this).hide();
+        var length = $('.pl').length-1;
+        var id = $('.pl_centent:last p').attr('id');
+        var goods_id = $('.pl:last').attr('id');
+       
+          // alert($('.pagination li a').html());
+        $.post(
+            "{:url('Goods/ajaxIndex')}",
+            { id: id, goods_id: goods_id },
+            function(data){
+               
+                   var l='';
+                   var length=data.length;
+                  if(data){
+                    for (i=0;i<length;i++) {
+                       l+='<div class="pl"><div class="head"><div class="img">';
+                        if (data[i].userpic== null){
+                            l+='<img src="__PUBLIC__/index/img/head.jpg" alt=""></div>';
+                        }else{
+                            l+='<img src="__IMAGE__/product/'+data[i].userpic+'" alt=""></div>';
+                        }
+                       l+='<div class="name">'+data[i].user_name+'</div>';
+                       l+='<div class="time">'+data[i].add_time+'</div>';
+                       l+='</div><div class="pl_centent"><p>'+data[i].content+'</p>';
+                       l+='</div>';
+                       l+='</div>';
+                    }
+                    $("#tab3").append(l);
+                }else{
+                      $.alert('没有更多了');
+                }
+                    
+                   
+
+            });
+       
+    })
+</script>
+
+{if condition="is_module_install('member')"}
+<script>
+    $('.shouchang a').click(function(){
+        var id=$(this).find('p').attr('id');
+        // $.alert($('#goods_id').val());
+        $.post(
+                "{:url('Collect/save')}",
+                {id:id,goods_id:$('#goods_id').val()},
+                function(data){
+                    if (data.error) {
+                        $.alert(data.error);
+                    }else{
+                        window.location.reload();
+                    }
+
+                }
+        );
+    });
+function isForm() {
+    var kucun = $('#kucun').html();
+    if (kucun==0) {
+        $.alert('该商品已售完');
+        return false;
+    }
+}
+$(function(){
+    
+$('.gouwuche').bind('click', function() {
+    // alert($('#goods_id').val());
+    $.post(
+        "{:url('mobile/Cart/add')}",
+        {goods_id:$('#goods_id').val(),type:'points'},
+        function (data) {
+            if (data) {
+                $.alert('加入成功！！');
+            }else{
+                $.alert('请先登录！！');
+            }
+        }
+    )
+});
+}); 
+</script>
+{/if}
+
+</html>

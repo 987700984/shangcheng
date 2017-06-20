@@ -1,0 +1,241 @@
+{include file="public:header" /}
+
+</head>
+
+<body>
+<div class="contents ruhui_centent">
+
+    <div class="swiper-container">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            {volist name="image" id="img" }
+            <div class="swiper-slide"><a href="JavaScript:;"><img src="IMG_ROOT{$img.image|resize=400,400}" alt=""></a>
+            </div>
+            {/volist}
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="synopsis">
+        <h1 class="name-title">{$goods.name} </h1>
+        <h1 class="name-title">库存 :<span id="kucun">{$goods.quantity}</span> </h1>
+        {if condition="($goods.end_time == 'NULL')"}
+        <div class="money">价格：￥{$goods.origin_price}
+        </div>
+        {elseif condition="($goods.end_time eq 1) "}
+        <div class="money">价格：￥{$goods.origin_price}
+        </div>
+        {else}
+        <div class="money">秒杀价：￥{$goods.price} 
+        </div>
+        <p><s>￥{$goods.origin_price}
+            </s></p>
+        <p><span><i class="icon iconfont icon-daojishi"></i></span> <span>离结束还剩：</span>
+            <span class="lxftime" endtime="{$goods.end_time}"></span>
+        </p>
+        {/if}
+    </div>
+
+
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                图文详情
+            </a>
+                            <a class="weui-navbar__item" href="#tab2">
+物品清单
+            </a>
+            <a class="weui-navbar__item" href="#tab3">
+                评论
+            </a>
+        </div>
+        <div class="weui-tab__bd">
+            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+               <!--  <p>
+                    因为辣木树有着奇特的成效，是当时开发保健型植物盆栽的首选目标之一，用辣木树作为美化树种，制作盆景，置于院子、室内、坪道，其树姿美丽，花朵具有芳香，并且种植便利，能吸收排泄开释的各种生物碱气体，起到消炎、灭菌、防蚊、净化空气、调理保健的效果。</p>
+                <img src="__PUBLIC__/index/img/test-data/lm.jpg" alt="">
+                <img src="__PUBLIC__/index/img/test-data/jingtou.jpg" alt="">
+                <p>兑换卷10张，可在兑换商城中兑换商品！</p>
+                <p>每星期返1张！</p> -->
+               {$goods.description}     
+            </div>
+            <div id="tab2" class="weui-tab__bd-item">
+
+                <div class="item_list">
+                    {$goods.goods_list}
+                </div>
+
+            </div>
+            <div id="tab3" class="weui-tab__bd-item">
+                <div class="pl_input" >
+                    <textarea  placeholder="无需忍着，想说什么就说吧？" ></textarea>
+                    
+                    <button type="buttom" >提交</button>
+                </div>
+                {volist name="comment" id="c" empty="$empty"}
+                <div class="pl" id="{$c.goods_id}">
+                    <div class="head">
+                        < {if condition="($c.userpic==NULL)"}
+                        <div class="img"><img src="__PUBLIC__/index/img/head.jpg" alt=""></div>
+                    {else/}
+                       <div class="img"><img src="__IMAGE__/product/{$c.userpic}" alt=""></div>  
+                    {/if}
+                        <div class="name">{$c.user_name}</div>
+                        <div class="time">{$c.add_time}</div>
+                    </div>
+                    <div class="pl_centent">
+                        <p id="{$c.id}">{$c.content}</p>
+                    </div>
+
+                </div>
+                {/volist}
+                <a id="more" href="javascript:;" style="font-size:1.4rem;color:blue;float:right">更多》</a>
+            </div>
+                
+                  
+        </div>
+    </div>
+
+
+    <div style="height: 3.5rem;"></div>
+    <!--底部浮动菜单-->
+    <div class="bottom ruhui_shop">
+    <form action="{:url('mobile/OrderMember/member_shop')}" method="post" onsubmit="return isForm()" >
+        <ul>
+            <li class="kefu"><a href="tencent://message/?uin=45118131&Site=admin5.com&Menu=yes"><i class="icon iconfont icon-qq"></i>联系客服</a></li>
+            <input id="goods_id" type="hidden" name="goods_id" value="{$goods.goods_id}">
+            <input  type="hidden" name="is_points_goods" value="0">
+            <li class="shouchang">
+            {if condition="($collect==NULL)"}
+                <a  href="javascript:;"><i class="icon iconfont icon-xing"></i>
+                    <p id="add0">关注</p></a>
+           {else/}
+                <a class="active" href="javascript:;"><i class="icon iconfont icon-xing"></i>
+                    <p id="del0">取消关注</p></a>
+           {/if}
+            </li>
+            <li class="gouwuche"><a href="javascript:;">加入购物车</a></li>
+            <li class="goumai"><input type="submit" value="立即购买"/></li>
+        </ul>
+    </form>
+    </div>
+
+    <script src="__PUBLIC__/index/js/jquery-2.1.4.js"></script>
+    <script src="__PUBLIC__/index/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/index/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/index/js/city-picker.min.js"></script>
+</div>
+</body>
+
+
+<script type="text/javascript" src="__PUBLIC__/index/js/chenks-time.js"></script>
+<script>
+    $(".swiper-container").swiper({
+        loop: true,
+        autoplay: 3000
+    });
+
+    $(".swiper-containers").swiper({
+        loop: true,
+        autoplay: 0
+    });
+
+    $('.pl_input button').click(function(){
+
+        // $.alert($('.pl_input textarea').val());
+        $.post(
+                "{:url('Exproduct/addComent')}",
+                {content:$('.pl_input textarea').val(),goods_id:$('#goods_id').val()},
+                function(data){
+                    if(data){
+                        $.alert('评论成功！');
+                    }
+                })
+    });
+    $('#more').click(function(){
+        $(this).hide();
+        var length = $('.pl').length-1;
+        var id = $('.pl_centent:last p').attr('id');
+        var goods_id = $('.pl:last').attr('id');
+       
+          // $.alert($('.pagination li a').html());
+        $.post(
+            "{:url('Goods/ajaxIndex')}",
+            { id: id, goods_id: goods_id },
+            function(data){
+               
+                   var l='';
+                   var length=data.length;
+                  if(data){
+                    for (i=0;i<length;i++) {
+                       l+='<div class="pl"><div class="head"><div class="img">';
+                        if (data[i].userpi== null){
+                            l+='<img src="__PUBLIC__/index/img/head.jpg" alt=""></div>';
+                        }else{
+                            l+='<img src="'+data[i].userpic+'" alt=""></div>';
+                        }
+                       l+='<div class="name">'+data[i].user_name+'</div>';
+                       l+='<div class="time">'+data[i].add_time+'</div>';
+                       l+='</div><div class="pl_centent"><p>'+data[i].content+'</p>';
+                       l+='</div>';
+                       l+='</div>';
+                    }
+                    $("#tab3").append(l);
+                }else{
+                    alert('没有更多了');
+                }
+            });
+       
+    });
+   
+  
+</script>
+{if condition="is_module_install('member')"}
+<script>
+ $('.shouchang a').click(function(){
+        var id=$(this).find('p').attr('id');
+        // $.alert($('#goods_id').val());
+        $.post(
+            "{:url('Collect/save')}",
+            {id:id,goods_id:$('#goods_id').val()},
+            function(data){
+                if (data.error) {
+                    $.alert(data.error);
+                }else{
+                    window.location.reload();
+                }
+                
+            }
+        );
+    });
+function isForm() {
+    var kucun = $('#kucun').html();
+    if (kucun==0) {
+        $.alert('该商品已售完');
+        return false;
+    }
+}
+$(function(){
+    
+$('.gouwuche').bind('click', function() {
+
+    // $.alert($('#goods_id').val());
+    $.post(
+        "{:url('Cart/add')}",
+        {goods_id:$('#goods_id').val(),type:'money'},
+        function (data) {
+            if (data) {
+                $.alert('加入成功！！');
+            }else{ 
+                $.alert('请先登录！！');
+            }
+        }
+    )
+});
+}); 
+</script>
+{/if}
+
+
+</html>

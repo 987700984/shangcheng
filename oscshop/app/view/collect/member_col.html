@@ -1,0 +1,83 @@
+{include file="public:header" /}
+</head>
+
+<body style="background-color: #fff;">
+<div class="contents collection">
+
+
+    <div class="nav-box">
+        
+    </div>
+    {volist name="list" id="d"}
+    <div class="sc-list">
+        <div class="list">
+            <div class="left"><a href="{:url('/goods/'.$d['goods_id'])}"><img class="images" src="IMG_ROOT{$d.image|resize=100,100}" alt=""></a></div>
+            <div class="right">
+                <h1><a href="{:url('/goods/'.$d['goods_id'])}">{$d.name}</a></h1>
+                {if condition="($d.end_time == NULL)"}
+                <div class="money">￥{$d.origin_price}</div>
+                {elseif condition="($d.end_time eq 1) "}
+                <div class="money">￥{$d.origin_price}</div>
+                {else}
+                <div class="money">￥{$d.price}</div>
+                <div class="money-02"><s>{$d.origin_price}</s></div>
+                {/if}
+                <div class="buttoms">
+                    <span class="sc-shoping"><a href="javascript:;" onclick="add({$d.goods_id})"><i class="icon iconfont icon-gouwuche"></i></a></span>
+                    <span class="qx"><a href="javascript:del({$d['id']});" id='show-confirm'>取消关注</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+{/volist}
+
+
+</div>
+</body>
+<script src="__PUBLIC__/index/js/jquery-2.1.4.js"></script>
+<script src="__PUBLIC__/index/js/jquery-weui.min.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="__PUBLIC__/index/js/jquery-weui.js"></script>
+<script>
+
+   function del(id)
+{   
+    var f=confirm('确认要删除吗？');
+
+    if(f==false){
+        return false;
+    }else{
+        $.post(
+            "{:url('Collect/remove')}",
+            {id:id},
+            function(data){
+                if (data) {
+                   window.location.reload(); 
+                }else{
+                    alert('删除失败！');
+                }
+            }
+        ); 
+    }
+}
+ function add(id) {
+             
+            $.post(
+                "{:url('Cart/add')}",
+                {goods_id:id},
+                function (data) {
+                    if (data) {
+                        alert('加入成功！！');
+                    }else{ 
+                        alert('请先登录！！');
+                    }
+                }
+            )
+        }
+</script>
+
+</html>

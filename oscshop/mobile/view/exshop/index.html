@@ -1,0 +1,163 @@
+{include file="public:header" /}
+
+</head>
+
+<body>
+<div class="contents mall_index">
+    <div class="swiper-container">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            {volist name="banner" id="b" empty="$empty"}
+            <div class="swiper-slide"><a href="JavaScript:;"><img src="IMG_ROOT{$b.image_url|resize=300,300}" alt=""></a></div>
+            {/volist}
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="weui-flex p-t-10">
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=48')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-001.png" alt=""></a>
+                <p>日用</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=43')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-002.png" alt=""></a>
+                <p>家电</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=42')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-003.png" alt=""></a>
+                <p>家具</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=51')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-004.png" alt=""></a>
+                <p>生鲜</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=47')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-005.png" alt=""></a>
+                <p>旅游</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-flex  p-b-10">
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=52')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-006.png" alt=""></a>
+                <p>家政</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=46')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-007.png" alt=""></a>
+                <p>医疗</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=53')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-008.png" alt=""></a>
+                <p>行政代办</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/index','id=54')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-009.png" alt=""></a>
+                <p>便民服务</p>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="placeholder">
+                <a href="{:url('Exproduct/category')}"><img class="images" src="__PUBLIC__/index/img/mall-icon-010.png" alt="">
+                <p>全部</p></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mall-nav-title">
+        限时钜惠
+    </div>
+
+
+    <div class="weui-flex danshuangjuan">
+        <div class="weui-flex__item">
+            <div class="dan">
+                <div class="biaoqian">
+                    单卷兑换
+                </div>
+                <p>单张兑换卷可兑换产品专区</p>
+                <div class="icon_img">
+                <a href="{:url('Exproduct/index','id=0')}">
+                    <div class="ad_01"><img src="__PUBLIC__/index/img/icon_tj_dj.jpg" alt=""></div>
+                    <div class="icon-size"><img src="__PUBLIC__/index/img/icon-size01.png" alt=""></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="weui-flex__item">
+            <div class="shuang">
+                <div class="biaoqian dblue">
+                    多卷兑换
+                </div>
+                <p>超值产品兑换区，需要多张兑换卷兑换</p>
+                <div class="icon_img">
+                <a href="{:url('Exproduct/index','id=1')}">
+                    <div class="ad_01"><img src="__PUBLIC__/index/img/icon_cz_dj.jpg" alt=""></div>
+                    <div class="icon-size"><img src="__PUBLIC__/index/img/icon-size02.png" alt=""></div>
+                </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mall-nav-title mall-nav-title2">
+        热销推荐
+    </div>
+
+    <div class="mall-centent-list">
+    {volist name="list" id="list"}
+      {volist name="list" id="l"}
+        <div class="left-box">
+            <a href="{:url('Exproduct/details','id='.$l['goods_id'])}">
+                <img class="images" src="IMG_ROOT{$l['image']|resize=100,100}">
+                <h1 class="title">{$l['name']}</h1>
+                <p class="money">{$l['pay_points']}张兑换券</p>
+            </a>
+        </div>
+    {/volist}
+
+        
+    {/volist}
+    
+
+
+
+
+    </div>
+
+    {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+<script>
+    $(".swiper-container").swiper({
+        loop: true,
+        autoplay: 3000
+    });
+
+    $(".swiper-containers").swiper({
+        loop: true,
+        autoplay: 0
+    });
+</script>
+<script type="text/javascript">
+$("#mall").addClass("active");
+</script>
+</html>

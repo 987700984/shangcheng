@@ -1,0 +1,307 @@
+<div class="all-nav-box">
+    <div class="container">
+        <a href="">首页</a> &gt; <a href="">百货</a>&gt;<a href="">其他</a>&gt;{$goods.name}
+    </div>
+</div>
+<div class="details_product">
+    <div class="container">
+        <div class="xcon-box">
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-1 ">
+                <ol class="Xcontent26">
+                    <div class="Xcontent07" style="border-color: rgb(205, 36, 38);"><img  src="IMG_ROOT{$goods.image|resize=400,400}"></div>
+            {volist name='image' id="ba" key=$key}
+            <div class="Xcontent09"><img src="IMG_ROOT{$ba.image|resize=400,400}"></div>
+            {/volist}
+                </ol>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-8 col-xs-8 ">
+            <div class="Xcontent-logo"><img width="100%" src="IMG_ROOT{$goods.image|resize=414,414}"></div>
+            </div>
+            <div class="col-lg-6 col-md-5 col-sm-12 col-xs-12">
+                <div class="title"><a href="#"><p>{$goods.name}</p></a></div>
+                <div class="Xcontent16"><p></p></div>
+                <div class="Xcontent17">
+                    <div class="left">
+                    <p class="Xcontent18">售价</p>
+                    <p class="Xcontent19">兑换券<span>{$goods.pay_points}张</span></p>
+                    <div class="Xcontent20">
+                        <p class="Xcontent21">促销</p>
+                        <img src="__PUBLIC__/pc/img/shangpinxiangqing/X12.png">
+                        <p class="Xcontent22"></p>
+                    </div>
+                    </div>
+                    <div class="only-ok">
+                        <span>{$goods.sale_count}</span><p>交易成功</p>
+                    </div>
+                </div>
+
+                 <p class="Xcontent-p"> <span>运费:到付/自提</span></p>
+                <form action="{:url('Cart/member_shop')}" method="post">
+                <div class="Xcontent30">
+                    <p class="Xcontent-p">数量：</p>
+                    <div class="Xcontent32"><img src="__PUBLIC__/pc/img/shangpinxiangqing/X15.png"></div>
+                    <input id="num" name="quantity" class="input" value="1">
+                    <div class="Xcontent33"><img src="__PUBLIC__/pc/img/shangpinxiangqing/16.png"></div>
+                </div>
+                    <input id="goods_id" type="hidden" name="goods_id" value="{$goods.goods_id}">
+                    <input id="type" type="hidden" name="type" value="points">
+                <p class="Xcontent-p">库存剩余：{$goods.quantity}</p>
+                    <div class="shop-button">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-xs-6">
+                                <input type="submit" class="btn btn-default btn-lg btn-block" value="立即购买">
+
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-xs-6">
+                        <button type="button" id="gouwuche" class="btn btn-danger btn-lg btn-block"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;&nbsp;加入购物车</button>
+                        </div>
+                            {if condition="($collect==NULL)"}
+                            <div class="col-xs-12 shoucang"><a  href="javascript:;">
+                                <p id="add0">关注</p></a></div>
+                            {else/}
+                            <div class="col-xs-12 shoucang"> <a class="active" href="javascript:;">
+                                <p id="del0">取消关注</p></a></div>
+                            {/if}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+<div class="container">
+    <div class="product-content row">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+
+                <li class="sosuo hidden-xs">
+                <form action="{:url('Exproduct/search')}" method="post">
+                    <input type="hidden" name="search"  value="1">
+                    <input type="text" name="name" placeholder="请输入要查找的商品名称"/><button type="sumbit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </form>
+                </li>
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">产品详情</a></li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">物品清单</a></li>
+                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">累计评论（<span>{$count}</span>）</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="col-lg-3 visible-lg-inline-block">
+            <div class="list-right">
+                <div class="nav-title">
+                    <h4>热销排行</h4>
+                </div>
+                {volist name="list4" id="lis"}
+                <div class="list">
+                    <a href="{:url('Exproduct/details','id='.$lis.goods_id)}">
+                        <div class="baner">
+                            <img src="IMG_ROOT{$lis.image|resize=300,300}" alt="">
+                        </div>
+                        <div class="conter">
+                            <div class="title">{$lis.name}</div>
+                            <p><span class="money">兑换券{$lis.pay_points}张</span>
+
+                                <span class="nonber">销量：{$lis.sale_count}</span></p>
+                        </div>
+                    </a>
+                </div>
+                {/volist}
+            </div>
+        </div>
+            <div class="tab-content col-md-12 col-lg-9">
+                <div role="tabpanel" class="tab-pane active" id="home">
+<!-------------------产品详情开始--------------------->
+                    {$goods.description}
+<!-----------------产品详情开始  END------------------>
+
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="profile">{$goods.goods_list}</div>
+                <div role="tabpanel" class="tab-pane" id="messages">
+
+                    <div class="row">
+                        <div class="pl_input">
+                        <div class="col-md-10 col-lg-10 col-sm-10 col-xs-10">
+                            <input type="text" class="form-control" placeholder="有什么想对我说的吗? ^_^!">
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
+                            <button type="button" class="btn btn-info btn-block">提交</button>
+                        </div>
+
+                    </div>
+                        {volist name="comment" id="c" empty="$empty"}
+                        <div class="pl_list">
+                            <div class="col-md-2 col-lg-2 col-sm-2 col-xs-3">
+                                <div class="head">
+                                    {if condition="($c.userpic==NULL)"}
+                                    <div class="img"><img src="__PUBLIC__/pc/img/head.jpg" width="100%"></div>
+                                    {else/}
+                                    <div class="img"><img  src="__IMAGE__/product/{$c.userpic}" width="100%"></div>
+                                    {/if}
+                                    {if condition="($c.user_name==NULL)"}
+                                    <p class="name">用户{$c.phone}</p>
+                                    {else/}
+                                    <p class="name">{$c.user_name}</p>
+                                    {/if}
+                                    <p class="time">{$c.add_time}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-10 col-lg-10 col-sm-10 col-xs-9">
+                                <div class="pl_centent">
+                                    <p id="{$c.id}">{$c.content}</p>
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        {/volist}
+                        <a id="more" href="javascript:;" style="color:blue;float:right;margin:10px 20px 0 0;">更多》</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+</div>
+
+
+
+
+</div>
+
+{include file="public/foot" /}
+<script  src="__PUBLIC__/pc/js/modernizr-custom-v2.7.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var $miaobian=$('.Xcontent08>div');
+        var $huantu=$('.Xcontent-logo>img');
+        var $miaobian1=$('.Xcontent26>div');
+        $miaobian.mousemove(function(){miaobian(this);});
+        $miaobian1.click(function(){miaobian1(this);});
+        function miaobian(thisMb){
+            for(var i=0; i<$miaobian.length; i++){
+                $miaobian[i].style.borderColor = '#dedede';
+            }
+            thisMb.style.borderColor = '#cd2426';
+
+            $huantu[0].src = thisMb.children[0].src;
+        }
+        function miaobian1(thisMb1){
+            for(var i=0; i<$miaobian1.length; i++){
+                $miaobian1[i].style.borderColor = '#dedede';
+            }
+//      thisMb.style.borderColor = '#cd2426';
+            $miaobian.css('border-color','#dedede');
+            thisMb1.style.borderColor = '#cd2426';
+            $huantu[0].src = thisMb1.children[0].src;
+        }
+        $(".Xcontent33").click(function(){
+            var value=parseInt($('.input').val())+1;
+            $('.input').val(value);
+        })
+
+        $(".Xcontent32").click(function(){
+            var num = $(".input").val()
+            if(num>1){
+                $(".input").val(num-1);
+            }
+
+        })
+
+    })
+    //评论
+    $('.pl_input div button').click(function(){
+
+
+//         alert($('.pl_input div input').val());
+        $.post(
+                "{:url('Exproduct/addComent')}",
+                {content:$('.pl_input div input').val(),goods_id:$('#goods_id').val()},
+                function(data){
+                    if(data){
+                        alert('评论成功！');
+                    }
+                })
+    });
+    $('.shoucang a').click(function(){
+//        alert($('#goods_id').val());
+        var id=$(this).find('p').attr('id');
+
+        $.post(
+                "{:url('Collect/save')}",
+                {id:id,goods_id:$('#goods_id').val()},
+                function(data){
+
+                    if (data.error) {
+                        alert(data.error);
+                    }else{
+                        window.location.reload();
+                    }
+
+                }
+        );
+    });
+    $('#gouwuche').bind('click', function() {
+//         alert($('#goods_id').val());
+        $.post(
+                "{:url('Cart/add')}",
+                {goods_id:$('#goods_id').val(),type:'money',quantity:$('#num').val()},
+                function (data) {
+                    if (data) {
+                        alert('加入成功！！');
+                    }else{
+                        alert('请先登录！！');
+                    }
+                }
+        )
+    });
+    $('#more').click(function(){
+        $(this).hide();
+        var length = $('.pl').length-1;
+        var id = $('.pl_centent:last p').attr('id');
+        var goods_id = $('#goods_id').val();
+//        alert(goods_id);
+//         alert(id);
+        $.post(
+                "{:url('Goods/ajaxIndex')}",
+                { id: id, goods_id: goods_id },
+                function(data){
+
+                    var l='';
+                    var length=data.length;
+                    if(data){
+                        l+='<div class="row"><div class="pl_input"><div class="col-md-10 col-lg-10 col-sm-10 col-xs-10"><input type="text" class="form-control" placeholder="有什么想对我说的吗? ^_^!"></div><div class="col-md-2 col-lg-2 col-sm-2 col-xs-2"><button type="button" class="btn btn-info btn-block">提交</button></div></div>';
+                        for (i=0;i<length;i++) {
+                            l+='<div class="pl_list"> <div class="col-md-2 col-lg-2 col-sm-2 col-xs-3"><div class="head">';
+                            if (data[i].userpi== null){
+
+                                l+=' <div class="img"><img src="__PUBLIC__/index/img/head.jpg"  width="100%" alt=""></div>';
+                            }else{
+
+                                l+='<div class="img"><img src="'+data[i].userpic+'"  width="100%" alt=""></div>';
+                            }
+                            if (data[i].user_name== ""){
+                                l+='<p class="name">用户'+data[i].phone+'</p>';
+                            }else{
+                                l+='<p class="name">'+data[i].user_name+'</p>';
+                            }
+                            l+='<p class="time">'+data[i].add_time+'</p>';
+                            l+='</div></div><div class="col-md-10 col-lg-10 col-sm-10 col-xs-9"><div class="pl_centent">';
+                            l+='<p>'+data[i].content+'</p>';
+                            l+='</div></div></div>';
+                        }
+                        $("#messages").html(l);
+                    }else{
+                        alert('没有更多了');
+                    }
+                });
+
+    });
+</script>
+</body>
+</html>

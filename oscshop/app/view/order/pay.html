@@ -1,0 +1,174 @@
+{include file="public:header" /}
+</head>
+
+<body>
+<div class="contents">
+    <div class="user_for_record">
+        <div class="nav-top">
+            <div class="icon">
+                <div class="l-height"></div>
+            </div>
+            <h1>选择支付方式</h1>
+        </div>
+    </div>
+    <form>
+        <div class="pay">
+
+            <div class="left">
+                <div class="redio-box">
+                    <input  type="radio" checked="checked" id="weixin" name="1" value="weixin"><span></span>
+                </div>
+            </div>
+            <div class="right" >微信</div>
+        </div>
+
+        <div class="pay">
+
+            <div class="left">
+                <div class="redio-box" id="alipay" >
+                    <!--<input type="radio" id="alipay"   name="1">-->
+                    <!--<span ></span>-->
+                </div>
+            </div>
+            <div class="right" >支付宝</div>
+        </div>
+
+
+
+
+    <div class="play">
+        <input type="button"  id="weixinpay" value="确定">
+    </div>
+    </form>
+
+
+</div>
+</body>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="__PUBLIC__/index/js/jquery-2.1.4.js"></script>
+<script src="__PUBLIC__/index/js/jquery-weui.min.js"></script>
+
+<script>
+    $('#alipay').click(function() {
+
+
+
+
+        $.alert('微信不支持支付宝');
+
+
+})
+
+</script>
+<!-- 微信JSSDK -->
+<?php if(in_wechat()){ ?>
+
+
+
+<script type="text/javascript">
+
+
+    wx.config({
+                debug: false,
+                appId: '{$signPackage.appId}',
+                timestamp: {$signPackage.timestamp},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: ['chooseWXPay']
+    });
+
+
+
+
+    /**
+     * 发起微信支付
+     */
+    $('#weixinpay').click(function(){
+                var order_id = $(this).attr['data-id'];
+                wepayCall(order_id);
+            }
+
+    );
+
+    /**
+     * 发起微信支付
+     * @returns {undefined}
+     */
+    function wepayCall(id) {
+
+
+        $('#weixinpay').attr('disabled',true).html('支付发起中...');
+
+        $.post("{:url('Payment/weixin_repay')}",
+                {
+                    'order_id':id,
+
+                },
+                function (r) {
+                    if(r.error){
+                        $.toast(r.error, "forbidden");
+                        return;
+                    }
+                    if (r.ret_code === 0) {
+                        if (r.bizPackage.package !== 'prepay_id=') {
+                            // 支付操作成功
+                            r.bizPackage.success = wepayCallback;
+                            // 支付操作取消
+                            r.bizPackage.cancel = wepayCancel;
+                            // 支付操作出错
+                            r.bizPackage.fail = wepayError;
+//							 发起微信支付
+
+                            wx.chooseWXPay(r.bizPackage);
+
+                            // 按钮恢复
+                            $('#weixinpay').attr('disabled',false).html('付款');
+                        } else {
+
+                            wepayError();
+                        }
+                    } else if(r.ret_code === 11){
+                        $('#weixinpay').attr('disabled',false).html('付款');
+                        $.alert('付款失败！' + r.ret_msg);
+                    }
+                });
+
+
+    }
+    /**
+     * 微信支付回调
+     * @param {type} res
+     * @returns {undefined}
+     */
+    function wepayCallback(res) {
+        if(res.errMsg == "chooseWXPay:ok" ) {
+
+
+            window.location.reload();
+
+
+
+        }else{
+            alert(res.errMsg);
+        }
+
+    }
+    /**
+     * 微信支付失败
+     */
+    function wepayError() {
+        $.alert('微信支付发起失败');
+        // 按钮恢复
+        $('#weixinpay').attr('disabled',false).html('付款');
+    }
+    /**
+     * 微信支付手动取消
+     */
+    function wepayCancel() {
+        // 按钮恢复
+        $('#weixinpay').attr('disabled',false).html('付款');
+    }
+
+</script>
+<?php } ?>
+</html>

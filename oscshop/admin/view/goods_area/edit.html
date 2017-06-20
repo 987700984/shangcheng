@@ -1,0 +1,85 @@
+{extend name="public:base" /}
+{block name="content"}
+<!--<div class="page-header">-->
+	<!--<h1>-->
+		<!--{$breadcrumb1}-->
+		<!--<small>-->
+			<!--<i class="ace-icon fa fa-angle-double-right"></i>-->
+			<!--{$breadcrumb2}-->
+		<!--</small>-->
+		<!--<small>-->
+			<!--<i class="ace-icon fa fa-angle-double-right"></i>-->
+			<!--{$crumbs}-->
+		<!--</small>			-->
+	<!---->
+	<!--</h1>-->
+<!--</div>-->
+
+<div class="row">
+	<div class="col-xs-12">
+		<form action="" method="post">
+		<div class="form-horizontal">
+			
+			{if condition="$Request.param.id"}
+			<input name="id" type="hidden" value="{$Request.param.id}" />
+			{/if}
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> * 地区名称 </label>
+			<div class="col-sm-5">
+				<div class="clearfix">
+				<input name="area_name" class="col-xs-10 col-sm-5"  value="{$d.area_name|default=''}" type="text">
+				</div>
+			</div>
+			</div>
+
+			<div class="space-4"></div>
+
+
+
+
+			<!---->
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input  type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+{/block}
+{block name="javascript"}
+<script src="__PUBLIC__/js/ckeditor/ckeditor.js"></script>
+<script>
+
+var back_index="{:url('GoodsArea/index')}";
+
+$('#send').click(function(){
+	console.log($('[name="description"]').text());
+	$.post(
+		'{$action}',
+		$('.form-horizontal input[type=\'text\'],.form-horizontal input[type=\'hidden\']'),
+		function(d){
+			art_dialog(d,back_index);
+		}
+	);
+});
+
+
+
+
+//CKEDITOR
+CKEDITOR.replace('description', {
+	filebrowserImageUploadUrl: '{:url("FileManager/ckupload")}',
+	toolbar: [
+		[ 'Source', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ],
+		[ 'FontSize', 'TextColor', 'BGColor' ],
+		[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','Image','Format']
+	]
+});
+
+
+</script>							
+{/block}

@@ -1,0 +1,406 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+{include file="public/member" /}
+<div class="member member-address">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="member-all-border">
+                    {include file="public/left" /}
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="small-nav">
+                    <ul>
+                        <li><a href="{:url('Member/index')}">首页</a></li>
+                        <li><i class="fa fa-angle-double-right" aria-hidden="true"></i></li>
+                        <li>地址管理</li>
+                    </ul>
+                </div>
+                <div class="member-all-border">
+                    <div class="increase">
+                        <button id="addre" type="button" class="btn btn-default btn-sm" data-toggle="modal"
+                                data-target="#increaseAdd"><i class="fa fa-plus"
+                                                              aria-hidden="true"></i>新增地址
+                        </button>
+                        <span>您已创建 2 个收货地址，最多可创建 6 个</span>
+                    </div>
+
+                    <div class="nav-title">
+                        收货地址
+                    </div>
+                    <div class="add-list">
+                        {volist name="list" id="v" empty="$empty"}
+
+                        <div class="add-box">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-10 col-md-10">
+                                    <p>收件人：<o>{$v.name}</o> <span>联系电话：<l>{$v.telephone}</l></span></p>
+                                    <p>地址：<sheng>{$v.province_id}</sheng><shi>{$v.city_id}</shi><qu>{$v.country_id}</qu> <k>{$v.address}</k></p>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2">
+                                    <a class="edit_address" href="javascript:;" data-toggle="modal" data-id="{$v.address_id}" data-target="#increaseUpdate">编辑</a>
+                                    <a  class="del_address" href="javascript:;">删除</a>
+                                </div>
+                            </div>
+                        </div>
+                        {/volist}
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<!--弹出层-->
+<!--新增收货地址-->
+<div class="modal fade" id="increaseAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">新增收货地址</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="addUser" class="col-sm-3 control-label">收件人：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="addUser" placeholder="请输入收件人" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addMobile" class="col-sm-3 control-label">手机号码：</label>
+                        <div class="col-sm-9">
+                            <input type="tel" class="form-control" id="addMobile" placeholder="请输入手机号码">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="distpicker2">
+                        <label for="inputAdd" class="col-sm-3 control-label">地区：</label>
+
+                        <div class="col-sm-3">
+                            <select id="sheng" class="form-control"></select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="shi" class="form-control"></select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="qu" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword2" class="col-sm-3 control-label">详细地址：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="addArea" placeholder="请输入详细地址">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="add_address" class="btn btn-primary">确定提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--修改收货地址-->
+<div class="modal fade" id="increaseUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLab">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLab">修改收货地址</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="updateUser" class="col-sm-3 control-label">收件人：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="updateUser" placeholder="请输入收件人" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updateMobile" class="col-sm-3 control-label">手机号码：</label>
+                        <div class="col-sm-9">
+                            <input type="tel" class="form-control" id="updateMobile" placeholder="请输入手机号码">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="distpicker3">
+                        <label for="inputAdd" class="col-sm-3 control-label">地区：</label>
+
+                        <div class="col-sm-3">
+                            <select id="shen" class="form-control"></select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="shis" class="form-control"></select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="que" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updateArea" class="col-sm-3 control-label">详细地址：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="updateArea" placeholder="请输入详细地址">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="edit_address" class="btn btn-primary">确定提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{include file="public/foot" /}
+<script src="__PUBLIC__/pc/js/distpicker.js"></script>
+<!--<script src="__PUBLIC__/pc/js/main.js"></script>-->
+<script>
+    $('#addre').click(function(){
+        $(function () {
+
+            'use strict';
+
+            var $distpicker = $('#distpicker');
+
+            $distpicker.distpicker({
+                province: '福建省',
+                city: '厦门市',
+                district: '思明区'
+            });
+
+            $('#reset').click(function () {
+                $distpicker.distpicker('reset');
+            });
+
+            $('#reset-deep').click(function () {
+                $distpicker.distpicker('reset', true);
+            });
+
+            $('#destroy').click(function () {
+                $distpicker.distpicker('destroy');
+            });
+
+
+            $('#distpicker1').distpicker();
+
+            $('#distpicker2').distpicker({
+                province: '---- 所在省 ----',
+                city: '---- 所在市 ----',
+                district: '---- 所在区 ----'
+            });
+        });
+        var len = $('.add-box').length;
+        if(len>=6){
+            alert("最多添加6个地址");
+            return false;
+        }
+    })
+    $('#add_address').click(function(){
+        var sheng = $('#sheng').val();
+        var shi = $('#shi').val();
+        var qu = $('#qu').val();
+        var user =$('#addUser').val();
+        var tel =$('#addMobile').val();
+        var address =$('#addArea').val();
+        var mobile_phone1 = /^1[3|4|5|7|8]\d{9}$/;
+        if(user==''){
+            alert("收件人不能为空");
+            return false;
+
+        }
+        if(sheng==""){
+            alert('省份必须选');
+            return false;
+        }
+        if(shi==""){
+            alert('市区必须选');
+            return false;
+        }
+        if(qu==""){
+            alert('村镇必须选');
+            return false;
+        }
+
+
+        if(address==''){
+            alert("地址不能为空");
+            return false;
+        }
+        if (!mobile_phone1.test(tel)) {
+            alert("手机号不正确");
+            return false;
+        }
+        $.post(
+                "{:url('Account/add_address')}",
+                {province_id:sheng,city_id:shi,country_id:qu,telephone:tel,name:user,address:address},
+                function(d){
+                    if(d.error){
+                        alert(d.error);
+                    }else{
+                        alert(d.success);
+                        window.location.reload();
+                    }
+                }
+        )
+
+
+    })
+
+    $('.edit_address').click(function(){
+        var name= $(this).parent().prev('.col-xs-10').children('p').find('o').html();
+        var area=$('#shen').parent().parent();
+        var telephone= $(this).parent().prev('.col-xs-10').children('p').find('span').find('l').html();
+
+        var sheng= $(this).parent().prev('.col-xs-10').children('p').find('sheng').html();
+        var shi= $(this).parent().prev('.col-xs-10').children('p').find('shi').html();
+        var qu= $(this).parent().prev('.col-xs-10').children('p').find('qu').html();
+        var address= $(this).parent().prev('.col-xs-10').children('p').find('k').html();
+        var id=$(this).attr('data-id');
+
+        $('#up-name').attr('data-id',id);
+        $('#updateUser').val(name);
+        $('#updateMobile').val(telephone);
+        $('#updateArea').val(address);
+        $(function () {
+
+            'use strict';
+
+            var $distpicker = $('#distpicker');
+
+            $distpicker.distpicker({
+                province: '福建省',
+                city: '厦门市',
+                district: '思明区'
+            });
+
+            $('#reset').click(function () {
+                $distpicker.distpicker('reset');
+            });
+
+            $('#reset-deep').click(function () {
+                $distpicker.distpicker('reset', true);
+            });
+
+            $('#destroy').click(function () {
+                $distpicker.distpicker('destroy');
+            });
+
+
+            $('#distpicker1').distpicker();
+
+            $('#distpicker2').distpicker({
+                province: '---- 所在省 ----',
+                city: '---- 所在市 ----',
+                district: '---- 所在区 ----'
+            });
+
+
+            $('#distpicker3').distpicker({
+                province: sheng,
+                city: shi,
+                district: qu
+            });
+
+
+        });
+        //修改地址
+        $('#edit_address').click(function(){
+            var shen = $('#shen').val();
+            var sh = $('#shis').val();
+            var que = $('#que').val();
+            var user =$('#updateUser').val();
+            var tel =$('#updateMobile').val();
+            var addres =$('#updateArea').val();
+            var mobile_phone1 = /^1[3|4|5|7|8]\d{9}$/;
+
+            if(user==''){
+                alert("收件人不能为空");
+                return false;
+
+            }
+            if(shen==""){
+                alert('省份必须选');
+                return false;
+            }
+            if(sh==""){
+                alert('市区必须选');
+                return false;
+            }
+            if(que==""){
+                alert('村镇必须选');
+                return false;
+            }
+
+            if(addres==''){
+                alert("地址不能为空");
+                return false;
+            }
+            if (!mobile_phone1.test(tel)) {
+                alert("手机号不正确");
+                return false;
+            }
+            $.post(
+                    "{:url('Account/edit_address')}",
+                    {address_id:id,province_id:shen,city_id:sh,country_id:que,telephone:tel,name:user,address:addres},
+                    function(d){
+                        if(d.error){
+                            alert(d.error);
+                        }else{
+                            alert(d.success);
+                            window.location.reload();
+                        }
+                    }
+            )
+        })
+    });
+//删除地址
+    $('.del_address').click(function(){
+        id = $(this).prev().attr('data-id');
+        var f = confirm('您确定要删除吗');
+
+        if(f){
+            $.post(
+               "{:url('Account/del_address')}",
+                    {id:id},
+                    function(d){
+                        if(d.success){
+                            alert(d.success);
+                            window.location.reload();
+                        }else{
+                            alert(d.error);
+                        }
+                    }
+            )
+        }
+    })
+
+
+</script>
+</body>
+</html>

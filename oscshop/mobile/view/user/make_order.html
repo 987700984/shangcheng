@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>确认订单</title>
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/example.css" />
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/my-sytle.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $(".add").click(function() {
+                var t = $(this).parent().find('input[class*=text_box]');
+                t.val(parseInt(t.val()) + 1)
+                setTotal();
+            })
+            $(".min").click(function() {
+                var t = $(this).parent().find('input[class*=text_box]');
+                t.val(parseInt(t.val()) - 1)
+                if (parseInt(t.val()) < 0) {
+                    t.val(0);
+                }
+                setTotal();
+            })
+
+            function setTotal() {
+                var s = 0;
+                $("#tab .order_details").each(function() {
+                    s += parseInt($(this).find('input[class*=text_box]').val()) * parseFloat($(this).find('span[class*=price]').text());
+                });
+                $("#total").html(s.toFixed(2));
+            }
+            setTotal();
+        })
+    </script>
+</head>
+
+<body>
+
+    <div class="my-order" id="tab">
+        <div class="order_details">
+            <a href="archives.php">
+                <div class="top">
+                    <div class="left"><img src="images/dw.png" alt=""></div>
+                    <div class="right">
+                        <p>收货人：柳妃妃 <span>13432353852</span></p>
+                        <p>收货地址：广东省 深圳市 宝安区 松岗镇 松岗街道 芙蓉路9号 桃花源创新科技园B栋603</p>
+                    </div>
+                </div>
+            </a>
+
+            <!--
+       <div class="weui_panel weui_panel_access">
+          <div class="weui_panel_bd">
+            <div class="weui_media_box weui_media_text">
+              <h4 class="weui_media_title">相关事宜说明：</h4>
+              <p class="weui_media_desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
+            </div>
+          </div>
+        </div>
+-->
+
+            <div class="my-product">
+                <div class="products">
+                    <div class="left"><img src="__PUBLIC__/../uploads/{$goods->image|default=''}" width="60px" height="60px"></div>
+                    <div class="center">
+                        <b>{$goods->name}</b>
+                        <p>作者：{$goods->brand->name|default=''}</p>
+                        <p>下单时间：{:date('Y-m-d',time())}</p>
+                    </div>
+                    <div class="right text-right">
+                        <p class="m-t-20">￥<span class="price">{$goods->price}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui_cells m-t-10">
+                <div class="weui_cell font-size-14">
+                    <div class="weui_cell_hd"><label class="weui_label">固定邮费：</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" type="tel" placeholder="" value="￥{$goods->postage}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui_cells m-t-10">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary font-size-14">
+                        <p>购买数量：</p>
+                    </div>
+                    <div class="weui_cell_ft">
+                       <span id="plus" class="min">-</span>
+                        <input class="text_box" name="num" type="text" value="1" />
+                        <span id="add" class="add">+</span>
+                    </div>
+                </div>
+            </div>
+            <div class="weui_cells m-t-10">
+                 <div class="weui_cell font-size-14">
+                    <div class="weui_cell_hd"><label class="weui_label">买家留言：</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                      <input class="weui_input" type="text" name="note" placeholder="对本次交易的说明">
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <p class="weui_article confirm_money">
+        总价：
+        <label>￥</label>
+        <label id="total"></label>
+    </p>
+    <div class="weui_article">
+        <a href="order-dfk.php" class="weui_btn weui_btn_primary" style="margin-bottom:55px;">提交订单</a>
+    </div>
+    <div class="height55"></div>
+    <div class="height55"></div>
+    <div class="bottomNav">
+        <div class="weui_tabbar">
+            <a href="{:url('aucIndex/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-01.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">专场</p>
+            </a>
+            <a href="{:url('aucIndex/list_painting')}" class="weui_tabbar_item ">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-02.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">拍品</p>
+            </a>
+            <a href="{:url('Index/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-03.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">商城</p>
+            </a>
+            <a href="{:url('User/index')}" class="weui_tabbar_item  weui_bar_item_on">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-04.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">个人中心</p>
+            </a>
+        </div>
+    </div>
+    <script src="__PUBLIC__/auction/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/auction/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/auction/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/auction/js/city-picker.min.js"></script>
+</body>
+<script>
+    var quantity = {$goods->quantity};
+    var postage = {$goods->postage};
+    var price = {$goods->price};
+    var num = $('[name="num"]');
+    getTotalPrice();
+    $('#plus').on('click',function(){
+        if(num.val()<=1){
+            return false;
+        }
+        num.val(parseInt(num.val()-1));
+        getTotalPrice();
+    })
+    $('#add').on('click',function(){
+        if(num.val()>=quantity){
+            return false;
+        }
+        num.val(parseInt(num.val())+1);
+        getTotalPrice();
+    })
+
+//    计算总价:
+function getTotalPrice(){
+    var total = num.val()*(postage+price);
+    $('#total').html(total);
+}
+
+</script>
+
+</html>

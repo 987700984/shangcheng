@@ -1,0 +1,52 @@
+{include file="public:header" /}
+</head>
+
+<body style="background-color: #fff;">
+<div class="contents rh-list">
+    {volist name="area" id="area" }
+    <div class="nav-title"><div class="nav-title2">{$area.area_name}</div></div>
+    {volist name="list" id="v" }
+    {if condition="($v.location == $area.id) "}
+    <div class="centent-box">
+        <div class="centent-list">
+            <div class="list-img"> <a href="{:url('Goods/index','id='.$v.goods_id)}"><img src="IMG_ROOT{$v.image|resize=100,100}" alt=""></a>
+            </div>
+            <div class="list-text">
+                <div class="title"><a href="#">{$v.name}</a></div>
+                {if condition="($v.end_time == NULL)"}
+                <p class="money">价格：￥{$v.origin_price}
+                    
+                </p>
+                {elseif condition="($v.end_time eq 1) "}
+                <p class="money">价格：￥{$v.origin_price}
+                    
+                </p>
+                {else/}
+                 <p class="money">秒杀价：￥{$v.price}
+                   
+                </p>
+                <p><s>￥{$v.origin_price}
+                        
+                    </s></p>
+                <p><span><i class="icon iconfont icon-daojishi"></i></span> <span>离结束还剩：</span>
+                    <span class="lxftime" endtime="{$v.end_time}"></span>
+                </p>
+                {/if}
+            </div>
+        </div>
+    </div>
+    {/if}
+    {/volist}
+    {/volist}
+
+
+
+
+   {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+
+
+<script type="text/javascript" src="__PUBLIC__/index/js/chenks-time.js"></script>
+
+</html>

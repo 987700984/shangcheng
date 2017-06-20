@@ -1,0 +1,46 @@
+<div class="hr2"></div>
+
+<div class="all-bottom">
+    <div class="container">
+        <div class="row">
+            {volist name="mess_cate" id="mes"}
+            <div class="col-md-2 col-sm-4 col-xs-4">
+                <div class="lis">
+                        <h4>{$mes.name}</h4>
+                    {volist name="message" id="me"}
+                    {if condition="($mes['id'] ==$me['category'])"}
+                    <p><a href="#">{$me.title}</a></p>
+                    {/if}
+                    {/volist}
+                </div>
+            </div>
+            {/volist}
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <p>Copyright © {$copy.value}. <a href="{:url('Index/index')}"
+                                                                                       style="color: #00A8EF;">点对点商城</a>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <div class="footer-card-icon">
+                        <i class="fa fa-cc-discover"></i>
+                        <i class="fa fa-cc-mastercard"></i>
+                        <i class="fa fa-cc-paypal"></i>
+                        <i class="fa fa-cc-visa"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

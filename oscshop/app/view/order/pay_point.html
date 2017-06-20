@@ -1,0 +1,40 @@
+{include file="public:header" /}
+</head>
+
+<body>
+<div class="contents">
+    <div class="user_for_record">
+        <div class="nav-top">
+            <div class="icon">
+                <div class="l-height"></div>
+            </div>
+            <h1>确认兑换</h1>
+        </div>
+    </div>
+    <form action="" method="post">
+
+
+        <div class="pay">
+
+            
+            <div class="right" >本次购买所需兑换券：{$order.pay_points}</div>
+        </div>
+        <input type="hidden" name="pay_points" value="{$order.pay_points}"/>
+        <input type="hidden" name="order_id" value="{$order.order_id}"/>
+        <div class="pay">
+
+            <div class="left">
+                
+            </div>
+            <div class="right" >您当前可用兑换券：{$point}</div>
+        </div>
+
+    <div class="play">
+        <input type="submit" value="确定">
+    </div>
+    </form>
+
+
+</div>
+</body>
+</html>

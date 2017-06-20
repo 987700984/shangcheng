@@ -1,0 +1,324 @@
+{include file="public:header" /}
+<style type="text/css">
+    .pagea .pagination li {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        line-height: 2rem;
+        margin-right: 1rem;
+        margin-bottom: 2rem;
+        border: 1px solid #666;
+        float: left;
+    }
+    .pagea .pagination li a{
+        display: block;
+        width: 100%;
+        height:100%;
+    }
+    .pagea .pagination .active{
+        background: #ff6c00;
+        height: 2rem;
+        width: 2rem;
+        color: #fff;
+        padding:0;
+    }
+    </style>
+</head>
+
+<body>
+<div class="contents user_order">
+    <div class="nav-box">
+        <div class="nav-box">
+        <div class="nav-list">
+            <ul class="tabs">
+                {if condition ="($id==null)"}
+                <li><a href="{:url('Order/index')}" class="active">全部订单</a></li>
+                {else/}
+                <li><a href="{:url('Order/index')}" >全部订单</a></li>
+                {/if}
+                {if condition ="($id==3)"}
+                <li><a class="active" href="{:url('Order/index','id=3')}">待付款</a></li>
+                {else/}
+                <li><a href="{:url('Order/index','id=3')}">待付款</a></li>
+                {/if}
+                {if condition ="($id==1)"}
+                <li><a <a class="active" href="{:url('Order/index','id=1')}">待发货</a></li>
+                {else/}
+                <li><a href="{:url('Order/index','id=1')}">待发货</a></li>
+                {/if}
+                {if condition ="($id==4)"}
+                <li><a class="active" href="{:url('Order/index','id=4')}">待收货</a></li>
+                {else/}
+                <li><a href="{:url('Order/index','id=4')}">待收货</a></li>
+                {/if}
+
+
+
+            </ul>
+        </div>
+    </div>
+    {volist name="list" id="d"}
+
+    <div class="order-box">
+    {volist name="goods" id="g"}
+    {if condition="($d.order_id==$g.order_id)"}
+        <div class="centent-list">
+            <div class="img-box">
+                <a href="{:url('Order/order_info','id='.$g.order_id)}"><img src="IMG_ROOT{$g.image|resize=100,100}" width="100%"></a>
+            </div>
+            <div class="right-box">
+                <div class="title">{$g.name}</div>
+                {if condition="($d.points_order==1)"}
+                <p>兑换券: {$g.point} <span>x{$g.quantity}</span></p>
+                {else/}
+                <p>￥{$g.price} <span>
+
+                x{$g.quantity}</span></p>
+                <p><s>￥{$g.origin_price}</s> </p>
+                {/if}
+            </div>
+        </div>
+    {/if}
+        {/volist}
+
+        <div class="statistics">
+        {if condition="($d.points_order==1)"}
+            <span>合计兑换券：{$d.pay_points}</span>
+        {else/}
+            <span>合计：{$d.total}</span>
+        {/if}
+
+        {switch name="d.order_status_id"}
+        {case value="3"}
+        {if condition="($d.points_order==0)"}
+            <a href="javascript:;" data-id="{$d.order_id}" style="bottom" class="active weixinpay">付款</a>
+        {else/}
+            <a href="{:url('Order/pay_point','order_id='.$d.order_id)}" style="bottom" class="active pay">付款</a>
+        {/if}
+            <button style="bottom" id="{$d.order_id}" class="abolish">取消订单</button>{/case}
+        {case value="4"}
+            <button style="bottom" id="{$d.order_id}" class="active on-otk" >确认收货</button>
+            <button style="bottom"  class="express" >快递单号</button> {/case}  
+        {case value="5"}
+            <button style="bottom" id="{$d.order_id} class="over">已完成</button>
+            <button style="bottom"  class="express">快递单号</button>{/case}
+        {case value="6"}<button style="bottom" >已取消</button><button id="{$d.order_id}" class="on-del" style="bottom" >删除订单</button>{/case}
+        {default/}
+            <button style="bottom" class="wait-delivered">待发货</button>
+            <button style="bottom" class="account-paid">已付款</button>
+        {/switch}
+        </div>
+    
+    </div>
+{/volist}
+
+    {block name="include"}{include file="public:bottom" /}{/block}
+<div class="pagea">{$page}</div>
+</div>
+</body>
+<script style="text/javascript">
+    $(document).on("click", ".over", function() {
+        $.toast("订单已完成", function() {
+            console.log('close');
+        });
+    })
+    $(document).on("click", ".on-del", function() {
+        var order_id=$(this).attr('id');
+       // alert(order_id);
+        $.confirm("您确定删除该订单吗?", "确认取消?", function() {
+
+                $.post(
+                    "{:url('Order/order_del')}",
+                    {order_id:order_id},
+                    function(d){
+                        if (d.success) {
+                            $.alert(d.success);
+                            window.location.reload();
+                        }else{
+                            $.alert(d.error);
+                        }
+                        
+                    }
+                );
+                    
+
+           
+            
+        }, function() {
+            //取消操作
+        });
+    });
+    $(document).on("click", ".on-otk", function() {
+        var order_id=$(this).attr('id');
+       
+        $.confirm("您确定收到货物了吗?", "确认取消?", function() {
+
+                $.post(
+                    "{:url('Order/confirm_ship')}",
+                    {order_id:order_id},
+                    function(d){
+                        if (d.success) {
+                            $.alert(d.success);
+                            window.location.reload();
+                        }
+                        
+                    }
+                );
+                    
+
+           
+            
+        }, function() {
+            //取消操作
+        });
+    });
+    $(document).on("click", ".account-paid", function() {
+        $.alert("您已付款了哦，如果还需要，请重新下单哦！", "已付款啦！");
+    });
+    $(document).on("click", ".express", function() {
+       var id = $(this).prev().attr('id');
+       $.post(
+            "{:url('Order/courier')}",
+            {order_id:id},
+            function(d){
+             $.alert(d.comment);   
+            }
+        ); 
+    });
+    $(document).on("click", ".wait-delivered", function() {
+        $.alert("包裹已经在仓库准备了哦，请耐心等待的！", "待发货！");
+    });
+    $(document).on("click", ".abolish", function() {
+        var id = $(this).attr('id');
+        $.confirm("您确定要取消此订单吗?", "确认取消?", function() {
+
+             $.post(
+                "{:url('Order/cancel_order')}",
+                {order_id:id},
+                function(d){
+                  $.alert("订单已取消!");
+                  window.location.reload();  
+                })
+              
+        }, function() {
+            //取消操作
+        });
+    });
+
+    document.getElementById("my").className = "active";
+</script>
+
+
+
+    <!-- 微信JSSDK -->
+<?php if(in_wechat()){ ?>
+
+
+
+<script type="text/javascript">
+
+    wx.config({
+                debug: false,
+                appId: '{$signPackage.appId}',
+                timestamp: {$signPackage.timestamp},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: ['chooseWXPay']
+    });
+
+
+
+
+    /**
+     * 发起微信支付
+     */
+    $('.weixinpay').click(function(){
+       var order_id = $(this).attr['data-id'];
+        wepayCall(order_id);
+    }
+
+    );
+
+    /**
+     * 发起微信支付
+     * @returns {undefined}
+     */
+    function wepayCall(id) {
+
+
+        $('.weixinpay').attr('disabled',true).html('支付发起中...');
+
+        $.post("{:url('Payment/weixin_repay')}",
+                {
+                    'order_id':id,
+
+                },
+                function (r) {
+                    if(r.error){
+                        $.toast(r.error, "forbidden");
+                        return;
+                    }
+                    if (r.ret_code === 0) {
+                        if (r.bizPackage.package !== 'prepay_id=') {
+                            // 支付操作成功
+                            r.bizPackage.success = wepayCallback;
+                            // 支付操作取消
+                            r.bizPackage.cancel = wepayCancel;
+                            // 支付操作出错
+                            r.bizPackage.fail = wepayError;
+//							 发起微信支付
+
+                            wx.chooseWXPay(r.bizPackage);
+
+                            // 按钮恢复
+                            $('.weixinpay').attr('disabled',false).html('付款');
+                        } else {
+
+                            wepayError();
+                        }
+                    } else if(r.ret_code === 11){
+                        $('.weixinpay').attr('disabled',false).html('付款');
+                        $.alert('充值失败！' + r.ret_msg);
+                    }
+                });
+
+
+    }
+    /**
+     * 微信支付回调
+     * @param {type} res
+     * @returns {undefined}
+     */
+    function wepayCallback(res) {
+        if(res.errMsg == "chooseWXPay:ok" ) {
+
+
+                window.location.reload();
+
+
+
+        }else{
+            alert(res.errMsg);
+        }
+
+    }
+    /**
+     * 微信支付失败
+     */
+    function wepayError() {
+        $.alert('微信支付发起失败');
+        // 按钮恢复
+        $('#wechat-payment-btn').attr('disabled',false).val('微信支付');
+    }
+    /**
+     * 微信支付手动取消
+     */
+    function wepayCancel() {
+        // 按钮恢复
+        $('#wechat-payment-btn').attr('disabled',false).val('微信支付');
+    }})
+<?php } ?>
+</script>
+
+
+</html>

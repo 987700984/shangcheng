@@ -1,0 +1,322 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+<div class="settlement card-pa">
+    <div class="top-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img class="logo" src="__PUBLIC__/pc/img/member_logo.png" alt="">
+                </div>
+                <div class="col-sm-10 hidden-xs">
+                    <div class="stepflex" id="#sflex03">
+                        <dl class="first done">
+                            <dt class="s-num">1</dt>
+                            <dd class="s-text">1.我的购物车</dd>
+                        </dl>
+                        <dl class="normal doing">
+                            <dt class="s-num">2</dt>
+                            <dd class="s-text">2.填写核对订单信息<s></s><b></b></dd>
+                        </dl>
+                        <dl class="normal last">
+                            <dt class="s-num">3</dt>
+                            <dd class="s-text">3.成功提交订单<s></s><b></b></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-page">
+    <form action="{:url('Cart/ex_shop')}" method="post" onsubmit="return registerForm()">
+        <div class="container">
+
+            <div class="header">
+                <div class="content">
+                    <span class="common firstTab">选中</span>
+                    <span class="common secondTab">商品</span>
+                    <span class="common thirdTab">单价</span>
+                    <span class="common fourthTab">数量</span>
+                    <span class="common lastTab">操作</span>
+                </div>
+            </div>
+            {volist name="list" id="d" empty=$empty}
+            <div class="goodsList">
+                <div class="listContent">
+                <span class="firstTab common">
+                     <input name="cart_id[]" type="checkbox" value="{$d.cart_id}"/>
+                </span>
+                    <div class="secondTab common">
+                        <div class="img">
+                            <div class="ban">
+                                <img class="goodsImg" src="IMG_ROOT{$d.image|resize=100,100}">
+                            </div>
+                        </div>
+                        <a class="goodsLink" href="{:url('Exproduct/details','id='.$d['goods_id'])}">
+                            {$d.name}
+                        </a>
+                    </div>
+                    <span class="thirdTab common price specialItem ">{$d.pay_points}张兑换券</span>
+                    <div class="fourthTab common">
+                        <input type="button" class="min" value="-">
+                        <input type="text" id="{$d.cart_id}" class="num" value="{$d.quantity}">
+                        <input type="button" class="add" value="+">
+                    </div>
+                    <div class="lastTab common"><a href="javascript:del({$d['cart_id']});">删除</a></div>
+                </div>
+            </div>
+            {/volist}
+            <!--        循环开始         -->
+            <div class="page">{$list->render()}</div>
+        </div>
+
+        <!--         循环END         -->
+
+        <div class="footer">
+            <div class="container">
+                <div class="Content">
+                    <div class="common all-xuanz">
+                        <input class="selectBtn" id="selectAll" type="button" value="全选">
+                        <input class="selectBtn" id="cancel" type="button" value="取消选择">
+                    </div>
+                    <div class="commons">
+                        <button class="jisuan" type="submit">结算</button>
+                    </div>
+                    <div class="common commons total">
+                        总兑换券:<span id="total" class="specialItem">0</span>
+                    </div>
+                    <div class="common commons count">
+                        选中商品数:
+                        <span id="count" class="specialItem">
+                        0
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--    热门推荐-->
+<div class="container">
+    <div class="list-product">
+        <div class="b-color" style="margin-bottom: 10px;">
+            <ul>
+                <li><span>热销推荐</span></li>
+            </ul>
+        </div>
+
+        <div class="list-content">
+            <div class="row">
+                {volist name="list4" id="lis"}
+                <div class="col-sm-3 col-xs-6">
+                    <div class="lis-box">
+                        <div class="img-list">
+                            <a href="{:url('Exproduct/details','id='.$lis.goods_id)}">
+                            <img src="IMG_ROOT{$d.image|resize=100,100}" alt=""></a>
+                        </div>
+                        <h3 class="title">
+                            <a href="{:url('Exproduct/details','id='.$lis.goods_id)}">
+                                {$lis.name}
+                            </a>
+                        </h3>
+                        <p class="money">
+                            {$lis.pay_points}张兑换券
+                        </p>
+                        <div class="button">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <button type="button" onclick="add({$lis.goods_id})" class="btn btn-danger btn-sm btn-lg btn-block">加入购物车
+                                    </button>
+                                </div>
+                                <div class="col-xs-6">
+                                    <button type="button" onclick="shoucang({$lis.goods_id})" class="btn btn-default btn-sm btn-lg btn-block">收藏商品
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/volist}
+                <!----------------------产品重复循环-------------------->
+
+                <!----------------------产品重复循环  END-------------------->
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{include file="public/foot" /}
+</body>
+<script src="__PUBLIC__/pc/js/jquery-1.7.2.min.js"></script>
+<script>
+    $(function () {
+        var adds = $('.add');
+        var mins = $('.min');
+        var selects = $('.goodsList input[type=checkbox]');
+        var prices = $('.price');
+        var nums = $('.num');
+
+        function getTotal() {
+            var total = 0;
+            for (var i = 0; i < selects.length; i++) {
+
+                var select = selects.eq(i);
+                if (select.attr("checked")) {
+
+                    var num = nums.eq(i).val();
+                    var price = prices.eq(i).text();
+                    total = parseFloat(total) + parseFloat(num) * parseFloat(price);
+                }
+
+            }
+
+            $('#total').text(total);
+
+//            $('#total').text(total.toFixed(2));//价格计算到小数点后两位
+        };
+
+        selects.click(function () {
+
+            getCount();
+
+            getTotal();
+        });
+
+        adds.on('click', function () {
+            var num = $(this).siblings('.num');
+
+            num.val(parseInt(num.val()) + 1);
+            getTotal();
+            $.post(
+                    "{:url('Cart/numb')}",
+                    {id:$(this).prev().val(),cart_id:$(this).prev().attr('id')},
+                    function(data){
+
+                    }
+            );
+        });
+
+        nums.on('change', function () {
+            getTotal();
+        });
+
+        mins.on('click', function () {
+            var num = $(this).siblings('.num');
+            if (num.val() > 1) {
+                num.val(parseInt(num.val()) - 1);
+                getTotal();
+            }
+            $.post(
+                    "{:url('Cart/numb')}",
+                    {id:$(this).next().val(),cart_id:$(this).next().attr('id')},
+                    function(data){
+
+                    }
+            );
+        });
+
+
+        $('.common #selectAll').on("click", function () {
+            for (var i = 0; i < selects.length; i++) {
+                selects.eq(i).attr("checked", true);
+            }
+
+            getCount();
+            getTotal();
+        });
+
+        $(' #cancel').on("click", function () {
+            for (var i = 0; i < selects.length; i++) {
+                selects.eq(i).attr("checked", false);
+
+            }
+            getTotal();
+            $('#count').text(0);
+        });
+
+        function getCount() {
+            var count = 0;
+            for (var i = 0; i < selects.length; i++) {
+                if (selects.eq(i).attr("checked")) {
+                    count++;
+                }
+            }
+
+            $('#count').text(count);
+
+        }
+    });
+</script>
+<script>
+    function del(id)
+    {
+        var f=confirm('确认要删除吗？');
+
+        if(f==false){
+            return false;
+        }else{
+            $.post(
+                    "{:url('Cart/remove')}",
+                    {id:id},
+                    function(data){
+                        if (data) {
+                            window.location.reload();
+                        }else{
+                            alert('删除失败！');
+                        }
+                    }
+            );
+        }
+    }
+    function registerForm() {
+        var a = $('.goodsList input:checked').length;
+
+        if (!a) {
+            alert('请选择购物车！');
+            return false;
+        }
+    }
+
+
+    function add(id) {
+
+//         alert($(this).attr('id'));
+        $.post(
+                "{:url('Cart/add')}",
+                {goods_id:id,type:'points',quantity:1},
+                function (data) {
+                    if (data) {
+                        alert('加入成功！！');
+                    }else{
+                        alert('请先登录！！');
+                    }
+                }
+        );
+    }
+    function shoucang(id){
+//
+
+        $.post(
+                "{:url('Collect/save_check')}",
+                {goods_id:id},
+                function(data){
+
+                    if (data.error) {
+                        alert(data.error);
+                    }else{
+                        alert(data.success);
+                    }
+
+                }
+        );
+    }
+
+
+
+</script>
+</html>

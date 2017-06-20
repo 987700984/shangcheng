@@ -1,0 +1,56 @@
+
+<div class="container article">
+    <div class="small-nav">
+        <ul>
+            <li><a href="{:url('Index/index')}"><i class="fa fa-home" aria-hidden="true"></i>首页</a></li>
+            <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+            <li>帮助中心</li>
+            <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+            <li>{$list.title}</li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="all-border">
+                <div class="list-title">
+                    帮助中心
+                </div>
+                {volist name="mess_cate" id="mes"}
+                <dl>
+
+                    <dt><i class="fa fa-minus-square" aria-hidden="true"></i>{$mes.name}</dt>
+                    {volist name="message" id="me"}
+                    {if condition="($mes['id'] ==$me['category'])"}
+                    <dd><a href="{:url('Index/article','id='.$me.id)}">{$me.title}</a></dd>
+                    {/if}
+                    {/volist}
+
+                </dl>
+                {/volist}
+
+
+
+            </div>
+        </div>
+        <div class="col-xs-9 col-sm-9 col-md-9">
+            <div class="all-border">
+                <div class="contall">
+                    <h1 class="content-title">
+                        {$list.title}
+                    </h1>
+                    <div class="zi-box">
+                        <span class="time">{$list.time|date='Y-m-d',###}</span><span class="author">作者：{$list.user_name}</span><span class="source">来源：点对点商城</span>
+                    </div>
+                    <div class="article-content">
+                        {$list.content}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/foot" /}
+
+</body>
+</html>

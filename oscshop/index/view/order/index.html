@@ -1,0 +1,300 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+{include file="public/member" /}
+<div class="member">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="member-all-border">
+                    {include file="public/left" /}
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-9 col-xs-9 member-index">
+                <div class="small-nav">
+                    <ul>
+                        <li><a href="{:url('Member/index')}">首页</a></li>
+                        <li><i class="fa fa-angle-double-right" aria-hidden="true"></i></li>
+                        <li>订单管理</li>
+                    </ul>
+                </div>
+                <div class="member-all-border member-order">
+                    <div class="list-nav">
+                        <ul>
+                            {if condition ="($id==0)"}
+                            <li><a class="active" href="{:url('Order/index')}">全部订单</a></li>
+                            {else/}
+                            <li><a  href="{:url('Order/index')}">全部订单</a></li>
+                            {/if}
+                            {if condition ="($id==3)"}
+                            <li><a class="active" href="{:url('Order/index','id=3')}">待付款({$number.3})</a></li>
+                            {else/}
+                            <li><a  href="{:url('Order/index','id=3')}">待付款({$number.3})</a></li>
+                            {/if}
+                            {if condition ="($id==1)"}
+                            <li><a class="active" href="{:url('Order/index','id=1')}">待发货({$number.1})</a></li>
+                            {else/}
+                            <li><a href="{:url('Order/index','id=1')}">待发货({$number.1})</a></li>
+                            {/if}
+                            {if condition ="($id==4)"}
+                            <li><a class="active" href="{:url('Order/index','id=4')}">待收货({$number.4})</a></li>
+                            {else/}
+                            <li><a href="{:url('Order/index','id=4')}">待收货({$number.4})</a></li>
+                            {/if}
+
+
+                        </ul>
+                    </div>
+                    <div class="order-table-th">
+                        <div class="row">
+                            <div class="col-xs-6">订单详情</div>
+                            <div class="col-xs-6">
+                                <div class="row">
+                                    <div class="col-xs-3">数量</div>
+                                    <div class="col-xs-3">总计</div>
+                                    <div class="col-xs-3">状态</div>
+                                    <div class="col-xs-3">操作</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {volist name="list" id="d" }
+                    <!---------------订单列表--------------->
+                    <div class="order-table">
+                        <div class="mber-time">
+                            {$d.date_added} <span>订单号：<ls>{$d.order_num_alias}</ls></span>
+                        </div>
+                        <div class="mber-time mber2">
+                            <div class="row">
+                                <div class="col-xs-3 col-md-3">支付：在线支付</div>
+                                <div class="col-xs-3 col-md-3">
+                                    {if condition="($d.points_order==1)"}
+                                    总额：{$d.pay_points}张兑换券
+                                    {else/}
+                                    总额：￥{$d.total}
+                                    {/if}
+                                </div>
+                                <div class="col-xs-3 col-md-3">运费：
+                                    {if condition="$d.shipping_method eq 0"}
+                                    自提
+                                    {else/}
+                                    到付
+                                    {/if}
+                                </div>
+                                <div class="col-xs-3 col-md-3">订单状态：
+                                    {volist name="status" id="sta"}
+                                    {if condition="($sta.order_status_id==$d.order_status_id)"}
+                                    {$sta.name}
+                                    {/if}
+                                    {/volist}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered">
+                        <tbody>
+
+                        {volist name="d.good_list" id="g" key=$key }
+
+
+                        <tr>
+                            <td class="tb-1">
+                                <div class="con-logo">
+                                    <a href="{:url('Order/order_info','id='.$g.order_id)}"><img src="IMG_ROOT{$g.image|resize=100,100}" width="100%"></a>
+                                </div>
+                                <div class="d-title"><a href="{:url('Order/order_info','id='.$g.order_id)}">{$g.name}</a></div>
+                            </td>
+                            <td class="tb-2">x {$g.quantity}</td>
+                            {if condition="$key eq 0"}
+
+                            {if condition="($d.points_order==1)"}
+                            <td class="tb-2" rowspan="{$d.count}">{$d.pay_points}张</td>
+                            {else/}
+                            <td class="tb-2" rowspan="{$d.count}">￥{$d.total}</td>
+                            {/if}
+
+                            <td class="tb-2 tb-3" rowspan="{$d.count}">
+                                {volist name="status" id="sta"}
+                                {if condition="($sta.order_status_id==$d.order_status_id)"}
+                                <p>{$sta.name}</p>
+                                {/if}
+                                {/volist}
+                                <a href="{:url('Order/order_info','id='.$g.order_id)}">查看订单</a>
+                            </td>
+                            <td class="tb-2" rowspan="{$d.count}">
+                                {switch name="d.order_status_id"}
+                                {case value="3"}
+                                {if condition="($d.points_order==0)"}
+                                <a href="{:url('Order/pay','order_id='.$d.order_id)}" type="button" class="btn btn-warning btn-sm btn-block">支付订单</a>
+                                {else/}
+                                <a href="{:url('Order/pay_point','order_id='.$d.order_id)}" type="button"  class="btn btn-warning btn-sm btn-block">支付订单</a>
+                                {/if}
+                                <button type="button" class="btn btn-default btn-sm btn-block cancel"  data-toggle="modal"  data-id="{$d.order_id}" data-target=".bs-example-modal-qx">取消订单</button>
+                                {/case}
+                                {case value="1"}
+                                <button type="button" class="btn btn-default btn-sm btn-block"    data-target=".bs-example-modal-qx">待发货</button>
+                                {/case}
+                                {case value="4"}
+                                <button type="button" class="btn btn-info btn-sm btn-block save"  data-toggle="modal" data-id="{$d.order_id}" data-target=".bs-example-modal-ok">确认收货</button>
+                                {/case}
+                                {case value="5"}
+                                <a href="javascript:;" class="btn btn-default btn-sm btn-block">已完成</a>
+                                {/case}
+                                {case value="6"}
+                                <button type="button" class="btn btn-default btn-sm btn-block"   data-target=".bs-example-modal-qx">已取消</button>
+                                <button type="button" class="btn btn-default btn-sm btn-block delete" data-id="{$d.order_id}"   data-target=".bs-example-modal-qx">删除订单</button>
+                                {/case}
+                                {/switch}
+                            </td>
+                            {/if}
+                        </tr>
+
+                        {/volist}
+
+
+                        </tbody>
+
+                    </table>
+                    {/volist}
+
+                    <!---------订单列表结束---------->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!------弹出层------>
+
+<div class="member-order">
+    <!--取消订单-->
+    <div class="modal fade bs-example-modal-qx" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="mySmallModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    确定取消订单？
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-primary btn-block quxiao">确定</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--确认收货-->
+    <div class="modal fade bs-example-modal-ok" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="mySmallModalLabe">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    确定已收到货？
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-primary btn-block shouhuo">确定</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{include file="public/foot" /}
+
+</body>
+</html>
+<script style="text/javascript">
+
+//删除订单
+$('.delete').click(function() {
+
+    var oid = $(this).attr('data-id');
+    var r = confirm("您确定删除该订单吗");
+    if (r == true) {
+        $.post(
+                "{:url('Order/order_del')}",
+                {order_id: oid},
+                function (d) {
+                    if (d.success) {
+                        alert(d.success);
+                        window.location.reload();
+                    } else {
+                        alert(d.error);
+                    }
+
+                }
+        );
+    }
+})
+//确定收货
+$('.save').click(function() {
+    var id = $(this).attr('data-id');
+    $('.shouhuo').click(function(){
+//           alert(id);
+        $.post(
+                "{:url('Order/confirm_ship')}",
+                {order_id:id},
+                function(d) {
+                    if (d.success) {
+                        alert(d.success);
+                        window.location.reload();
+                    } else {
+                        alert(d.error);
+                    }
+        })
+    })
+})
+
+
+
+
+
+
+
+//取消订单
+$('.cancel').click(function() {
+    var id = $(this).attr('data-id');
+        $('.quxiao').click(function(){
+//           alert(id);
+            $.post(
+                    "{:url('Order/cancel_order')}",
+                    {order_id:id},
+                    function(d){
+                        if(d.success){
+                            alert(d.success);
+                            window.location.reload();
+                        }else{
+                            alert(d.error);
+                        }
+
+                    })
+        })
+
+
+})
+
+
+</script>

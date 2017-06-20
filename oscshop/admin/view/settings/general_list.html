@@ -1,0 +1,71 @@
+{extend name="public:base" /}
+{block name="content"}
+
+<div class="page-header">
+	<h1>	
+		{$breadcrumb1}
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			
+		</small>
+	</h1>
+</div>
+<div class="page-header">
+	{if condition="$Request.param.pid"}
+		<a href="{:url('Category/add',array('pid'=>input('param.pid')))}" class="btn btn-primary">新增</a>
+	{else/}
+		<a href="{:url('Settings/add')}" class="btn btn-primary">新增</a>
+	{/if}
+</div>	
+	
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>id</th> 		
+						<th>联系人</th>		
+						<th>电话</th>
+						<th>自提地址</th>					
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+					{volist name="list" id="cat" empty="$empty"}
+					<tr>
+						<td>
+							{$cat.address_id}								
+						</td>
+						<td>
+							{$cat.name}
+						</td>
+						<td>{$cat.telephone}</td>
+						<td>{$cat.address}</td>
+						<td>
+							<a  class="btn btn-xs btn-info" href='{:url("Settings/general",array("id"=>$cat["address_id"]))}'>
+								<i class="fa fa-edit bigger-120"></i>
+							</a> 
+							<a class="delete btn btn-xs btn-danger" href='{:url("Settings/del",array("id"=>$cat["address_id"]))}' >
+								<i class="fa fa-trash bigger-120"></i>
+							</a>
+						</td>
+					</tr>	
+					{/volist}
+					
+					<tr>
+						<td colspan="20" class="page">{$list->render()}</td>
+					</tr>
+					<tr>
+						<td colspan="20">总计 {$list->total()|default="0"} 个自提地址</td>
+					</tr>	
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="javascript"}
+
+{/block}

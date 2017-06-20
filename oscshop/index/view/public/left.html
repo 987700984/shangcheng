@@ -1,0 +1,81 @@
+<div class="member-all-left">
+    <div class="user-logos">
+        <div class="user-logo">
+            <div class="img">
+                <a href="javascript:;">
+                    {if condition="($member.userpic==NULL)"}
+                    <img class="Head_portrait" src="__PUBLIC__/index/img/head.jpg" alt=""></a>
+                {else/}
+                <img class="Head_portrait" src="__IMAGE__/product/{$member.userpic}" alt=""></a>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <div class="user-dj">用户ID为:{$member.uid}</div>
+    <ul>
+        <li>
+            <h3 style="font-size: 16px; padding: 0 5px;">
+                <a href="{:url('Member/index')}"><i class="fa fa-home" aria-hidden="true"></i> 会员首页</a>
+                <a class="span" href="{:url('Account/profile')}">账户管理</a>
+            </h3>
+        </li>
+    </ul>
+    <ul>
+        <li><h3>交易中心</h3></li>
+        <li class="title"><a href="{:url('Order/index')}">我的订单</a></li>
+        <li><a href="{:url('Order/index','id=3')}">待付款 <span>{$number.3}</span></a></li>
+        <li><a href="{:url('Order/index','id=1')}">待付发货 <span>{$number.1}</span></a></li>
+        <li><a href="{:url('Order/index','id=4')}">待收货 <span>{$number.4}</span></a></li>
+    </ul>
+
+    <ul>
+        <li><h3>资产中心</h3></li>
+        <li><a href="{:url('Member/recharge')}">兑换券购买</a></li>
+        <li><a href="{:url('Member/ticketTime')}">兑换账期</a></li>
+        <li><a href="{:url('Member/product')}">产品兑换（兑换券）</a></li>
+        <li><a href="{:url('Member/pr_record')}">产品兑换记录</a></li>
+    </ul>
+
+    <ul>
+        <li><h3>关注中心</h3></li>
+        <li><a href="{:url('Collect/ex_collect')}">商品收藏</a></li>
+        <li><a href="{:url('Collect/member_col')}">入会关注</a></li>
+    </ul>
+
+    <ul>
+        <li><h3>设置</h3></li>
+        <li><a href="{:url('Account/profile')}">个人信息</a></li>
+        <li><a href="{:url('Account/address')}">地址管理</a></li>
+    </ul>
+
+    <ul>
+        <li>
+            <h3 style="font-size: 14px;">
+                <a href="javascript:;" data-toggle="modal" data-target=".bs-example-modal-Recommender">
+                    我的推荐人
+                </a>
+            </h3>
+        </li>
+    </ul>
+</div>
+
+
+<!-- 弹出层-推荐人 -->
+
+<div class="modal fade bs-example-modal-Recommender" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">你的推荐人:</h4>
+            </div>
+            <div class="modal-body">
+               {$pid}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

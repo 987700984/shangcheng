@@ -1,0 +1,367 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+
+<div class="settlement">
+    <div class="top-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img class="logo" src="__PUBLIC__/pc/img/member_logo.png" alt="">
+                </div>
+                <div class="col-sm-10 hidden-xs">
+                    <div class="stepflex" id="#sflex03">
+                        <dl class="first done">
+                            <dt class="s-num">1</dt>
+                            <dd class="s-text">1.我的购物车</dd>
+                        </dl>
+                        <dl class="normal doing">
+                            <dt class="s-num">2</dt>
+                            <dd class="s-text">2.填写核对订单信息<s></s><b></b></dd>
+                        </dl>
+                        <dl class="normal last">
+                            <dt class="s-num">3</dt>
+                            <dd class="s-text">3.成功提交订单<s></s><b></b></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="settlement">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>填写并核对订单信息</h3>
+            </div>
+            <form action="{:url('Order/order_now')}" method="post" onsubmit="return registerForm()">
+                <div class="col-md-12">
+                    <div class="user-add">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>收货人信息：<span><a href="javascript:;" data-toggle="modal" data-target="#increaseAdd">+ 新增收货地址</a></span></h4>
+                            </div>
+                            <div class="col-sm-12">
+                                {volist name="address" id="add"}
+                                <div class="list-add">
+                                    <input type="radio" id="a{$add.address_id}" name="address_id" value="{$add.address_id}">
+                                    <label class="add-box" name="address_id" for="a{$add.address_id}">
+                                        <div class="name">
+                                            <span class="nam">{$add.name}</span>（收）
+
+                                        </div>
+                                        <p class="add">{$add.area} {$add.address}</p>
+                                    </label>
+                                    <span class="tel">{$add.telephone}</span>
+                                </div>
+                                {/volist}
+
+                            </div>
+                            <!-------------------------自提地址--------------------->
+                            <div class="since">
+                                <div class="col-sm-12">
+                                    <div class="h4">自提地址：</div>
+                                    {volist name="addres" id="ad"}
+                                    <div class="list-add-2">
+                                        <input type="radio" id="b{$ad.address_id}" name="address_id" value="{$ad.address_id}">
+                                        <label class="add-box" name="add" for="b{$ad.address_id}">
+                                            <div class="name"><span class="nam">{$ad.name}</span> &nbsp;&nbsp;&nbsp;<span class="add">电话: <span class="tel">{$ad.telephone}</span></span>
+                                                <p class="add">{$ad.area} {$ad.address}</p> </div>
+
+                                        </label>
+
+
+
+
+                                    </div>
+                                    {/volist}
+
+
+
+
+                                </div>
+                            </div>
+                            <!-------------------------自提地址 END--------------------->
+                        </div>
+
+
+
+
+                        <div class="detailed-list">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>确认订单信息</h4>
+                                </div>
+                            </div>
+
+                            <div class="list-box">
+
+                                <div class="row">
+
+                                    <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+                                        <div class="img-box">
+                                            {if condition="($type == 'money')"}
+                                            <a href="{:url('/goods/'.$list['goods_id'])}" class="img">
+                                                {else/}
+                                                <a href="{:url('Exproduct/details','id='.$list.goods_id)}" class="img">
+                                                {/if}
+                                                <img src="IMG_ROOT{$list.image|resize=100,100}" alt="">
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7 col-md-8 col-lg-8">
+                                        <div class="title">
+                                            {if condition="($type == 'money')"}
+                                            <a href="{:url('/goods/'.$list['goods_id'])}">
+                                                {else/}
+                                                <a href="{:url('Exproduct/details','id='.$list.goods_id)}">
+                                                    {/if}{$list.name}</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-1 col-md-1 col-lg-1">
+                                        <div class="money">
+                                            {if condition="($type == 'money')"}
+
+                                                {if condition="($list.end_time == NULL)"}
+                                                <span class="Unit-Price">{$list.origin_price} </span>
+                                                {elseif condition="($list.end_time eq 1) "}
+                                                <span class="Unit-Price">{$list.origin_price} </span>
+                                                {else}
+                                                ￥<span class="Unit-Price">{$list.price} </span>
+                                                {/if}
+                                            {else/}
+                                            <span class="Unit-Price">{$list.pay_points} </span> 张
+                                            {/if}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2 col-md-1 col-lg-1">
+                                        <div class="namber">
+                                            &times; <span class="much">{$quantity}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!----------------------循环开始--------------------->
+
+
+                            <!----------------------循环开始 END--------------------->
+                        </div>
+
+                        <input type="hidden" name="type" value="{$type}" />
+                        <input name="quantity" type="hidden" value="{$quantity}" />
+                        <input type="hidden" name="goods_id" value="{$list.goods_id}" />
+                        <input type="hidden" id="total" name="total" value="0">
+                        <div class="detailed-list">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <label class="lab2" for="beizhu">备注：</label>
+                                </div>
+                                <div class="col-xs-10">
+                                    <input id="beizhu" name="comment" class="form-control" type="text" value=""
+                                           placeholder="选填，对本次交易的说明">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detailed-list">
+                            <div class="Statistics">
+                                <p style="margin-bottom: 10px;">数量：<span class="number"></span></p>
+                                <p>合计：
+                                    {if condition="($type == 'money')"}
+                                    ￥ <span class="Total-price"></span>
+                                    {else/}
+                                    兑换券 <span class="Total-price"></span> 张
+                                    {/if}
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="detailed-list" style="border: ;">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-7 col-md-offset-5">
+                                    <div class="Settlement2">
+                                        <div class="Settlement3">
+                                            <p class="mone">
+                                                实付：
+                                                <span class="mey">
+                                                    {if condition="($type == 'money')"}
+                                                ￥ <span class="Total-price"></span>
+                                                    {else/}
+                                                    兑换券 <span class="Total-price"></span> 张
+                                                    {/if}
+                                            </span>
+                                            </p>
+                                            <!--物流配送-->
+                                            <p><span class="mone">地址：</span><span class="addr"></span>
+                                            </p>
+                                            <p><span class="mone">联系人：</span><span class="na"></span> <span
+                                                    class="te"></span></p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-2 col-xs-offset-8 col-sm-offset-8 col-md-offset-10">
+                                    <input class="btn btn-danger btn-lg btn-block" type="submit" value="提交">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--弹出层-->
+<!--新增收货地址-->
+<div class="modal fade" id="increaseAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">新增收货地址</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="inputUser" class="col-sm-3 control-label">收件人：</label>
+                        <div class="col-sm-9">
+                            <input type="text"  class="form-control" id="inputname" placeholder="请输入收件人" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputMobile" class="col-sm-3 control-label">手机号码：</label>
+                        <div class="col-sm-9">
+                            <input type="tel"  class="form-control" id="inputMobiletel" placeholder="请输入手机号码">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="distpicker">
+                        <label for="inputAdd" class="col-sm-3 control-label">地区：</label>
+
+                        <div class="col-sm-3">
+                            <select id="sheng"  class="form-control"></select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="shi" class="form-control"></select>
+                        </div>
+                        <div class="col-sm-3">
+                            <select  id="qu" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword2" class="col-sm-3 control-label">详细地址：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputAddress" placeholder="请输入详细地址">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="add_address()" class="btn btn-primary"> 增加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--三级地址联动<div id="distpicker">-->
+<!--    <select class="form-control"></select>-->
+<!--    <select class="form-control"></select>-->
+<!--    <select class="form-control"></select>-->
+<!--</div>-->
+{include file="public/foot" /}
+<script src="__PUBLIC__/pc/js/distpicker.js"></script>
+<script src="__PUBLIC__/pc/js/main.js"></script>
+<script>
+    $(function () {
+        $('.add-box').click(function () {
+            //$('.add-box').removeClass("checked"); //移除class
+            //$(this).addClass("checked");//添加class
+            $(this).addClass("checked").parents().siblings().find('label').removeClass("checked");//清除class并添加当前class
+            var name = $(this).find('div').find('span').html();
+            var tel = $(this).parent().find(".tel").html();
+            var addr = $(this).parent().find('p').html();
+            $('.addr').html(addr);
+            $('.te').html(tel);
+            $('.na').html(name);
+//            alert(name);
+//            alert(tel);
+//            alert(addr  );
+
+        });
+    });
+    function registerForm() {
+
+        $('#total').val($('.Total-price').html());
+        if ($('.settlement input:checked').size()>0) {
+
+        }else{
+            alert('请选择地址！');
+            return false;
+        }
+
+    }
+    $(function () {
+        var selects = $('.title').length;
+        var prices = $('.Unit-Price');
+        var nums = $('.much');
+
+
+        function getTotal() {
+            var total = 0;
+            var number = $('.number');
+            for (i = 0; i < selects; i++) {
+                var num = nums.eq(i).html();
+                var price = prices.eq(i).html();
+                total = parseFloat(total) + parseFloat(num) * parseFloat(price);
+                $('.Total-price').html(total);
+            }
+            number.html($('.list-box').length);
+
+        }
+
+        getTotal();
+    });
+    function  add_address(){
+        var area = $('#sheng').val()+"&nbsp;"+$('#shi').val()+"&nbsp;"+$('#qu').val();
+        var user =$('#inputname').val();
+        var tel =$('#inputMobiletel').val();
+        var address =$('#inputAddress').val();
+        var len = $('.list-add').length;
+        var mobile_phone1 = /^1[3|4|5|7|8]\d{9}$/;
+        if(len>=6){
+            alert("最多添加6个地址");
+            return false;
+        }
+        if (!mobile_phone1.test(tel)) {
+            alert("手机号不正确");
+            return false;
+        }
+        $.post(
+                "{:url('Account/add_address')}",
+                {area:area,telephone:tel,name:user,address:address},
+                function(d){
+                    if(d.error){
+                        alert(d.error);
+                    }else{
+                        alert(d.success);
+                        window.location.reload();
+                    }
+                }
+        )
+
+
+    }
+</script>
+</body>
+</html>

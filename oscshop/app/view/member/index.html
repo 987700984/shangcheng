@@ -1,0 +1,158 @@
+{include file="public:header" /}
+</head>
+
+<body>
+<div class="contents user">
+    <div class="user_top">
+        <div class="setup"><i class="icon iconfont icon-shezhi"></i></div>
+        <div class="user-box">
+            <div class="user-logo">
+            {if condition="($member.userpic==NULL)"}<img src="__PUBLIC__/index/img/head.jpg" alt="">
+            {else/}
+            <img src="__IMAGE__/product/{$member.userpic}" alt="">
+            {/if}
+            </div>
+            <div class="dj_name">
+                <div class="name">{$member.nickname}</div>
+                <div class="dj">
+                
+                <img src="__PUBLIC__/index/img/user/icon-jd.png" alt="">
+                <span>vip会员</span></div>
+            </div>
+            <div class="user-data">
+                <a href="{:url('Account/profile')}">会员资料<i class="icon iconfont icon-qianjin"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="user-list">
+        <div class="dingdan">我的订单</div>
+        <ul class="dingdan-list">
+            <li>
+                <a href="{:url('Order/index')}">
+                    <p class="icons"><i class="icon iconfont icon-quanbudingdan"></i></p>
+                    <p>全部订单</p>
+                </a>
+            </li>
+            <li>
+                <a href="{:url('Order/index','id=3')}">
+                    <p class="icons"><i class="icon iconfont icon-1111112"></i></p>
+                    <p>待付款</p>
+                </a>
+                <span>{$number.3}</span>
+            </li>
+            <li>
+                <a href="{:url('Order/index','id=1')}">
+                    <p class="icons"><i class="icon iconfont icon-icon077"></i></p>
+                    <p>待发货</p>
+                </a>
+                <span>{$number.1}</span>
+            </li>
+            <li>
+                <a href="{:url('Order/index','id=4')}">
+                    <p class="icons"><i class="icon iconfont icon-daishouhuo"></i></p>
+                    <p>待收货</p>
+                </a>
+                <span>{$number.4}</span>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="user-list">
+        <div class="list-name">
+            <a href="{:url('OrderMember/ticketTime')}">
+            <img class="img-icon" src="__PUBLIC__/index/img/user/list-01.png" alt=""><span class="name">兑换账期</span>  <span class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+    
+ <hr>
+
+        <div class="list-name">
+            <a href="{:url('Cart/index')}">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-08.png" alt=""><span class="name">购物车（会员入会）</span> <span
+                    class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+        <hr>
+        <div class="list-name">
+            <a href="{:url('Cart/ex_cart')}">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-09.png" alt=""><span class="name">购物车（兑换商城）</span> <span
+                    class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+    </div>
+    <div class="user-list">
+        <div class="list-name">
+            <a href="{:url('Payment/recharge')}">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-02.png" alt=""><span class="name">兑换券购买</span>  <span class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+
+        <hr>
+
+        <div class="list-name">
+            <a href="{:url('Member/product')}">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-03.png" alt=""><span class="name">产品兑换(兑换券)</span>  <span class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+
+        <hr>
+
+        <div class="list-name">
+            <a href="{:url('Member/pr_record')}">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-04.png" alt=""><span class="name">产品兑换记录</span>  <span class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+    </div>
+
+
+    <div class="user-list">
+        <div class="list-name">
+            <a href="{:url('Collect/ex_collect')}">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-05.png" alt=""><span class="name">商品收藏</span>  <span class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+        <hr>
+        <div class="list-name">
+            <a href="{:url('Collect/member_col')}">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-06.png" alt=""><span class="name">入会关注</span>  <span class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+    </div>
+
+
+    <div class="user-list">
+        <div class="list-name">
+            <a id="referees" href="javascript:;">
+                <img class="img-icon" src="__PUBLIC__/index/img/user/list-07.png" alt=""><span  class="name">我的推荐人</span>  <span class="icon02"><i class="icon iconfont icon-qianjin"></i></span>
+            </a>
+        </div>
+    </div>
+
+
+    {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+
+
+</html>
+<script type="text/javascript">
+$("#my").addClass("active");
+
+    $(document).on("click", "#referees", function () {
+        $.post(
+                "{:url('Member/referrer')}",
+                function(d){
+                    if(d.success){
+                        $.alert(d.success);
+                    }else{
+                        $.alert(d.error);
+                    }
+                }
+        )
+
+    });
+    document.getElementById("my").className = "active";
+
+</script>

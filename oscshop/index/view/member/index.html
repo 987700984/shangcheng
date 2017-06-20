@@ -1,0 +1,126 @@
+
+<div class="member">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="member-all-border">
+                    {include file="public/left" /}
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-9 col-xs-9 member-index">
+                <div class="member-all-border">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="nav-info">
+                                欢迎您：
+                                {if condition="($member.nickname!='')"}
+                                {$member.nickname}
+                                {else/}
+                                {$member.telephone}
+                                {/if}
+                                <span class="right">
+                                可用兑换券：<span class="money01">{$member.cash_points}</span>张 <a href="{:url('Member/recharge')}" class="recharge">充值</a> <span
+                                        class="money2">未兑换：{$member.points}张</span>
+                            </span>
+                            </div>
+                            <div class="order">
+                                <div class="row">
+                                    <div class="col-xs-3 col-sm-3 col-md-3">
+                                        <div class="order-box">
+                                            <a href="{:url('Order/index')}">
+                                                <div class="icon">
+                                                    <i class="fa fa-paste" aria-hidden="true"></i>
+                                                </div>
+                                                <p>所有订单</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3">
+                                        <div class="order-box">
+                                            <a href="{:url('Order/index','id=3')}">
+                                                <div class="icon">
+                                                    <i class="fa fa-credit-card" aria-hidden="true"></i>
+                                                </div>
+                                                <p>待付款</p>
+                                            </a>
+                                            <span>{$number.3}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3">
+                                        <div class="order-box">
+                                            <a href="{:url('Order/index','id=1')}">
+                                                <div class="icon">
+                                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                                </div>
+                                                <p>待发货</p>
+                                            </a>
+                                            <span>{$number.1}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-3 col-md-3">
+                                        <div class="order-box">
+                                            <a href="{:url('Order/index','id=4')}">
+                                                <div class="icon">
+                                                    <i class="fa fa-truck" aria-hidden="true"></i>
+                                                </div>
+                                                <p>待收货</p>
+                                            </a>
+                                            <span>{$number.4}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                            <div class="follow">
+                                <div class="nav-info">
+                                    入会关注<span class="right"><a href="{:url('Collect/member_col')}.php">更多》</a></span>
+                                </div>
+                                <div class="order">
+                                    {volist name="collect_me" id="me"}
+                                    <div class="col-xs-4">
+                                        <a href="{:url('/goods/'.$me['goods_id'])}">
+                                            <img src="IMG_ROOT{$me.image|resize=100,100}">
+                                            <p>{$me.name}</p>
+                                        </a>
+                                    </div>
+                                   {/volist}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                            <div class="follow">
+                                <div class="nav-info">
+                                    商品收藏<span class="right"><a href="{:url('Collect/ex_collect')}">更多》</a></span>
+                                </div>
+                                <div class="order">
+                                    {volist name="collect" id="col"}
+                                    <div class="col-xs-4">
+                                        <a href="{:url('Exproduct/details','id='.$col['goods_id'])}">
+                                            <img src="IMG_ROOT{$col.image|resize=100,100}">
+                                            <p>{$col.name}</p>
+                                        </a>
+                                    </div>
+                                    {/volist}
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{include file="public/foot" /}
+
+</body>
+</html>

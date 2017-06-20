@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>支付订金</title>
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/example.css" />
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/my-sytle.css">
+</head>
+<body>
+
+    <div class="archives-top">
+        <div class="hd">
+            <h4 class="page_title">
+                <img src="{$user->userpic|default=''}" class="img-circle">
+            </h4>
+            <div class="grades">
+                <div class="text-center">{$user->username|default=''}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui_cells weui_cells_form archives">
+
+          <div class="weui_cell weui_vcode">
+            <div class="weui_cell_hd"><label class="weui_label">充值金额：</label></div>
+            <div class="weui_cell_bd weui_cell_primary" style="height: 44px;line-height: 44px">
+                <input class="archives-input" name="charge_num" type="text" placeholder="">
+
+            </div>
+
+          </div>
+    </div>
+        <input  style=" margin:30px 10px 5px 10px;" id="wechat-payment-btn"  class="weui_btn weui_btn_primary" type="button" value="微信支付">
+
+
+
+    <div class="height55"></div>
+    <div class="bottomNav">
+        <div class="weui_tabbar">
+            <a href="{:url('aucIndex/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-01.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">专场</p>
+            </a>
+            <a href="{:url('aucIndex/list_painting')}" class="weui_tabbar_item ">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-02.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">拍品</p>
+            </a>
+            <a href="{:url('Index/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-03.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">商城</p>
+            </a>
+            <a href="{:url('User/index')}" class="weui_tabbar_item  weui_bar_item_on">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-04.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">个人中心</p>
+            </a>
+        </div>
+    </div>
+    <script src="__PUBLIC__/auction/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/auction/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/auction/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/auction/js/city-picker.min.js"></script>
+</body>
+
+
+
+
+<!-- 微信JSSDK -->
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<!-- 微信JSSDK -->
+<script type="text/javascript">
+
+    var total_fee = {$goods->deposit};
+    var goods_name = '{$goods->aucGoods->name}';
+
+    wx.config({
+                debug: false,
+                appId: '{$signPackage.appId}',
+                timestamp: {$signPackage.timestamp},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: ['chooseWXPay']
+    });
+
+
+
+
+    /**
+     * 发起微信支付
+     */
+    $('#wechat-payment-btn').click(wepayCall);
+
+    /**
+     * 发起微信支付
+     * @returns {undefined}
+     */
+    function wepayCall() {
+
+
+        $('#wechat-payment-btn').addClass('disable').val('支付发起中...');
+
+        $.post("{:url('Payment/pay_charge')}",
+                {
+                    'pay_total':$('[name="charge_num"]').val(),
+                    'name':'charge'
+                },
+                function (r) {
+
+                    if(r.error){
+                        $.toast(r.error, "forbidden");
+                        return;
+                    }
+                    if (r.ret_code === 0) {
+                        if (r.bizPackage.package !== 'prepay_id=') {
+                            // 支付操作成功
+                            r.bizPackage.success = wepayCallback;
+                            // 支付操作取消
+                            r.bizPackage.cancel = wepayCancel;
+                            // 支付操作出错
+                            r.bizPackage.fail = wepayError;
+//							 发起微信支付
+
+                            wx.chooseWXPay(r.bizPackage);
+
+                            // 按钮恢复
+                            $('#wechat-payment-btn').removeClass('disable').html('微信安全支付');
+                        } else {
+
+                            wepayError();
+                        }
+                    } else if(r.ret_code === 11){
+                        $('#wechat-payment-btn').removeClass('disable').html('微信安全支付');
+                        alert('订单创建失败！' + r.ret_msg);
+                    }
+                });
+
+
+    }
+    /**
+     * 微信支付回调
+     * @param {type} res
+     * @returns {undefined}
+     */
+    function wepayCallback(res) {
+        if(res.errMsg == "chooseWXPay:ok" ) {
+            location.href = "{:url('PaySuccess/index')}";
+
+            $('#wechat-payment-btn').removeClass('disable').html('微信安全支付');
+        }else{
+            alert(res.errMsg);
+        }
+
+    }
+    /**
+     * 微信支付失败
+     */
+    function wepayError() {
+        alert('微信支付发起失败');
+        // 按钮恢复
+        $('#wechat-payment-btn').removeClass('disable').html('微信安全支付');
+    }
+    /**
+     * 微信支付手动取消
+     */
+    function wepayCancel() {
+        // 按钮恢复
+        $('#wechat-payment-btn').removeClass('disable').html('微信安全支付');
+    }
+
+
+
+</script>
+
+
+
+
+
+
+
+    </html>

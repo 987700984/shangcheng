@@ -1,0 +1,110 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+<div class="card-page">
+    <div class="top-banner">
+        <h1>充值入会</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="user-recharge">
+        <div class="title">
+            <h3>充值方式：</h3>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-2">
+                <div class="list-pay">
+                    <input type="radio" checked="checked" id="weixin" name="pay" value="">
+                    <label name="pay" class="pay active" for="weixin">
+                        <img src="__PUBLIC__/pc/img/weixin-pay.svg" width="100%" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-2">
+                <div class="list-pay">
+                    <input type="radio" id="alipay" name="pay" value="">
+                    <label name="pay" class="pay" for="alipay">
+                        <img src="__PUBLIC__/pc/img/alipay.svg" width="100%" />
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="title" style="margin-bottom: 30px;">
+            <h3>充值数量：</h3>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3">
+                <input type="tel" id="num" class="form-control" value="20">
+            </div>
+            <div class="col-xs-1 col-text">
+                张
+            </div>
+        </div>
+        <div class="title"></div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <span class="money">共<money id="total"></money>元</span>
+            </div>
+            <div class="col-xs-12">
+                <p>兑换说明:</p>
+                <p style="margin:10px 0 0 45px;">兑换券购买为{$charge}元/张，付款后即时到账</p>
+            </div>
+        </div>
+       <span class="button">
+           <button type="button" id="pay" class="btn btn-danger btn-lg">确定充值</button>
+       </span>
+    </div>
+</div>
+
+<!--    热门推荐   -->
+
+
+{include file="public/foot" /}
+<script>
+    $('#total').html($('#num').val()*"{$charge}");
+    $(function () {
+        $('.pay').click(function () {
+            $('.pay').removeClass("active"); //移除class
+            $(this).addClass("active");//添加class
+
+        });
+
+
+        $('#num').blur(function(){
+            $('#total').html($(this).val()*"{$charge}");
+        });
+
+        $('#pay').click(function(){
+            var type=$('input:checked').attr('id');
+
+
+            $.post(
+                    "{:url('payment/Payment/charge_pay')}",
+                    {
+                        number:$('#num').val(),
+                        type:type,
+                        total: $('#total').html()
+                    },
+                    function(d){
+                        if(d.error){
+                            alert(d.error);
+                        }else if(d.pay_url){
+
+                            if(d.type=='wx_pay'){
+                                window.location.href=d.pay_url;
+                            }else{
+
+                                parent.window.location.href=d.pay_url;
+                            }
+                        }
+                    }
+            );
+
+        })
+    });
+
+
+</script>
+
+</body>
+</html>

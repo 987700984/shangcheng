@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>会员资料</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+</head>
+
+<body>
+<div class="contents user_datails">
+    <div class="user_top">
+        <div class="user-logo" id="preview"><img id="imghead" src='img/head.jpg'></div>
+        <div class="name">卟暧/aiq</div>
+    </div>
+
+
+    <form action="user.html">
+
+        <div class="content">
+            <div class="weui-cells">
+                <a class="weui-cell weui-cell_access" href="javascript:;" id="upload">
+                    <div class="weui-cell__bd btn">
+                        <span class="btn upload"><i class="icon iconfont icon-z-camera"></i> 更换头像<input
+                                class="upload_pic" type="file" onchange="previewImage(this)" accept="image/*"
+                                multiple=""/> </span>
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label"><i class="icon iconfont icon-bianji"></i> 用户昵称</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="name" placeholder="卟暧/aiq">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="weui-cells">
+                <a class="weui-cell weui-cell_access" href="user_datails_phone.html">
+                    <div class="weui-cell__bd">
+                        <p><i class="icon iconfont icon-shouji"></i> 手机号:</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                        13800138000
+                    </div>
+                </a>
+
+                <a class="weui-cell weui-cell_access" href="add_manage.html">
+                    <div class="weui-cell__bd">
+                        <p><i class="icon iconfont icon-dingwei"></i> 地址管理：</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
+
+                <a class="weui-cell weui-cell_access" href="user_datails_password.html">
+                    <div class="weui-cell__bd">
+                        <p><i class="icon iconfont icon-suo"></i> 修改密码：</p>
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
+            </div>
+<div class="buttom">
+    <button style="button" class="weui-btn weui-btn_primary" id="show-toast">确定修改</button>
+</div>
+        </div>
+    </form>
+
+
+</div>
+</body>
+<script src="js/jquery-weui.min.js"></script>
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+    //图片上传预览  IE是用了滤镜。
+    function previewImage(file) {
+        var MAXWIDTH = 260;
+        var MAXHEIGHT = 180;
+        var div = document.getElementById('preview');
+        if (file.files && file.files[0]) {
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.onload = function () {
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width = rect.width;
+                img.height = rect.height;
+//         img.style.marginLeft = rect.left+'px';
+//                img.style.marginTop = rect.top+'px';
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                img.src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+        else //兼容IE
+        {
+            var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+            div.innerHTML = "<div id=divhead style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;" + sFilter + src + "\"'></div>";
+        }
+    }
+    function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+        var param = {top: 0, left: 0, width: width, height: height};
+        if (width > maxWidth || height > maxHeight) {
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+
+            if (rateWidth > rateHeight) {
+                param.width = maxWidth;
+                param.height = Math.round(height / rateWidth);
+            } else {
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+
+</script>
+</html>

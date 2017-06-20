@@ -1,0 +1,279 @@
+{include file="public:header" /}
+</head>
+
+<body>
+<div class="contents user_order details">
+    <div class="add-box">
+        <div class="add-icon"><i class="icon iconfont icon-dingwei"></i></div>
+        <div class="add-right">
+            <p>{$order.shipping_name} <span>{$order.shipping_tel}</span></p>
+            <p>{$order.shipping_province_id}{$order.shipping_city_id}{$order.shipping_country_id}{$order.address}</p>
+        </div>
+    </div>
+
+    <div class="leave">
+        <i class="icon iconfont icon-xinxi"></i><span id="comment">{$order.comment}</span>
+    </div>
+
+
+    <div class="order-box">
+    {volist name="product" id="p"}
+        <div class="centent-list">
+
+                <div class="img-box">
+                    <a href="javascript:;"><img src="IMG_ROOT{$p.image|resize=100,100}" width="100%"></a>
+                </div>
+                <div class="right-box">
+                    <div class="title">{$p.name}</div>
+                    {if condition="($order.points_order==0)"}
+                    <p>￥{$p.price} <span> x {$p.quantity}</span></p>
+                    {else/}
+                    <p>兑换券{$p.point}张<span> x {$p.quantity}</span></p>
+                    {/if}
+                </div>
+
+        </div>
+{/volist}
+
+
+
+
+        
+
+    </div>
+
+    <div class="details-content">
+        <p>订单编号：{$order.order_num_alias}</p>
+            {switch name="order.order_status_id"}
+        {case value="3"}
+        <p>下单时间：{$order.date_added|date='Y/m/d H:i:s',###}</p>
+        {/case}
+        {case value="4"}
+        <p>下单时间：{$order.date_added|date='Y/m/d H:i:s',###}</p>
+        <p>付款时间：{$order.pay_time|date='Y/m/d H:i:s',###}</p>
+        <p>发货时间：{$order.date|date='Y/m/d H:i:s',###}</p>
+        {/case}
+        {case value="5"}
+        <p>下单时间：{$order.date_added|date='Y/m/d H:i:s',###}</p>
+        <p>付款时间：{$order.pay_time|date='Y/m/d H:i:s',###}</p>
+        <p>发货时间：{$order.date|date='Y/m/d H:i:s',###}</p>
+        <p>成交时间：{$order.date_modified|date='Y/m/d H:i:s',###}</p>
+        {/case}
+        {case value="6"}
+        <p>下单时间：{$order.date_added|date='Y/m/d H:i:s',###}</p>
+        <p>成交时间：{$order.date_modified|date='Y/m/d H:i:s',###}</p>
+        {/case}
+        {case value="1"}
+        <p>下单时间：{$order.date_added|date='Y/m/d H:i:s',###}</p>
+        <p>付款时间：{$order.pay_time|date='Y/m/d H:i:s',###}</p>
+        {/case}
+        {/switch}
+    </div>
+
+    <!--    已完成状态  -->
+            <div class="bottom order-box">
+                <div class="statistics">
+                    <span>合计：
+                    {if condition="($order.points_order==0)"}
+                    {$order.total}
+                    {else/}
+                    兑换券{$order.pay_points}张
+                    {/if}
+                    </span>
+        {switch name="order.order_status_id"}
+        {case value="3"}
+        {if condition="($order.points_order==0)"}
+            <a href="javascript:;" id="weixinpay" data-id="{$order.order_id}" type="button" class="active">付款</a>
+        {else/}
+            <a href="{:url('Order/pay_point','order_id='.$order.order_id)}" type="button" class="active">付款</a>
+        {/if}
+            <button type="button" data-id="{$order.order_id}" class="abolish">取消订单</button>{/case}
+        {case value="4"}
+            <button type="button" data-id="{$order.order_id}" class="active on-otk" >确认收货</button>
+            <button type="button" data-id="{$order.hcomment}" class="express" >快递单号</button> {/case}
+        {case value="5"}
+            <button type="button" class="over">已完成</button>
+            <button type="button" id="{$order.hcomment}" class="express">快递单号</button>{/case}
+        {case value="6"}<button type="button" >已取消</button>{/case}
+        {case value="1"}
+            <button type="button" class="wait-delivered">待发货</button>
+            <button type="button" class="account-paid">已付款</button>{/case}
+        {/switch}
+                </div>
+            </div>
+
+</div>
+<script src="__PUBLIC__/index/js/jquery-2.1.4.js"></script>
+<script src="__PUBLIC__/index/js/jquery-weui.min.js"></script>
+
+<script style="text/javascript">
+     $(document).on("click", ".over", function() {
+        $.toast("订单已完成", function() {
+            console.log('close');
+        });
+    })
+   $(document).on("click", ".express", function() {
+        var comment=$(this).attr('data-id');
+        $.alert("运单号:"+comment);
+    });
+    $(document).on("click", ".on-otk", function() {
+        var order_id=$(this).attr('data-id');
+       
+        $.confirm("您确定收到货物了吗?", "确认取消?", function() {
+
+                $.post(
+                    "{:url('Order/confirm_ship')}",
+                    {order_id:order_id},
+                    function(d){
+                        if (d.success) {
+                            $.alert(d.success);
+                            window.location.reload();
+                        }
+                        
+                    }
+                );
+                    
+
+           
+            
+        }, function() {
+            //取消操作
+        });
+    });
+    $(document).on("click", ".account-paid", function() {
+        $.alert("您已付款了哦，如果还需要，请重新下单哦！", "已付款啦！");
+    });
+    $(document).on("click", ".wait-delivered", function() {
+        $.alert("包裹已经在仓库准备了哦，请耐心等待的！", "待发货！");
+    });
+    $(document).on("click", ".abolish", function() {
+        var id = $(this).attr('data-id');
+        $.confirm("您确定要取消此订单吗?", "确认取消?", function() {
+
+             $.post(
+                "{:url('Order/cancel_order')}",
+                {order_id:id},
+                function(d){
+                  $.alert("订单已取消!");
+                  window.location.reload();  
+                })
+              
+        }, function() {
+            //取消操作
+        });
+    });
+</script>
+
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<!-- 微信JSSDK -->
+<?php if(in_wechat()){ ?>
+
+
+
+<script type="text/javascript">
+
+    wx.config({
+                debug: false,
+                appId: '{$signPackage.appId}',
+                timestamp: {$signPackage.timestamp},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: ['chooseWXPay']
+    });
+
+
+
+
+    /**
+     * 发起微信支付
+     */
+    $('#weixinpay').click(function(){
+                var order_id = $(this).attr['data-id'];
+                wepayCall(order_id);
+            }
+
+    );
+
+    /**
+     * 发起微信支付
+     * @returns {undefined}
+     */
+    function wepayCall(id) {
+
+
+        $('#weixinpay').attr('disabled',true).html('支付发起中...');
+
+        $.post("{:url('Payment/weixin_repay')}",
+                {
+                    'order_id':id,
+
+                },
+                function (r) {
+                    if(r.error){
+                        $.toast(r.error, "forbidden");
+                        return;
+                    }
+                    if (r.ret_code === 0) {
+                        if (r.bizPackage.package !== 'prepay_id=') {
+                            // 支付操作成功
+                            r.bizPackage.success = wepayCallback;
+                            // 支付操作取消
+                            r.bizPackage.cancel = wepayCancel;
+                            // 支付操作出错
+                            r.bizPackage.fail = wepayError;
+//							 发起微信支付
+
+                            wx.chooseWXPay(r.bizPackage);
+
+                            // 按钮恢复
+                            $('#weixinpay').attr('disabled',false).html('付款');
+                        } else {
+
+                            wepayError();
+                        }
+                    } else if(r.ret_code === 11){
+                        $('#weixinpay').attr('disabled',false).html('付款');
+                        $.alert('付款失败！' + r.ret_msg);
+                    }
+                });
+
+
+    }
+    /**
+     * 微信支付回调
+     * @param {type} res
+     * @returns {undefined}
+     */
+    function wepayCallback(res) {
+        if(res.errMsg == "chooseWXPay:ok" ) {
+
+
+            window.location.reload();
+
+
+
+        }else{
+            alert(res.errMsg);
+        }
+
+    }
+    /**
+     * 微信支付失败
+     */
+    function wepayError() {
+        $.alert('微信支付发起失败');
+        // 按钮恢复
+        $('#weixinpay').attr('disabled',false).html('付款');
+    }
+    /**
+     * 微信支付手动取消
+     */
+    function wepayCancel() {
+        // 按钮恢复
+        $('#weixinpay').attr('disabled',false).html('付款');
+    }});
+    <?php } ?>
+</script>
+</body>
+</html>

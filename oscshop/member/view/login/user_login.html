@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>登录</title>
+     <link rel="stylesheet" href="__PUBLIC__/index/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/index/css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="__PUBLIC__/index/css/my-sytle.css">
+</head>
+
+<body style="background: #fff;">
+<div class="contents login">
+    <div class="logo">
+        <img src="__PUBLIC__/index/img/logo.png" alt="" width="100%">
+    </div>
+
+    <div class="user_input">
+        <a href="javascript:;" class="weui-btn weui-btn_primary">
+            微信登录
+        </a>
+        <a href="{:url('Login/login')}" class="weui-btn weui-btn_primary">
+            手机登录
+        </a>
+        <p><a href="{:url('Login/reg')}">注册</a></p>
+    </div>
+
+
+     {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+<script>
+    document.getElementById("index").className = "active";
+</script>
+</html>

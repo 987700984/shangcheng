@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>手机号验证</title>
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/example.css" />
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/my-sytle.css">
+</head>
+<body>
+
+    <div class="archives-top">
+        <div class="hd">
+            <h4 class="page_title">
+                <img src="{$user->userpic|default=''}" class="img-circle">
+            </h4>
+            <div class="grades">
+                <div class="text-center">{$user->username|default=''}</div>
+            </div>
+        </div>
+    </div>
+    <form action="{:url('phone_check')}" method="post">
+    <div class="weui_cells weui_cells_form archives">
+        <div class="weui_cell weui_cel">
+            <div class="weui_cell_hd"><label class="weui_label">手机号码：</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="archives-input" name="phone" type="tel" placeholder="请输入手机号码">
+            </div>
+        </div>
+          <div class="weui_cell weui_vcode">
+            <div class="weui_cell_hd"><label class="weui_label">验证码</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+              <input class="weui_input verification_input" name="check_num" type="number" placeholder="">
+            </div>
+            <div class="weui_cell_ft">
+              <a id="phoneMsg" href="javascript:;" class="weui_btn weui_btn_plain_primary verification_tel">获取验证码</a>
+            </div>
+          </div>
+    </div>
+        <input  style=" margin:30px 10px 5px 10px;" id="show-confirm" name="submit"  class="weui_btn weui_btn_primary" type="submit" value="认证">
+<p style="text-align: center;font-size: 12px">点击认证既表示同意 <a style="color: #2c5976;text-decoration: underline" href="{:url('service')}">盛世艺拍拍卖规则</a></p>
+    </form>
+
+    <div class="height55"></div>
+    <div class="bottomNav">
+        <div class="weui_tabbar">
+            <a href="{:url('aucIndex/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-01.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">专场</p>
+            </a>
+            <a href="{:url('aucIndex/list_painting')}" class="weui_tabbar_item ">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-02.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">拍品</p>
+            </a>
+            <a href="{:url('Index/index')}" class="weui_tabbar_item">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-03.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">商城</p>
+            </a>
+            <a href="{:url('User/index')}" class="weui_tabbar_item  weui_bar_item_on">
+                <div class="weui_tabbar_icon">
+                    <img src="__PUBLIC__/auction/images/icon/bottom-04.png" alt="">
+                </div>
+                <p class="weui_tabbar_label">个人中心</p>
+            </a>
+        </div>
+    </div>
+    <script src="__PUBLIC__/auction/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/auction/js/jquery-weui.min.js"></script>
+    <script src="__PUBLIC__/auction/js/swiper.min.js"></script>
+    <script src="__PUBLIC__/auction/js/city-picker.min.js"></script>
+</body>
+    <script>
+      $(document).on("click", "#show-confirm", function() {
+        $.toast("操作成功!");
+      });
+
+
+      //短信验证发送请求
+      $('#phoneMsg').on('click',function(){
+          var myForm = {
+              'phone_number':$('[name="phone"]').val()
+          };
+         if(msgStatusChange()){
+             $.post("{:url('User/get_phone_msg')}",myForm,function(data){
+
+             }).error(function(msg) {
+                 aa = JSON.stringify(msg);
+//                 alert(aa);
+             });
+         }
+
+
+      })
+
+      //短信验证时状态切换
+      function msgStatusChange() {
+
+var phone_number = $('[name="phone"]').val();
+          if (phone_number == '') {
+              $.alert('手机号不能为空！');
+              return false;
+          }else if(!(/^1[34578]\d{9}$/.test(phone_number))){
+              alert("手机号码有误，请重填");
+              return false;
+          }else{
+              $('#phoneMsg').attr('disabled', true);
+              var html = 60;
+              var timer = setInterval(function () {
+                  if (html <= 0) {
+                      $('#phoneMsg').attr('disabled', false).html('发送验证码').css({'color': '#04BE02'});
+                      clearInterval(timer);
+                  } else {
+                      html--;
+                      $('#phoneMsg').html(html + 's后重发').css({'color': 'red'});
+                  }
+              }, 1000);
+              return true;
+          }
+
+      }
+
+    </script>
+
+
+
+</html>

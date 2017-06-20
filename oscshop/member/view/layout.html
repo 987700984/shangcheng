@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>点对点商城首页|DoToDoMall.Com-深圳点对点商城有限公司</title>
+    <!-- Bootstrap -->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="__PUBLIC__/pc/css/my-style.css">
+</head>
+<body>
+<div class="header-area">
+    <div class="nav-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-8">
+                    <ul class="header-left">
+                        <li><a href=""  data-toggle="modal" data-target=".bs-example-modal-weixin"><i class="glyphicon glyphicon-phone"></i> 微信公众号</a></li>
+                        <!--<li><a href="#"><i class="fa fa-heart"></i> APP下载</a></li>-->
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-sm-4">
+                    <div class="header-right">
+                        <ul>
+                            <li class="dropdown">
+                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span
+                                        class="value"><span class="key"><i
+                                        class="fa fa-user fa-fw"></i> </span> 我的账户</span><b
+                                        class="caret"></b></a>
+
+                                <ul class="dropdown-menu">
+                                {if condition="member('uid')"}
+                                <li><a href="{:url('Member/index')}">会员中心</a></li>
+                                <li><a href="{:url('member/Login/logout')}">退出</a></li>
+                                {else/}
+                                <li><a href="javascript:;" data-toggle="modal" data-target=".bs-example-modal-dl">登录</a></li>
+                                <li><a href="javascript:;" data-toggle="modal" data-target="#myUser">注册</a></li>
+                                {/if}
+                                    
+                                    
+                                    
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-toggle" href="#">我的收藏</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--弹出层-->
+<!--公众号-->
+<div class="modal fade bs-example-modal-weixin" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <img src="img/test-data/logo-01.jpg" alt="微信公众号二维码" width="100%">
+        </div>
+    </div>
+</div>
+<!--登录-->
+<div class="modal fade bs-example-modal-dl" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <form class="form-horizontal">
+            <div class="modal-content">
+                <!-- Nav tabs -->
+                <ul class="user_tabs" role="tablist">
+                    <li role="presentation" class="a1 active"><a href="#dl_mobile" aria-controls="dl_mobile" role="tab" data-toggle="tab">手机登录</a></li>
+                    <li role="presentation" class="a2"><a href="#dl_weixin" aria-controls="dl_weixin" role="tab" data-toggle="tab">微信登录</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="dl_mobile">
+
+                        <div class="form-group">
+                            <label for="dl_input_user" class="col-sm-4 control-label">手机号:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="dl_input_user" placeholder="请输入手机号码">
+                                <span id="dl-us" class="myfunction-span"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dl_input_Password" class="col-sm-4 control-label">密码:</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="dl_input_Password"
+                                       placeholder="请输入密码"><span id="dl-ps" class="myfunction-span"></span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <input type="button" class="btn btn-primary btn-block" onclick="dlForm()" value="登录">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="dl_weixin">
+                        <img src="img/test-data/index-ing%20(1).jpg">
+                        <p>微信扫码登录</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--注册-->
+<div class="modal fade" id="myUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">用户注册</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="zc_input_user" class="col-sm-3 control-label">手机号：</label>
+                        <div class="col-sm-9">
+                            <input type="tel" class="form-control" id="zc_input_user" placeholder="请输入手机号码！"><span style="color: #ff0000;" id="zc_us"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zc_input_yzm" class="col-sm-3 control-label">验证码：</label>
+                        <div class="col-sm-6">
+                            <input type="tel" class="form-control" id="zc_input_yzm" placeholder="请输入验证码"><span style="color: #ff0000;" id="zc_yzm"></span>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" id="btn" class="btn btn-warning btn-block" >发送</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-3 control-label">密码：</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="inputPassword" placeholder="请输入密码"><span style="color: #FF0000;" id="zc_ps1"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="inputPassword2" class="col-sm-3 control-label">确认密码：</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="inputPassword2" placeholder="请再次输入密码"> <span class="myfunction-span" id="zc_ps2"></span>
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        <label for="inputRecommender" class="col-sm-3 control-label">推荐人：</label>
+                        <div class="col-sm-9">
+                            <input type="tel" class="form-control" id="inputRecommender" placeholder="请输入推荐人手机号码">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <label id="xieyi">
+                                <input type="checkbox" id="checkbox_agre" name="zc_agre" value="checkbox"> 同意 《网站服务协议》
+                            </label>
+                            <p id="zc_xieyi" class="myfunction-span"></p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="zcForm()"> 注册</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function dlForm() {
+
+        var dl_user = document.getElementById("dl_input_user").value;
+        var dl_password = document.getElementById("dl_input_Password").value;
+        var mobile_phone2 = /^1[3|4|5|7|8]\d{9}$/;
+//        alert(1);
+        if (dl_user == "") {
+            document.getElementById("dl_input_user").className =  "myfunction-input"
+            document.getElementById("dl-us").innerHTML="手机号不能为空";
+            return false;
+        }
+        else {
+            document.getElementById("dl_input_user").className =  "form-control"
+            document.getElementById("dl-us").innerHTML="";
+        }
+        if (!mobile_phone2.test(dl_user)) {
+            document.getElementById("dl_input_user").className =  "myfunction-input"
+            document.getElementById("dl-us").innerHTML="手机格式不对";
+            return false;
+        }else {
+            document.getElementById("dl_input_user").className =  "form-control"
+            document.getElementById("dl-us").innerHTML="";
+        }
+        if (dl_password == "") {
+            document.getElementById("dl_input_Password").className =  "myfunction-input"
+            document.getElementById("dl-ps").innerHTML="密码不能为空";
+            return false;
+        }
+        else {
+            document.getElementById("dl_input_Password").className =  "form-control"
+            document.getElementById("dl-ps").innerHTML="";
+        }
+
+        $.post(
+            "{:url('member/Login/login')}",
+            {
+                telephone:dl_user,
+                password:dl_password
+            },
+            function(d){
+                if (d.error) {
+                    document.getElementById("dl_input_Password").className =  "myfunction-input"
+                    document.getElementById("dl-ps").innerHTML=d.error;
+                    return false;
+                }else{
+                    alert(d.success);
+                    window.location.reload();
+                }
+            }
+
+        )
+
+    }
+var wait=60;  
+function time(o) {  
+        if (wait == 0) {  
+            o.removeAttribute("disabled");            
+            o.innerHTML="免费获取验证码";  
+            wait = 60;  
+        } else {  
+            o.setAttribute("disabled", true);  
+            o.innerHTML="重新发送(" + wait + ")";  
+            wait--;  
+            setTimeout(function() {  
+                time(o)  
+            },  
+            1000)  
+        }  
+}
+document.getElementById("btn").onclick=function(){
+    
+    var phone = document.getElementById("zc_input_user").value;
+    var mobile_phone2 = /^1[3|4|5|7|8]\d{9}$/;
+    if (phone=='' || !mobile_phone2.test(phone) ) {
+        document.getElementById("zc_input_user").className = "myfunction-input"
+        document.getElementById("zc_us").innerHTML = "手机号码不正确";
+        return false;
+    }else{
+        time(this);
+        $.post(
+            "{:url('member/Login/send')}",
+            {telephone:phone},
+            function(data){
+                if (data) {
+                    alert('发送成功！');
+                }else{
+                    alert('发送失败！');
+                }
+            }
+        ) 
+    }
+    
+}
+
+    function zcForm() {
+        var zc_user = document.getElementById("zc_input_user").value;
+        var zc_yzm = document.getElementById("zc_input_yzm").value;
+        var zc_ps1 = document.getElementById("inputPassword").value;
+        var zc_ps2 = document.getElementById("inputPassword2").value;
+        var mobile_phone1 = /^1[3|4|5|7|8]\d{9}$/;
+
+        if (!mobile_phone1.test(zc_user)) {
+            document.getElementById("zc_input_user").className =  "myfunction-input"
+            document.getElementById("zc_us").innerHTML="手机号码不正确";
+            return false;
+        }
+        else {
+            document.getElementById("zc_input_user").className =  "form-control"
+            document.getElementById("zc_us").innerHTML="";
+        }
+
+
+
+        if (zc_yzm == "") {
+            document.getElementById("zc_input_yzm").className =  "myfunction-input"
+            document.getElementById("zc_yzm").innerHTML="验证码不能为空";
+            return false;
+        }
+        else {
+            document.getElementById("zc_input_yzm").className =  "form-control"
+            document.getElementById("zc_yzm").innerHTML="";
+        }
+
+        if (zc_ps1 == "") {
+            document.getElementById("inputPassword").className =  "myfunction-input"
+            document.getElementById("zc_ps1").innerHTML="密码不能为空";
+            return false;
+        }
+        else {
+            document.getElementById("inputPassword").className =  "form-control"
+            document.getElementById("zc_ps1").innerHTML="";
+        }
+
+        if (zc_ps1!=zc_ps2){
+            document.getElementById("inputPassword2").className =  "myfunction-input"
+            document.getElementById("zc_ps2").innerHTML="两次密码不相同";
+            return false;
+        }
+        else {
+            document.getElementById("inputPassword2").className =  "form-control"
+            document.getElementById("zc_ps2").innerHTML="";
+        }
+
+        if(!document.getElementsByName("zc_agre")[0].checked)
+        {
+            document.getElementById("checkbox_agre").className =  "myfunction-xieyi"
+            document.getElementById("zc_xieyi").innerHTML="请先阅读条款并同意我们的条款才可以继续申请";
+            return false;
+        }
+        $.post(
+            "{:url('member/Login/reg')}",
+            {   
+                telephone:zc_user,
+                code:zc_yzm,
+                password:zc_ps1
+            },
+            function(d){
+                if (d.error) {
+                    alert(d.error);
+                }else{
+                    alert(d.success);
+                    window.location.reload();
+                }
+            }
+
+        )
+    }
+
+</script>
+<div class="header-area">
+    <div class="container">
+        <div class="header-site">
+            <div class="row">
+                <div class="col-md-9 col-sm-8 col-xs-8">
+                    <div class="logo">
+                        <a href=""><img src="IMG_ROOT{$logo.image_url|resize=200,60}"" alt="标志"></a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-4">
+                    <div class="shop-card btn-group">
+                        <a href="javascript:;"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 购物车-<span>{$cart}</span>件商品 &nbsp;&nbsp;<i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="card_page.php">购物车(会员入会)</a></li>
+                            <li><a href="card_page.php">购物车(兑换商城)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--导航-->
+    <div class="mainmenu-area">
+        <div class="container">
+            <nav class="navbar navbar-default navbar-static-top">
+                <!-- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns. -->
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-8" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-8" aria-expanded="false">
+                        <ul class="nav navbar-nav">
+                            <li><a class="all-ctegories" id="drop5" href="#" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="false"><i
+                                    class="glyphicon glyphicon-align-justify"></i>&nbsp;
+                                所有类别</a>
+                                <ul id="menu2" class="dropdown-menu" aria-labelledby="drop5">
+                                    {volist name="cate1" id="cat"}
+                                    <li><a href="{:url('Exproduct/index','id='.$cat['id'])}">{$cat.name}</a></li>
+                                    {/volist}
+                                    <li role="separator" class="divider" style="margin: 0;"></li>
+                                    {volist name="cate2" id="ca"}
+                                    <li><a href="{:url('Exproduct/index','id='.$ca['id'])}">{$ca.name}</a></li>
+                                    {/volist}
+                                </ul>
+                            </li>
+                            <li class="active"><a class="active" href="{:url('Index/index')}"><i
+                                    class="glyphicon glyphicon-home"></i> 首页</a>
+                            </li>
+                            <li><a href="#">最新活动</a></li>
+                            <li><a href="{:url('Exproduct/index','id=0')}">单卷专区</a></li>
+                            <li><a href="{:url('Exproduct/index','id=1')}">多卷兑换</a></li>
+                            <li><a href="#">会员服务</a></li>
+                            <li><a href="checkout.html">关于我们</a></li>
+                        </ul>
+
+                        <!-- /.navbar-collapse -->
+                    </div>
+            </nav>
+        </div>
+    </div>
+</div>
+{__CONTENT__}

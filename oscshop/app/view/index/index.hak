@@ -1,0 +1,39 @@
+{extend name="public:base" /}
+{block name="head"}
+<link href="__PUBLIC__/view_res/mobile/css/home.css" type="text/css" rel="Stylesheet" />
+<script src="__PUBLIC__/artTemplate/template.js"></script>
+<script src="__PUBLIC__/view_res/mobile/load_list.js"></script>
+<script src="__PUBLIC__/view_res/mobile/index.js"></script>
+{/block} 
+{block name="header"}
+{include file="public/search" /}
+{/block}
+
+{block name="content"}
+<section class="home-recom">
+    <section class="clearfix" id="goods_list">
+
+    </section>
+    <div id="list-loading" style="display: none;"><img src="__PUBLIC__/view_res/mobile/images/icon/spinner-g-60.png" width="30"></div>
+</section>
+<script id="list" type="text/html">
+    	<@each list as value i@>
+	        <a href="/mobile/goods/detail/id/<@value.goods_id@>" class="hplist">
+	                <img src="/<@value.image@>" />
+	                <p><@value.name@></p>
+	        <i>&yen;<@value.price@></i>
+	        </a>
+        <@/each@>
+</script>
+{/block}
+
+{block name="footer"}
+{include file="public/footer-nav" /}
+{/block}
+
+
+$(function(){
+scroll_load('mobile/index/ajax_goods_list','list','goods_list');
+});
+</script>
+{/block}

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>{$goods->name} - 盛世艺拍</title>
+    <!--<link href="__PUBLIC__/view_res/mobile/css/home.css" type="text/css" rel="Stylesheet" />-->
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/example.css" />
+    <link rel="stylesheet" href="__PUBLIC__/auction/css/my-sytle.css">
+</head>
+<body>
+
+
+
+<div class="swiper-container">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+
+        {if condition="$goods->goodsImage"}
+        {volist name="$goods->goodsImage" id="v"}
+        <div class="swiper-slide" style="max-height:400px;"><img src="/public/static/../uploads/{$v->image}" alt=""></div>
+
+        {/volist}
+        {else /}
+        <!--<img src="/public/static/../uploads/images/osc1/auction/index/banner-02.jpg" alt="">-->
+        {/if}
+
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+</div>
+
+
+<div class="mall-content-top">
+    <h4 class="title">{$goods->name}</h4>
+    <div class="money"><span class="customizde_money">定制价格：</span><small>￥</small>{$goods->price}</div>
+    <div class="weui-row weui-no-gutter">
+        <div class="weui-col-33">定制类型：{$goods->model}</div>
+        <div class="weui-col-33"></div>
+        <div class="weui-col-33">名额：{$goods->quantity}名</div>
+    </div>
+
+    <p>艺术家介绍</p>
+</div>
+
+
+
+
+<div class="weui_coll" id="main2">
+    <a id='js-content' href="javascript:;" style="display: inline-block;width: 100%;" >
+        <div id='js-contentwrap' class="mall_content">
+
+            <div id="js-description" style="text-indent: 2em;display: none;word-wrap: break-word">{$goods->GoodsDescription->description|default=''}</div>
+
+        </div>
+        <div class="text-center"><span id='btnnext'></span></div>
+    </a>
+
+
+
+
+
+</div>
+<div style="margin-top: 40px; " >
+    定制类型及相关事宜说明:
+
+</div>
+<div style="text-indent: 2em">{$goods->goods_description->summary}</div>
+
+
+<div class="mall-content_shoping">
+    <a id="pop_call" href="javascript:void(0);" class="weui_btn weui_btn_primary m-t-10">点击预约定制</a>
+</div>
+
+
+
+<div class="weui_navbar_item weui_bar_item_on mall_content_pl">评论</div>
+
+
+
+{volist name="goodsComment" id="v"}
+<div class="show-title border" style="padding:5px">
+    <div class="icon-logos"><img src="__PUBLIC__/auction/images/icon/comment.png" alt=""></div>
+    <div class="pl-content">
+        <p class="font-size-15">{$v->user_name} <span class="font-size-10">{$v->add_time}</span></p>
+        <p class="font-size-14">{$v->content}</p>
+    </div>
+</div>
+{/volist}
+
+<div class="weui_cells">
+    <form action="{:url('comment/commentAdd')}" method="post">
+        <div class="weui_cell weui_vcode">
+            <div class="weui_cell_hd">
+                <img src="__PUBLIC__/auction/images/icon/pan.png" style="width:20px;margin:10px;display:block" alt="">
+            </div>
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="content" placeholder="没事写两句呗！">
+            </div>
+
+            <div class="weui_cell_ft">
+                <input type="hidden" name="goods_id" value="{$goods.goods_id}">
+                <input type="hidden" name="url" value="customGoods/detail">
+                <input class="weui_btn weui_btn_primary" type="submit" value="发送">
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<!--今日推荐-->
+<div class="weui_cells mall-in">
+    <div class="recommend_in">今日推荐</div>
+
+
+    <div class="swiper-containers">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+
+            <!-- Slides -->
+            {volist name="recommend" id="v"}
+            <div class="swiper-slide">
+                <div class="weui-row weui-no-gutter">
+                    {volist name="v" id="data"}
+                    <div class="weui-col-33 text-center">
+                        <a href="{:url('aucIndex/auction_goods',['id'=>$data->goods_id])}">
+                            <div class="pm-list">
+                                <div class="img-list">
+                                    <span></span><img src="__PUBLIC__/../uploads/{$data.image}" alt="">
+                                </div>
+                                <p>{$data.name}</p>
+                                <p><span>当前价 ￥{$data->max_price|default=''}</span></p>
+                            </div>
+                        </a>
+                    </div>
+                    {/volist}
+                </div>
+            </div>
+            {/volist}
+
+            <!-- Slides end-->
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+
+</div>
+
+
+<!--今日推荐 END-->
+
+
+
+<!-- 出价部分 -->
+<div id="half" class='weui-popup-container popup-bottom'>
+    <div class="weui-popup-overlay"></div>
+    <div class="weui-popup-modal">
+        <div class="toolbar">
+            <div class="toolbar-inner">
+                <a href="javascript:;" class="picker-button close-popup">X</a>
+                <h1 class="title">当前剩余定制名额：<span>{$goods->quantity}</span>
+                </h1>
+            </div>
+        </div>
+
+        <div class="modal-content">
+            <form name="myForm" action="{:url('submit_custom')}" method="post">
+                <div class="form-content">
+                    <div class="left"><a id="plus" href="javascript:;"><img src="__PUBLIC__/auction/images/icon/0.gif" alt=""></a></div>
+                    <div class="form-conter"> <input class="weui_input" type="text" value="1" name="quantity"></div>
+                    <div class="right"><a id="add" href="javascript:;"><img src="__PUBLIC__/auction/images/icon/1.gif" alt=""></a></div>
+                    <input type="hidden" name="goods_id" value="{$goods->goods_id}">
+                    <input type="hidden" name="price" value="{$goods->price}">
+                </div>
+
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label  class="weui_label">特殊要求说明：</label></div>
+                </div>
+                <div class="weui_cell">
+                    <div style="padding-right: 20px;" class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input" type="text" name="comment" value="" placeholder="">
+                    </div>
+                </div>
+
+                <div class="weui_dialog_ft">
+                    <a id="pop_btn" href="javascript:;" class="weui_btn_dialog primary text-center close-popup">提交申请</a>
+                </div>
+            </form>
+        </div>
+        <div class="height55"></div>
+        <div class="height55"></div>
+    </div>
+</div>
+<!-- 出价部分 END -->
+
+<div class="height55"></div>
+<div class="height55"></div>
+
+<div class="bottomNav">
+    <div class="weui_tabbar">
+        <a href="{:url('aucIndex/index')}" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-01.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">专场</p>
+        </a>
+        <a href="{:url('aucIndex/list_painting')}" class="weui_tabbar_item ">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-02.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">拍品</p>
+        </a>
+        <a href="{:url('Index/index')}" class="weui_tabbar_item  weui_bar_item_on">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-03.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">商城</p>
+        </a>
+        <a href="{:url('User/index')}" class="weui_tabbar_item">
+            <div class="weui_tabbar_icon">
+                <img src="__PUBLIC__/auction/images/icon/bottom-04.png" alt="">
+            </div>
+            <p class="weui_tabbar_label">个人中心</p>
+        </a>
+    </div>
+</div>
+
+</body>
+
+<script src="__PUBLIC__/auction/js/jquery.min.js"></script>
+<script src="__PUBLIC__/auction/js/jquery-weui.min.js"></script>
+<script src="__PUBLIC__/auction/js/swiper.min.js"></script>
+<script src="__PUBLIC__/auction/js/city-picker.min.js"></script>
+<script src="__PUBLIC__/artTemplate/template.js"></script>
+<script src="__PUBLIC__/view_res/mobile/load_list.js"></script>
+<script src="__PUBLIC__/view_res/mobile/index.js"></script>
+
+<!-- 微信JSSDK -->
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<!-- 微信JSSDK -->
+<script>
+    $(".swiper-container").swiper({
+        loop: true,
+        autoplay: 3000
+    });
+
+    $(".swiper-containers").swiper({
+        loop: true,
+    });
+</script>
+
+<script>
+
+    //    定制申请弹窗
+    $('#pop_call').on('click',function(){
+
+        $.post('{:url("mobile/CustomGoods/check_custom")}',{'goods_id':{$goods->goods_id}},function(data){
+
+
+            if(data.status===1){
+                $('#half').popup();
+            }else if(data.status===2){
+                $.confirm('您还没有选择收货地址，请选择',function(){
+                    fnSelectAddr();
+                });
+            }else if(data.status===0){
+                window.location.href = '{:url("mobile/User/phone_check")}';
+            }else if(data.status==3){
+                $.alert(data.msg);
+
+            }
+        });
+    });
+
+
+
+
+    //    数量增与减操作
+    var quantity = {$goods->quantity};
+
+    $('#plus').on('click',function(){
+        var num = $('[name="quantity"]').val();
+        if(num<=1){
+            return false;
+        }else{
+            $('[name="quantity"]').val(num-1);
+        }
+    });
+
+    $('#add').on('click',function(){
+        var num = $('[name="quantity"]').val();
+        if(num>=quantity){
+            return false;
+        }else{
+            $('[name="quantity"]').val(parseInt(num)+1);
+        }
+    });
+
+
+
+
+    $('#pop_btn').on('click',function(){
+        document.myForm.submit();
+    })
+
+
+
+    //    商品详情折叠js
+    $('#js-content').on('click', function() {
+        if ($('#btnnext').hasClass('nex')) {
+            $('#js-description').slideUp(300);
+            $('#btnnext').removeClass('nex');
+        } else {
+            $('#js-description').slideDown(300);
+            $('#btnnext').addClass('nex');
+        }
+    })
+
+
+
+
+
+
+
+
+//微信配置
+    wx.config({
+                debug: false,
+                appId: '{$signPackage.appId}',
+                timestamp: {$signPackage.timestamp},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: ['chooseWXPay']
+    });
+    var addrsignPackage = {$addrsignPackage};
+
+
+
+
+
+    /**
+     * 获取收货地址回调函数
+     * @param {type} res
+     * @returns {undefined}
+     */
+
+    var uid = {$uid};
+    function addAddressCallback(res) {
+        if (res.err_msg === 'edit_address:ok') {
+            var data = {
+                'uid':uid,
+                'name':res.userName,
+                'telephone':res.telNumber,
+                'address':res.addressDetailInfo,
+                'province_name':res.proviceFirstStageName,
+                'city_name':res.addressCitySecondStageName,
+                'country_name':res.addressCountiesThirdStageName
+            };
+            $.post('{:url("add_address")}',data,function(res){
+
+
+
+                if(res.status==0){
+                    $.alert('保存地址失败，请稍候重试！');
+                }
+            }).error(function(dd){
+                dd = JSON.stringify(dd);
+
+            });
+        } else {
+            $('#wrp-btn').html('授权失败');
+        }
+    }
+
+
+    /**
+     * 显示收货地址数据
+     */
+
+    function addressShow() {
+        $('#wrp-btn').remove();
+        $('#express-name').html(expressData.userName);
+        $('#express-person-phone').html(expressData.telNumber);
+        $('#express-address').html(expressData.Address);
+    }
+
+    /**
+     * 选择收货地址
+     */
+    $('#express_address').click(fnSelectAddr);
+
+    /**
+     * 获取收货地址
+     * @returns {undefined}
+     */
+    function fnSelectAddr() {
+
+        WeixinJSBridge.invoke('editAddress',addrsignPackage, addAddressCallback);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+</html>

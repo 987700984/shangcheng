@@ -1,0 +1,27 @@
+{include file="public:header" /}
+</head>
+
+<body style="background: #fff;">
+<div class="contents login">
+    <div class="logo">
+        <img src="__PUBLIC__/index/img/logo.png" alt="" width="100%">
+    </div>
+
+    <div class="user_input">
+        <a href="{:url('Login/wei_login')}" class="weui-btn weui-btn_primary">
+            微信登录
+        </a>
+        <a href="{:url('Login/login')}" class="weui-btn weui-btn_primary">
+            手机登录
+        </a>
+        <p><a href="{:url('Login/reg')}">注册</a></p>
+    </div>
+
+
+     {block name="include"}{include file="public:bottom" /}{/block}
+</div>
+</body>
+<script>
+    document.getElementById("index").className = "active";
+</script>
+</html>

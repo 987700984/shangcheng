@@ -1,0 +1,215 @@
+{extend name="public:base" /}
+{block name="content"}	
+<div class="page-header">
+	<h1>
+		{$breadcrumb1}
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$breadcrumb2}
+		</small>
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$crumbs}
+		</small>			
+	<button type="submit" style="float:right;" id='send' form="form-goods"  class="btn button btn-sm btn-primary">提交</button>
+	</h1>
+</div>
+	<div class="row">
+	<div class="col-xs-12">	
+		<div class="panel-body">
+        <form action="{:url('AuctionGoods/edit_general')}" method="post" enctype="multipart/form-data" id="form-goods" class="form-horizontal">
+        
+        {if condition="$Request.param.id"}
+			<input name="goods_id" type="hidden" value="{$Request.param.id}" />
+		{/if}
+          <ul class="nav nav-tabs">
+          	
+          	<li class="active"><a href="#tab-data" data-toggle="tab">基本信息</a></li>
+            <li><a href="#tab-general" data-toggle="tab">商品描述</a></li>
+          </ul>
+          <div class="tab-content">
+          		
+	          	<!-- 基本信息 START -->
+	          	<div class="tab-pane active" id="tab-data">
+	          		
+	          		<div class="form-group required">
+		                <label class="col-sm-2 control-label" for="input-image">
+		                <span title="" data-toggle="tooltip" data-original-title="上传800x800的图片">缩略图：</span>
+		                </label>
+		                
+		                <div class="col-sm-10" id="thumb">
+		                  <a id="thumb-image" href="#" data-toggle="image" class="img-thumbnail">
+		                  		{if condition="!empty($auctioning->aucGoods->image)"}
+		                  			<img src="IMG_ROOT{$auctioning->aucGoods->image|resize=100,100}" />
+			                  	{else /}
+			                  		<img src="__PUBLIC__/image/no_image_100x100.jpg" />
+			                  	{/if}
+								</a>
+		                  <input type="hidden" name="image" value="{$auctioning->aucGoods->image|default=''}" id="input-image" />
+		            </div>
+		            
+		            </div>
+					<input class="form-control" type="hidden" placeholder="拍品数量" value="1" name="quantity">
+
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name2">拍品名称：</label>
+						<div class="col-sm-10">
+							<input id="input-name2" class="form-control" type="text" placeholder="拍品名称" value="{$auctioning->aucGoods->name|default=''}" name="name">
+						</div>
+					</div>
+
+
+
+					<div class="form-group required">
+						<label class="col-sm-2 control-label">材质：</label>
+						<div class="col-sm-10">
+							<input  class="form-control" type="text" placeholder="" value="{$auctioning->aucGoods->model|default=''}" name="model">
+						</div>
+					</div>
+					<!--<div class="form-group required">-->
+						<!--<label class="col-sm-2 control-label">固定邮费：</label>-->
+						<!--<div class="col-sm-10">-->
+					<input  class="form-control" type="hidden" placeholder="若邮费为0则填0" value="0" name="postage">
+
+					<!--<input  class="form-control" type="text" placeholder="若邮费为0则填0" value="{$auctioning->aucGoods->postage|default=''}" name="postage">-->
+						<!--</div>-->
+					<!--</div>-->
+
+
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-meta-title2">
+							<a href="{:url('Brand/add')}" target="_blank" class="btn btn-primary" type="button">添加作者</a> 作者：</label>
+						<div class="col-sm-10">
+							<select  class="form-control" name="brand_id">
+								{volist name="brand" id="v"}
+								<option value="{$v.brand_id}"  >{$v.name}</option>
+								{/volist}
+							</select>
+
+
+						</div>
+					</div>
+
+					
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-meta-title2">重量：</label>
+						<div class="col-sm-10">
+							<input id="input-meta-title2" class="form-control" type="text" placeholder="重量" value="{$auctioning->aucGoods->weight|default=''}" name="weight">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-length-class">重量单位：</label>
+						<div class="col-sm-10">
+							
+							<select id="input-length-class" class="form-control" name="weight_class_id">
+								{volist name="weight_class" id="v"}
+									<option {if condition="isset($auctioning)&&($v.weight_class_id eq $auctioning->aucGoods->weight_class_id)"}selected="selected"{/if} value="{$v.weight_class_id}"  >{$v.title}</option>
+								{/volist}
+							</select>
+						</div>
+					</div>
+		            
+		            <div class="form-group">
+						<label class="col-sm-2 control-label" for="input-length">尺寸(L x W x H)：</label>
+						<div class="col-sm-10">
+							<div class="row">
+								<div class="col-sm-4">
+									<input id="input-length" class="form-control" type="text" placeholder="长度" value="{$auctioning->aucGoods->length|default=''}" name="length">
+								</div>
+								<div class="col-sm-4">
+									<input id="input-width" class="form-control" type="text" placeholder="宽度" value="{$auctioning->aucGoods->width|default=''}" name="width">
+								</div>
+								<div class="col-sm-4">
+									<input id="input-height" class="form-control" type="text" placeholder="高度" value="{$auctioning->aucGoods->height|default=''}" name="height">
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" >尺寸单位：</label>
+						<div class="col-sm-10">
+							
+							<select  class="form-control" name="length_class_id">
+								{volist name="length_class" id="v"}
+									<option {if condition="isset($auctioning)&&($v.length_class_id eq $auctioning->aucGoods->length_class_id)"}selected="selected"{/if} value="{$v.length_class_id}">{$v.title}</option>
+								{/volist}
+							</select>
+						</div>
+					</div>
+		            
+
+		            
+		            <div class="form-group required">
+						<label class="col-sm-2 control-label" >排序：</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="text" placeholder="排序" value="{$auctioning->aucGoods->sort_order|default=''}" name="sort_order">
+						</div>
+					</div>
+		            
+	          	</div>
+	          	<!-- 基本信息 END -->
+	          	
+	          	<!-- 拍品描述  START -->
+
+
+	          	<div class="tab-pane" id="tab-general">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-description">拍品详情：</label>
+						<div class="col-sm-10">
+							<textarea name="goods_description[description]" id="description">
+
+								{$auctioning->aucGoods->goodsDescription->description|default=''}
+							</textarea>
+							<input type="hidden" name="goods_description[summary]" value="0">
+							<input type="hidden" name="goods_description[meta_description]" value="0">
+							<input type="hidden" name="goods_description[meta_keyword]" value="0">
+						</div>
+					</div>
+	          	</div>
+	          	<!-- 拍品描述 END -->
+	          	
+        
+          </div>
+        </form>
+	</div>
+	</div>
+</div>
+{/block}
+{block name="javascript"}	
+<script src="__PUBLIC__/js/ckeditor/ckeditor.js"></script> 
+<script>
+$(function(){
+	{if condition="$Request.param.id"}
+				Oscshop.setValue("status", {$aucGoods.status|default=1});
+				Oscshop.setValue("subtract",{$aucGoods.subtract|default=1});
+				Oscshop.setValue("shipping",{$aucGoods.shipping|default=1});
+	{/if}
+});	
+
+$('#send').click(function(){
+	
+	var name=$('input[name="name"]').val();
+	
+	if(name==''){
+		alert('拍品名称必填');
+		return false;
+	}	
+	
+	return true;
+}); 
+
+
+CKEDITOR.replace('description', {
+	filebrowserImageUploadUrl: '{:url("FileManager/ckupload")}',	
+	toolbar: [
+				[ 'Source', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ],
+				[ 'FontSize', 'TextColor', 'BGColor' ],
+				[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','Image','Format']
+			]	
+});
+</script>
+{/block}

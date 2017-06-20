@@ -1,0 +1,96 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+{include file="public/member" /}
+<div class="member">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="member-all-border">
+                    {include file="public/left" /}
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-9 col-xs-9 for-record">
+                <div class="small-nav">
+                    <ul>
+                        <li><a href="{:url('Index/index')}">首页</a></li>
+                        <li><i class="fa fa-angle-double-right" aria-hidden="true"></i></li>
+                        <li>兑换账期</li>
+                    </ul>
+                </div>
+                <div class="member-all-border">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="panel">
+                                <div class="top-icon"><i class="fa fa-ticket" aria-hidden="true"></i></div>
+                                <div class="top-nember">
+                                    <p>当前未兑换</p>
+                                    <p>共{$points}张</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6">
+                            <div class="panel">
+                                <div class="top-icon top-icon-2"><i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
+                                <div class="top-nember">
+                                    <p>当前可用</p>
+                                    <p>共{$point}张</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    {volist name="order" id="d"}
+                    <div class="list-box">
+                        <h4>类型：{$d.goods_name}</h4>
+                        <div class="text">
+                            <div class="left">
+                                <p>您还有{$d.none_points}张兑换券未兑</p>
+                                <p>到期时间：{$d.start_time|date='Y/m/d H:i:s',###}</p>
+                            </div>
+                            <div class="right">
+                                <p>当前有{$d.cash_points}张兑换券可用</p>
+                                <p>作废时间：{$d.end_time|date='Y/m/d H:i:s',###}</p>
+                            </div>
+                        </div>
+                        <ul>
+                            <?php
+
+        for($i=$d['total_points'];$i>$d['none_points'];$i--){
+                            echo '<li class="active">'.$i.'兑</li>';
+                            }
+
+                            for($i=$d['none_points'];$i>=1;$i--){
+                            echo '<li>'.$i.'未</li>';
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                    {/volist}
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{include file="public/foot" /}
+
+</body>
+</html>

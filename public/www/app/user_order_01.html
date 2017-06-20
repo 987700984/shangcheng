@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>全部订单</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font_icon/iconfont.css">
+    <link rel="stylesheet" href="css/my-sytle.css">
+</head>
+
+<body>
+<div class="contents user_order">
+    <div class="nav-box">
+        <div class="nav-list">
+            <ul class="tabs">
+                <li><a href="user_order_01.html" class="active">全部订单</a></li>
+                <li><a href="user_order_02.html">待付款</a></li>
+                <li><a href="user_order_03.html">待发货</a></li>
+                <li><a href="user_order_04.html">待收货</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+<!--    待付款状态-->
+    <div class="order-box">
+        <div class="centent-list">
+            <a href="user_order_details.html">
+                <div class="img-box">
+                    <img src="img/test-data/01.jpg" width="100%">
+                </div>
+                <div class="right-box">
+                    <div class="title">宝马牌24速山地自行车（高配版）</div>
+                    <p>￥1888.00 <span>x1</span></p>
+                    <p><s>￥6680.00</s></p>
+                </div>
+            </a>
+        </div>
+        <div class="statistics">
+            <span>合计：￥1888.00</span>
+            <a href="pay.html" style="bottom" class="active">付款</a>
+            <button style="bottom" id="abolish">取消订单</button>
+        </div>
+    </div>
+
+
+<!--待发货状态-->
+    <div class="order-box">
+        <div class="centent-list">
+            <a href="user_order_details.html">
+                <div class="img-box">
+                    <img src="img/test-data/01.jpg" width="100%">
+                </div>
+                <div class="right-box">
+                    <div class="title">宝马牌24速山地自行车（高配版）</div>
+                    <p>￥1888.00 <span>x1</span></p>
+                    <p><s>￥6680.00</s></p>
+                </div>
+            </a>
+        </div>
+        <div class="statistics">
+            <span>合计：￥1888.00</span>
+                        <button style="bottom" id="wait-delivered">待发货</button>
+                        <button style="bottom" id="account-paid">已付款</button>
+        </div>
+    </div>
+
+
+    <!--待发收货-->
+    <div class="order-box">
+        <div class="centent-list">
+            <a href="user_order_details.html">
+                <div class="img-box">
+                    <img src="img/test-data/01.jpg" width="100%">
+                </div>
+                <div class="right-box">
+                    <div class="title">宝马牌24速山地自行车（高配版）</div>
+                    <p>￥1888.00 <span>x1</span></p>
+                    <p><s>￥6680.00</s></p>
+                </div>
+            </a>
+        </div>
+        <div class="statistics">
+            <span>合计：￥1888.00</span>
+                            <button style="bottom" class="active" id="ont-ok">确认收货</button>
+                            <button style="bottom" id="express">快递单号</button>
+        </div>
+    </div>
+
+
+    <!--已完成-->
+    <div class="order-box">
+        <div class="centent-list">
+            <a href="user_order_details.html">
+                <div class="img-box">
+                    <img src="img/test-data/01.jpg" width="100%">
+                </div>
+                <div class="right-box">
+                    <div class="title">宝马牌24速山地自行车（高配版）</div>
+                    <p>￥1888.00 <span>x1</span></p>
+                    <p><s>￥6680.00</s></p>
+                </div>
+            </a>
+        </div>
+        <div class="statistics">
+            <span>合计：￥1888.00</span>
+            <button style="bottom" id="over">已完成</button>
+            <button style="bottom" id="express">快递单号</button>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <div style="height: 4rem;"></div>
+<div class="bottom">
+
+    <div class="weui-flex">
+        <div class="weui-flex__item"><div class="placeholder in">
+            <a href="index.html" class="" id="index"><i class="icon iconfont icon-zhuye"></i>
+            <p>首页</p></a>
+        </div></div>
+        <div class="weui-flex__item"><div class="placeholder">
+            <a href="mall_index.html" id="mall"><i class="icon iconfont icon-shangcheng2"></i>
+            <p>兑换商城</p></a>
+        </div></div>
+        <div class="weui-flex__item"><div class="placeholder">
+            <a href="user.html" id="my"><i class="icon iconfont icon-geren"></i>
+            <p>我的</p></a>
+        </div></div>
+    </div>
+</div>
+
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/jquery-weui.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/city-picker.min.js"></script>
+</div>
+</body>
+<script style="text/javascript">
+    $(document).on("click", "#over", function() {
+        $.toast("订单已完成", function() {
+            console.log('close');
+        });
+    })
+    $(document).on("click", "#express", function() {
+        $.alert("运单号：62542225435", "韵达快递");
+    });
+    $(document).on("click", "#ont-ok", function() {
+        $.alert("您确定已经收到货物了吗？", "确认收货！");
+    });
+    $(document).on("click", "#account-paid", function() {
+        $.alert("您已付款了哦，如果还需要，请重新下单哦！", "已付款啦！");
+    });
+    $(document).on("click", "#wait-delivered", function() {
+        $.alert("包裹已经在仓库准备了哦，请耐心等待的！", "待发货！");
+    });
+    $(document).on("click", "#abolish", function() {
+        $.confirm("您确定要取消此订单吗?", "确认取消?", function() {
+            $.toast("订单已取消!");
+        }, function() {
+            //取消操作
+        });
+    });
+
+    document.getElementById("my").className = "active";
+</script>
+</html>

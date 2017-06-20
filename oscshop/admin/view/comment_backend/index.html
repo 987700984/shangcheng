@@ -1,0 +1,245 @@
+{extend name="./oscshop/admin/view/public/base.html" /}
+{block name="content"}
+<div class="page-header">
+	<h1>
+		移动端
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			评论管理
+		</small>
+		<a data-href="{:url('admin/comment_backend/addComment')}" style="margin-left: 50px" id="js-add_comment" class="btn btn-success ">添加评论</a>
+	</h1>
+</div>
+<table class="table table-striped table-bordered table-hover search-form">
+	<thead>
+	<input name="type" type="hidden"  value="search" />
+	<th><input name="search_goods_id" type="text" placeholder="输入商品id" value="{:input('search_goods_id')}" /></th>
+
+	<th>
+		<select name="search_status">
+			<option value="">全部状态</option>
+			<option {if condition="input('search_status') eq 1"} selected="selected"{/if}value="1">启用</option>
+			<option {if condition="input('search_status') eq 2"} selected="selected"{/if} value="2">停用</option>
+		</select>
+	</th>
+	<th>
+		<a class="btn btn-primary" href="javascript:;" id="search" url="{:url('index')}">查询</a>
+	</th>
+	</thead>
+</table>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="table-responsive">
+			<table id="table" class="table table-striped table-bordered table-hover">
+				<thead>
+				<tr>
+					<th>商品id</th>
+					<th>商品名称</th>
+					<th>用户</th>
+					<th width="300px">内容</th>
+					<th>评论时间</th>
+					<th>状态</th>
+					<th>审核人</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{volist name="list" id="v" empty="$empty"}
+
+<?php $i=0;?>
+				{if condition="$v->Goods"}
+<?php $i++;?>
+				<tr>
+					<td>{$v.goods_id}</td>
+					<td>{$v->Goods->name}</td>
+					<td>{$v.user_name}</td>
+					<td >{$v.content}</td>
+					<td>{$v.add_time}</td>
+					<td>
+						{switch name="v->getData('status')"}
+						{case value="1"}
+						<a href='{:url("comment_backend/pass",array("id"=>$v["id"],"status"=>2))}'>
+							<span class="btn btn-xs btn-info"><i class="fa fa-unlock bigger-120"></i></span>
+						</a>
+						{/case}
+						{case value="2"}
+						<a href='{:url("comment_backend/pass",array("id"=>$v["id"],"status"=>1))}'>
+							<span class="btn btn-xs btn-danger"><i class="fa fa-lock bigger-120"></i></span>
+						</a>
+						{/case}
+						{case value="0"}
+						<a href='{:url("comment_backend/pass",array("id"=>$v["id"],"status"=>1))}'>
+							<span class="btn btn-xs btn-danger"><i class="fa fa-lock bigger-120"></i></span>
+						</a>
+						{/case}
+						{/switch}
+					</td>
+					<td>{$v->Admin->user_name|default="-"}</td>
+					<td>
+						<a class="js-comment_answer color-primary" href="javascript:void(0)"  data-href="{:url('admin/comment_backend/answer',['pid'=>$v.id,'goods_id'=>$v->Goods->goods_id])}">回复</a>
+						{if condition="!empty($subCommends[$i-1])"}
+						<a class="js-comment_show text-success" href="javascript:void(0)"   data-content='{:json_encode($subCommends[$i-1])}'>查看回复</a>
+						{/if}
+					</td>
+				</tr>
+
+
+
+				{/if}
+
+
+				{/volist}
+				<tr>
+					<td colspan="20" class="page">{$list->render()}</td>
+				</tr>
+				<tr>
+					<td colspan="20" class="page">总计 {$list->total()-$i|default="0"} 个评论</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!--回复评论及添加评论的弹出框-->
+<div id="bootstrap-modal" class="modal fade">
+	<div class="modal-dialog">
+		<form id="js-form" action="" method="post">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 id="comment_back_title" class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+					<p id="js-comment_user" >
+						<input class="form-control" type="text" name="goods_id"placeholder="请输入商品ID"><br />
+						<input class="form-control" type="text" name="username"placeholder="请输入用户名"><br /></p>
+					<textarea class="form-control" name="content" rows="3" placeholder="请输入评论内容">请输入评论内容</textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</form>
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--查看二级评论的弹出框-->
+<div id="subcomment-modal" class="modal fade">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 id="subcomment_title" class="modal-title"></h4>
+			</div>
+			<div class="modal-body">
+				<div class="table-responsive">
+					<table  class="table table-striped table-bordered table-hover">
+						<thead>
+						<tr>
+							<th>用户</th>
+							<th width="200px">内容</th>
+							<th>评论时间</th>
+							<th>状态</th>
+							<th>审核人</th>
+						</tr>
+						</thead>
+						<tbody data-adminhref='{:url("comment_backend/getAdminName")}' data-passhref='{:url("comment_backend/pass")}' id="js-sub_attr">
+						</tbody>
+					</table>
+				</div>
+		</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary">提交</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			</div>
+		</div><!-- /.modal-content -->
+
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script>
+	var modal = $('#bootstrap-modal');
+	var myform = $('#js-form');
+	var commentTitle = $('#comment_back_title');
+	var goodsId = $('[name="goodsId"]');
+	var username = $('#js-comment_user');
+	var subModal = $('#subcomment-modal');
+	var subAttr = $('#js-sub_attr');
+	//	回复评论
+	$('.js-comment_answer').on('click', function () {
+		modal.modal('show');
+		myform.attr('action',$(this).attr('data-href'));
+		$('[name="content"]').html('');
+		commentTitle.html('回复评论');
+		username.hide();
+	})
+
+
+	//	添加评论
+	$('#js-add_comment').on('click',function(){
+		modal.modal('show');
+		commentTitle.html('添加评论');
+		$('[name="content"]').html('');
+		myform.attr('action',$(this).attr('data-href'));
+		username.show();
+	})
+
+
+	//	查询
+	$("#search").click(function () {
+		var url = $(this).attr('url');
+		var query = $('.search-form').find('input,select').serialize();
+		query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+		query = query.replace(/^&/g, '');
+		if (url.indexOf('?') > 0) {
+			url += '&' + query;
+		} else {
+			url += '?' + query;
+		}
+		window.location.href = url;
+	});
+
+
+
+	//	查看回复评论
+	$('.js-comment_show').on('click',function(){
+
+		subAttr.html('');
+		var adminHref = subAttr.attr('data-adminHref');
+		var passHref = subAttr.attr('data-passHref');
+		var content = $(this).attr('data-content');
+		content = JSON.parse(content);
+
+		var html = '';
+
+		for(var i=0;i<content.length;i++){
+
+			//此处有问题不能每条都单独查询数据库，以后想办法把这个解决掉,或者在控制器里直接把adminname加进来
+
+			html += '<tr><td>' + content[i].user_name + '</td> <td>' + content[i].content + '</td> <td>' + content[i].add_time + '</td> <td>';
+			if (content[i].status == '未审核' || content[i].status == '未通过') {
+				html += '<a href="' + passHref + '?id=' + content[i].id + '&status=1' + '"> <span class="btn btn-xs btn-danger"><i class="fa fa-lock bigger-120"></i></span> </a>';
+			} else if (content[i].status == '通过') {
+				html += '<a href="' + passHref + '?id=' + content[i].id + '&status=2' + '"><span class="btn btn-xs btn-info"><i class="fa fa-unlock bigger-120"></i></span> </a>'
+			};
+			html += ' </td><td>' + content[i].admin_name + '</td></tr>';
+		}
+		subAttr.append(html);
+		subModal.modal('show');
+	})
+
+</script>
+
+
+
+
+
+
+{/block}

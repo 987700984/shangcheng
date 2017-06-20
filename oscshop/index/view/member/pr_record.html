@@ -1,0 +1,124 @@
+{__NOLAYOUT__}
+{include file="public/header" /}
+{include file="public/member" /}
+<div class="member">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="member-all-border">
+                    {include file="public/left" /}
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-9 col-xs-9 exchange-record">
+                <div class="small-nav">
+                    <ul>
+                        <li><a href="{:url('Index/index')}">首页</a></li>
+                        <li><i class="fa fa-angle-double-right" aria-hidden="true"></i></li>
+                        <li>兑换记录</li>
+                    </ul>
+                </div>
+                <div class="member-all-border">
+                    {volist name='list' id='d'}
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="in-logo">
+                                <img src="__IMAGE__/product/{$d.img}" alt="">
+                            </div>
+                        </div>
+                        <div class="col-xs-9 col-sm-9 col-md-9">
+                            <h2 class="title">{$d.name}</h2>
+
+                            <p class="time">提交时间：{$d.add_time}
+                                <span>状态:<o>
+                                    {if condition="($d.status==2)"}
+                                    待兑换
+                                    {else/}
+                                    已兑换
+                                    {/if}
+                                </o></span></p>
+                            {if condition="($d.status==1)"}
+                            <p class="time">审核时间：{$d.record_time}</p>
+                            {/if}
+
+                        </div>
+                        {if condition="($d.status==2)"}
+                        <div class="button">
+
+                            <button type="button" class="btn btn-default" onclick="del({$d.id})" data-toggle="modal" data-target=".bs-example-modal-qx">取消兑换</button>
+                            <a href="{:url('Member/product')}" class="btn btn-warning">再次兑换</a>
+                        </div>
+                        {else/}
+                        <div class="button">
+                            <a href="{:url('Member/product')}" class="btn btn-warning">再次兑换</a>
+                        </div>
+                        <div class="watermark">
+                            <img src="__PUBLIC__/pc/img/watermark.png" alt="已完成">
+                        </div>
+                        {/if}
+                    </div>
+                    {/volist}
+                    <!--分割线-->
+
+
+            </div>
+        </div>
+            <div>{$page}</div>
+    </div>
+</div>
+<!--弹出层-->
+
+<div class="member-order">
+    <!--取消兑换-->
+    <div class="modal fade bs-example-modal-qx" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="mySmallModalLabel">信息提示</h4>
+                </div>
+                <div class="modal-body">
+                    确定取消兑换？
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-primary btn-block queding">确定</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-default btn-block" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/foot" /}
+    <script>
+
+
+            function del(id) {
+
+                $('.queding').click(function() {
+
+                    $.post(
+                            "{:url('Member/remove')}",
+                            {id: id},
+                            function (data) {
+                                if (data) {
+                                    alert("已取消!");
+                                    window.location.reload();
+                                }
+                            }
+                    );
+                });
+
+            }
+
+
+    </script>
+</body>
+</html>
